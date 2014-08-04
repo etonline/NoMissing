@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/settings_activity_preference_category_tts_settings" >
+        
+        <ListPreference
+            android:persistent="true"
+            android:entries="@array/settings_activity_list_preference_speaker_key"
+            android:entryValues="@array/settings_activity_list_preference_speaker_value"
+            android:key="tts_speaker"
+            android:summary="Bruce (預設)"
+            android:title="@string/settings_activity_list_preference_speaker" >
+        </ListPreference>
+
+        <edu.ntust.cs.idsl.nomissing.util.SeekBarPreference
+            android:dialogLayout="@layout/pref_seekbar"
+            android:dialogTitle="@string/settings_activity_seekbar_preference_volume"
+            android:key="tts_volume"
+            android:summary="100 (預設)"
+            android:title="@string/settings_activity_seekbar_preference_volume" >
+        </edu.ntust.cs.idsl.nomissing.util.SeekBarPreference>
+        
+        <edu.ntust.cs.idsl.nomissing.util.SeekBarPreference
+            android:dialogLayout="@layout/pref_seekbar"
+            android:dialogTitle="@string/settings_activity_seekbar_preference_speed"
+            android:key="tts_speed"
+            android:summary="0 (預設)"
+            android:title="@string/settings_activity_seekbar_preference_speed" >
+        </edu.ntust.cs.idsl.nomissing.util.SeekBarPreference>
+        
+    </PreferenceCategory>
+
+</PreferenceScreen>

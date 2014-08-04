@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.ntust.cs.idsl.nomissing.MainActivity" >
+  
+    <item
+        android:id="@+id/action_set_chime_ok"
+        android:orderInCategory="0"
+        android:title="@string/action_add_chime_ok"
+        android:icon="@drawable/ic_action_accept"
+        android:showAsAction="ifRoom|withText"/>
+    
+    <item
+        android:id="@+id/action_delete_chime"
+        android:orderInCategory="1"
+        android:title="@string/action_delete_chime"
+        android:icon="@drawable/ic_action_discard"
+        android:showAsAction="ifRoom|withText"/>    
+    
+</menu>

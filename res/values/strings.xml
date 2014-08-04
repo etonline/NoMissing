@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NoMissing</string>
+    <string name="title_activity_login">登入</string>
+    <string name="title_activity_signup">註冊</string>
+    <string name="title_activity_init">InitActivity</string>
+    <string name="title_activity_main">NoMissing</string>
+    <string name="title_activity_settings">設定</string>
+    <string name="title_activity_set_chime">語音報時設定</string>
+    <string name="title_activity_set_weather">語音天氣設定</string>
+
+    <!-- Action Bar -->
+    <string name="action_settings">設定</string>
+    <string name="action_about">關於</string>
+    <string name="action_add_chime">新增</string>
+    <string name="action_add_chime_ok">完成</string>
+    <string name="action_delete_chime">刪除</string>
+    <string name="action_settings_ok">設定完成</string>
+    <string name="action_set_weather">提醒設定</string>
+    <string name="action_save">儲存</string>
+
+    <!-- Navigation Drawer -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item>NoMissing</item>
+        <item>行事曆</item>
+        <item>語音報時</item>
+        <item>語音天氣</item>
+        <item>設定</item>
+        <item>登出</item>
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_launcher</item>
+    </array>
+
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
+
+    <!-- InitActivity -->
+    <string name="init_text_view_text_loading">程式載入中，請稍後…</string>
+    <string name="init_alert_dialog_title_network_inavailable">連線失敗</string>
+    <string name="init_alert_dialog_message_network_inavailable">您尚未設置網路，請啟用行動網路或 Wi-Fi 後，重新進入本程式以取得完整服務。</string>
+    <string name="init_alert_dialog_button_exit">離開</string>
+
+    <!-- LoginActivity -->
+    <string name="login_edit_text_hint_username">帳號</string>
+    <string name="login_edit_text_hint_password">密碼</string>
+    <string name="login_button_text_login">登入</string>
+    <string name="login_button_text_signup">註冊新帳號</string>
+
+    <!-- SignupActivity -->
+    <string name="signup_edit_text_hint_username">帳號</string>
+    <string name="signup_edit_text_hint_password">密碼</string>
+    <string name="signup_edit_text_hint_confirm_password">確認密碼</string>
+    <string name="signup_edit_text_hint_email">電子郵件</string>
+    <string name="signup_button_text_sign_up">註冊</string>
+    <string name="signup_toast_text_signup_sucess">註冊成功！請輸入您的帳號密碼。</string>
+
+    <!-- WeatherFragment -->
+    <string name="weather_fragment_spinner_promt">請選擇城市</string>
+    <string name="weather_fragment_button_start">播放</string>
+    <string name="weather_fragment_button_pause">暫停</string>
+    <string name="weather_fragment_button_stop">停止</string>
+    <string name="weather_fragment_toast_start">播放</string>
+    <string name="weather_fragment_toast_pause">暫停</string>
+    <string name="weather_fragment_toast_stop">停止</string>
+    <string name="weather_fragment_toast_continue">繼續</string>
+    <string name="weather_fragment_toast_play_completion">完成</string>
+    <string name="weather_fragment_alert_dialog_close">關閉</string>
+
+    <!-- ChimeFragment -->
+    <string name="chime_fragment_button_add">新增</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="progress_dialog_please_wait">Please wait...</string>
+    <string name="no_data"></string>
+
+    <!-- SetChimeActivity -->
+    <string name="chime_activity_check_box_preference_enabled">開啟報時</string>
+    <string name="chime_activity_time_preference_time">時間</string>
+    <string name="chime_activity_time_preference_repeat">重複</string>
+
+    <string-array name="chime_activity_time_preference_repeat_key">
+        <item>一次</item>
+        <item>每天</item>
+    </string-array>
+    <string-array name="chime_activity_time_preference_repeat_value">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <!-- SetWeatherActivity -->
+    <string name="set_weather_activity_check_box_preference_enabled">定時提醒</string>
+    <string name="set_weather_activity_time_preference_time">提醒時間</string>
+    <string name="set_weather_activity_time_preference_city">所在城市</string>
+
+    <!-- SettingsActivity -->
+    <string name="settings_activity_preference_category_tts_settings">Text-to-Speech</string>
+    <string name="settings_activity_list_preference_speaker">音源</string>
+
+    <string-array name="settings_activity_list_preference_speaker_key">
+        <item>Bruce (男生語音)</item>
+        <item>Theresa (女生語音)</item>
+        <item>Angela (小女孩語音)</item>
+    </string-array>
+    <string-array name="settings_activity_list_preference_speaker_value">
+        <item>Bruce</item>
+        <item>Theresa</item>
+        <item>Angela</item>
+    </string-array>
+
+    <string name="settings_activity_seekbar_preference_volume">音量</string>
+    <string name="settings_activity_seekbar_preference_speed">聲速</string>
+    <string name="settings_activity_preference_category_weather_settings">語音天氣</string>
+    <string name="title_activity_alarm">AlarmActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_calendar">CalendarActivity</string>
+
+</resources>

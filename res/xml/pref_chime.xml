@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:key="enabled"
+        android:persistent="false"
+        android:title="@string/chime_activity_check_box_preference_enabled" />
+
+	<Preference android:key="time" 
+	        android:persistent="false"
+	        android:title="@string/chime_activity_time_preference_time"/>
+
+    <ListPreference
+        android:entries="@array/chime_activity_time_preference_repeat_key"
+        android:entryValues="@array/chime_activity_time_preference_repeat_value"
+        android:key="repeat"
+        android:summary="一次"
+        android:title="@string/chime_activity_time_preference_repeat" >
+    </ListPreference>
+
+</PreferenceScreen>

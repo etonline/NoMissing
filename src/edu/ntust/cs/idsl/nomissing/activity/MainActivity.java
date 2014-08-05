@@ -3,16 +3,14 @@ package edu.ntust.cs.idsl.nomissing.activity;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -22,18 +20,18 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.adapter.NavDrawerListAdapter;
+import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.ChimeFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.HomeFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.WeatherFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.NavDrawerItem;
-import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
 @SuppressLint("NewApi") 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
 	private static final String TAG = MainActivity.class.getSimpleName();
 	private NoMissingApp app;
@@ -187,7 +185,7 @@ public class MainActivity extends Activity {
 			fragment = new HomeFragment();
 			break;
 		case 1:
-			fragment = new HomeFragment();
+			fragment = new CalendarFragment();
 			break;
 		case 2:
 			fragment = new ChimeFragment();
@@ -207,7 +205,7 @@ public class MainActivity extends Activity {
 		}
 
 		if (fragment != null) {
-			FragmentManager fragmentManager = getFragmentManager();
+			FragmentManager fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.frame_container, fragment).commit();
 

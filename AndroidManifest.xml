@@ -100,6 +100,14 @@
             android:name=".CalendarActivity"
             android:label="@string/title_activity_calendar" >
         </activity>
+        <activity
+            android:name=".CalendarsActivity"
+            android:label="@string/title_activity_calendars" >
+        </activity>
+        <activity
+            android:name="edu.ntust.cs.idsl.nomissing.activity.SetEventActivity"
+            android:label="@string/title_activity_set_event" >
+        </activity>
     </application>
 
 </manifest>

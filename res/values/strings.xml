@@ -126,5 +126,13 @@
     <string name="title_activity_alarm">AlarmActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_calendar">CalendarActivity</string>
+    <string name="title_activity_calendars">CalendarsActivity</string>
+    <string name="title_activity_set_event">SetEventActivity</string>
+    
+    <!-- SetCalendarActivity -->
+    <string name="set_event_edit_text_hint_title">標題</string>
+    <string name="set_event_edit_text_hint_location">地點</string>
+    <string name="set_event_edit_text_hint_start">開始</string>
+    <string name="set_event_edit_text_hint_end">結束</string>
 
 </resources>

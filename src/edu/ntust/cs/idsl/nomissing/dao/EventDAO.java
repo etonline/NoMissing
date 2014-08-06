@@ -9,9 +9,11 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.location.Location;
 import android.net.Uri;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Instances;
+import android.util.Log;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 
 @SuppressLint({ "SimpleDateFormat", "NewApi" })
@@ -21,15 +23,18 @@ public class EventDAO implements ICalendarDAO<Event> {
 	private Context context;
 	
 	public static final String[] INSTANCE_PROJECTION = new String[] {
-	    Instances.EVENT_ID,      // 0
-	    Instances.BEGIN,         // 1
-	    Instances.TITLE,         // 2
-	    Instances.EVENT_LOCATION
+	    Instances.EVENT_ID,  
+	    Instances.TITLE, 
+	    Instances.EVENT_LOCATION,
+	    Instances.BEGIN,    
+	    Instances.END
 	  };
 	  
 	private static final int PROJECTION_ID_INDEX = 0;
-	private static final int PROJECTION_BEGIN_INDEX = 1;
-	private static final int PROJECTION_TITLE_INDEX = 2;
+	private static final int PROJECTION_TITLE_INDEX = 1;
+	private static final int PROJECTION_LOCATION_INDEX = 2;
+	private static final int PROJECTION_BEGIN_INDEX = 3;
+	private static final int PROJECTION_END_INDEX = 4;
 
 	private EventDAO(Context context) {
 		this.context = context;
@@ -61,8 +66,20 @@ public class EventDAO implements ICalendarDAO<Event> {
 
 	@Override
 	public long update(Event entity) {
-		// TODO Auto-generated method stub
-		return 0;
+		ContentResolver cr = context.getContentResolver();
+		ContentValues values = new ContentValues();
+		Uri updateUri = null;
+		values.put(Events.DTSTART, entity.getStart());
+		values.put(Events.DTEND, entity.getEnd());
+		values.put(Events.TITLE, entity.getTitle());
+//		values.put(Events.DESCRIPTION, entity.getDescription());
+//		values.put(Events.CALENDAR_ID, entity.getCalendarID());
+//		values.put(Events.EVENT_TIMEZONE, entity.getTimezone());		
+		String[] selArgs = new String[]{Long.toString(entity.getEventID())};
+
+		updateUri = ContentUris.withAppendedId(Events.CONTENT_URI, entity.getEventID());
+		int rows = context.getContentResolver().update(updateUri, values, null, null);
+		return rows;
 	}
 
 	@Override
@@ -72,7 +89,7 @@ public class EventDAO implements ICalendarDAO<Event> {
 	}
 
 	@Override
-	public List<Event> findAll(long startMillis, long endMillis) {
+	public List<Event> find(long startMillis, long endMillis) {
 		List<Event> events = new ArrayList<Event>();
 		  
 		Cursor cur = null;
@@ -89,16 +106,22 @@ public class EventDAO implements ICalendarDAO<Event> {
 			
 		    String title = null;
 		    long eventID = 0;
-		    long beginVal = 0;    
+		    long beginVal = 0; 
+		    String location = null;
+		    long endVal = 0; 
 		    
 		    // Get the field values
 		    eventID = cur.getLong(PROJECTION_ID_INDEX);
 		    beginVal = cur.getLong(PROJECTION_BEGIN_INDEX);
 		    title = cur.getString(PROJECTION_TITLE_INDEX);
+		    location = cur.getString(PROJECTION_LOCATION_INDEX);
+		    endVal = cur.getLong(PROJECTION_END_INDEX);
 		    
 		    event.setEventID(eventID);
 		    event.setTitle(title);
 		    event.setStart(beginVal);
+		    event.setLocation(location);
+		    event.setEnd(endVal);
 		    events.add(event);
 		}
 		cur.close();
@@ -123,16 +146,22 @@ public class EventDAO implements ICalendarDAO<Event> {
 		while (cur.moveToNext()) {
 		    String title = null;
 		    long eventID = 0;
-		    long beginVal = 0;    
+		    long beginVal = 0; 
+		    String location = null;
+		    long endVal = 0; 
 		    
 		    // Get the field values
 		    eventID = cur.getLong(PROJECTION_ID_INDEX);
 		    beginVal = cur.getLong(PROJECTION_BEGIN_INDEX);
 		    title = cur.getString(PROJECTION_TITLE_INDEX);
-
+		    location = cur.getString(PROJECTION_LOCATION_INDEX);
+		    endVal = cur.getLong(PROJECTION_END_INDEX);
+		    
 		    event.setEventID(eventID);
 		    event.setTitle(title);
 		    event.setStart(beginVal);
+		    event.setLocation(location);
+		    event.setEnd(endVal);
 		}
 		cur.close();
 		

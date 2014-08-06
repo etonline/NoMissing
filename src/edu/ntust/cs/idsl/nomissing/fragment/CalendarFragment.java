@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import android.accounts.Account;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
 import edu.ntust.cs.idsl.nomissing.R;
+import edu.ntust.cs.idsl.nomissing.activity.SetEventActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.EventListAdapter;
 import edu.ntust.cs.idsl.nomissing.dao.EventDAO;
 import edu.ntust.cs.idsl.nomissing.model.Event;
@@ -106,7 +108,7 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
             	calendar.add(Calendar.DAY_OF_YEAR, 1);
             	long endMillis = calendar.getTimeInMillis();
             	
-            	dayEvents = eventDAO.findAll(startMillis, endMillis);
+            	dayEvents = eventDAO.find(startMillis, endMillis);
             	adapter = new EventListAdapter(getActivity(), dayEvents);
             	listViewEvents.setAdapter(adapter);        
             }
@@ -120,7 +122,7 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
         		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         		long endMillis = calendar.getTimeInMillis();
 
-        		monthEvents = eventDAO.findAll(startMillis, endMillis);
+        		monthEvents = eventDAO.find(startMillis, endMillis);
         		for(Event event : monthEvents) {
         			calendar.setTimeInMillis(event.getStart());
         			caldroidFragment.setBackgroundResourceForDate(R.color.blue, calendar.getTime());
@@ -143,9 +145,17 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		ToastMaker.toast(getActivity(), String.valueOf(dayEvents.get(position).getEventID()));
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		long eventID = id;
+    	long startMillis = dayEvents.get(position).getStart();
+    	long endMillis = dayEvents.get(position).getEnd();		
+		
+		Intent intent = new Intent(getActivity(), SetEventActivity.class);
+		intent.putExtra("eventID", eventID);
+		intent.putExtra("startMillis", startMillis);
+		intent.putExtra("endMillis", endMillis);
+		
+		startActivityForResult(intent, 1);
 	}
 
 

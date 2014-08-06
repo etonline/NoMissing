@@ -10,7 +10,7 @@ public interface ICalendarDAO<T> {
 
 	public long delete(long id);
 
-	public List<T> findAll(long startMillis, long endMillis);
+	public List<T> find(long startMillis, long endMillis);
 
 	public T find(long id, long startMillis, long endMillis);
 	

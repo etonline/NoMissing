@@ -8,18 +8,60 @@
         android:id="@+id/editTextTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="28dp"
         android:ems="10"
-        android:hint="@string/login_edit_text_hint_username" />
+        android:hint="@string/set_event_edit_text_hint_title" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/editTextLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="32dp"
-        android:ems="10" />
+        android:layout_alignLeft="@+id/editTextTitle"
+        android:layout_below="@+id/editTextTitle"
+        android:layout_marginTop="25dp"
+        android:ems="10"
+        android:hint="@string/set_event_edit_text_hint_location" />
+
+    <EditText
+        android:id="@+id/editTextEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextLocation"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="71dp"
+        android:ems="10"
+        android:focusable="false" />
+
+    <EditText
+        android:id="@+id/editTextEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editTextEndTime"
+        android:layout_alignLeft="@+id/editTextEndTime"
+        android:layout_marginBottom="17dp"
+        android:ems="10"
+        android:focusable="false" />
+
+    <EditText
+        android:id="@+id/editTextStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextLocation"
+        android:layout_below="@+id/editTextLocation"
+        android:layout_marginTop="44dp"
+        android:ems="10"
+        android:focusable="false" />
+
+    <EditText
+        android:id="@+id/editTextStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editTextEndDate"
+        android:layout_alignLeft="@+id/editTextEndDate"
+        android:layout_marginBottom="29dp"
+        android:ems="10"
+        android:focusable="false" />
 
 </RelativeLayout>

@@ -14,11 +14,13 @@
     <string name="action_settings">設定</string>
     <string name="action_about">關於</string>
     <string name="action_add_chime">新增</string>
-    <string name="action_add_chime_ok">完成</string>
+    <string name="action_set_chime_ok">完成</string>
     <string name="action_delete_chime">刪除</string>
     <string name="action_settings_ok">設定完成</string>
     <string name="action_set_weather">提醒設定</string>
     <string name="action_save">儲存</string>
+    <string name="action_set_event_ok">完成</string>
+    <string name="action_delete_event">刪除</string>    
 
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>

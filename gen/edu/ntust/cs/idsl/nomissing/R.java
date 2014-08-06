@@ -1287,8 +1287,8 @@ containing a value of this type.
         public static final int right_arrow=0x7f02006c;
     }
     public static final class id {
-        public static final int action_about=0x7f090068;
-        public static final int action_add_chime=0x7f090066;
+        public static final int action_about=0x7f09006d;
+        public static final int action_add_chime=0x7f09006b;
         public static final int action_bar=0x7f09001c;
         public static final int action_bar_activity_content=0x7f090015;
         public static final int action_bar_container=0x7f09001b;
@@ -1297,14 +1297,16 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f090023;
         public static final int action_bar_title=0x7f090022;
         public static final int action_context_bar=0x7f09001d;
-        public static final int action_delete_chime=0x7f090063;
+        public static final int action_delete_chime=0x7f090066;
+        public static final int action_delete_event=0x7f090068;
         public static final int action_menu_divider=0x7f090016;
         public static final int action_menu_presenter=0x7f090017;
         public static final int action_mode_close_button=0x7f090024;
-        public static final int action_save=0x7f090064;
-        public static final int action_set_chime_ok=0x7f090062;
-        public static final int action_set_weather=0x7f090067;
-        public static final int action_settings_ok=0x7f090065;
+        public static final int action_save=0x7f090069;
+        public static final int action_set_chime_ok=0x7f090065;
+        public static final int action_set_event_ok=0x7f090067;
+        public static final int action_set_weather=0x7f09006c;
+        public static final int action_settings_ok=0x7f09006a;
         public static final int activity_chooser_view_content=0x7f090025;
         public static final int always=0x7f09000b;
         public static final int beginning=0x7f090011;
@@ -1312,28 +1314,31 @@ containing a value of this type.
         public static final int buttonLogin=0x7f090046;
         public static final int buttonPanel=0x7f090040;
         public static final int buttonSignup=0x7f090047;
-        public static final int calendar1=0x7f09005d;
-        public static final int calendar_gridview=0x7f09005b;
-        public static final int calendar_left_arrow=0x7f090052;
-        public static final int calendar_month_year_textview=0x7f090053;
-        public static final int calendar_right_arrow=0x7f090054;
-        public static final int calendar_title_view=0x7f090051;
-        public static final int calendar_tv=0x7f09005a;
-        public static final int checkBoxEnabled=0x7f090057;
+        public static final int calendar1=0x7f090060;
+        public static final int calendar_gridview=0x7f09005e;
+        public static final int calendar_left_arrow=0x7f090055;
+        public static final int calendar_month_year_textview=0x7f090056;
+        public static final int calendar_right_arrow=0x7f090057;
+        public static final int calendar_title_view=0x7f090054;
+        public static final int calendar_tv=0x7f09005d;
+        public static final int checkBoxEnabled=0x7f09005a;
         public static final int checkbox=0x7f09002d;
         public static final int collapseActionView=0x7f09000d;
         public static final int contentPanel=0x7f09003d;
-        public static final int counter=0x7f09005c;
+        public static final int counter=0x7f09005f;
         public static final int default_activity_button=0x7f090028;
         public static final int dialog=0x7f09000e;
         public static final int disableHome=0x7f090008;
         public static final int drawer_layout=0x7f090048;
         public static final int dropdown=0x7f09000f;
-        public static final int editText1=0x7f09004d;
-        public static final int editText2=0x7f09004e;
-        public static final int editTextConfirmPassword=0x7f09004f;
-        public static final int editTextEmail=0x7f090050;
+        public static final int editTextConfirmPassword=0x7f090052;
+        public static final int editTextEmail=0x7f090053;
+        public static final int editTextEndDate=0x7f09004f;
+        public static final int editTextEndTime=0x7f09004e;
+        public static final int editTextLocation=0x7f09004d;
         public static final int editTextPassword=0x7f090045;
+        public static final int editTextStartDate=0x7f090050;
+        public static final int editTextStartTime=0x7f090051;
         public static final int editTextTitle=0x7f09004c;
         public static final int editTextUsername=0x7f090044;
         public static final int edit_query=0x7f090030;
@@ -1348,11 +1353,11 @@ containing a value of this type.
         public static final int image=0x7f090027;
         public static final int leftSpacer=0x7f090041;
         public static final int listMode=0x7f090001;
-        public static final int listViewEvents=0x7f09005f;
+        public static final int listViewEvents=0x7f090062;
         public static final int list_item=0x7f090029;
         public static final int list_slidermenu=0x7f09004a;
         public static final int middle=0x7f090012;
-        public static final int months_infinite_pager=0x7f090056;
+        public static final int months_infinite_pager=0x7f090059;
         public static final int never=0x7f090009;
         public static final int none=0x7f090010;
         public static final int normal=0x7f090000;
@@ -1371,7 +1376,7 @@ containing a value of this type.
         public static final int search_plate=0x7f090036;
         public static final int search_src_text=0x7f090037;
         public static final int search_voice_btn=0x7f09003b;
-        public static final int seekBar=0x7f090061;
+        public static final int seekBar=0x7f090064;
         public static final int shortcut=0x7f09002e;
         public static final int showCustom=0x7f090007;
         public static final int showHome=0x7f090004;
@@ -1381,16 +1386,16 @@ containing a value of this type.
         public static final int tabMode=0x7f090002;
         public static final int textView=0x7f09003f;
         public static final int textView1=0x7f09004b;
-        public static final int textViewDate=0x7f09005e;
+        public static final int textViewDate=0x7f090061;
         public static final int textViewLoading=0x7f090043;
-        public static final int textViewRepeat=0x7f090059;
-        public static final int textViewTime=0x7f090058;
+        public static final int textViewRepeat=0x7f09005c;
+        public static final int textViewTime=0x7f09005b;
         public static final int title=0x7f09002b;
         public static final int top_action_bar=0x7f090020;
-        public static final int txtLabel=0x7f090060;
+        public static final int txtLabel=0x7f090063;
         public static final int up=0x7f090021;
         public static final int useLogo=0x7f090003;
-        public static final int weekday_gridview=0x7f090055;
+        public static final int weekday_gridview=0x7f090058;
         public static final int withText=0x7f09000c;
     }
     public static final class integer {
@@ -1464,11 +1469,12 @@ containing a value of this type.
     }
     public static final class menu {
         public static final int activity_set_chime=0x7f0e0000;
-        public static final int activity_set_weather=0x7f0e0001;
-        public static final int activity_settings=0x7f0e0002;
-        public static final int fragment_chime=0x7f0e0003;
-        public static final int fragment_weather=0x7f0e0004;
-        public static final int main=0x7f0e0005;
+        public static final int activity_set_event=0x7f0e0001;
+        public static final int activity_set_weather=0x7f0e0002;
+        public static final int activity_settings=0x7f0e0003;
+        public static final int fragment_chime=0x7f0e0004;
+        public static final int fragment_weather=0x7f0e0005;
+        public static final int main=0x7f0e0006;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1513,9 +1519,11 @@ containing a value of this type.
         public static final int abc_shareactionprovider_share_with_application=0x7f07000c;
         public static final int action_about=0x7f070016;
         public static final int action_add_chime=0x7f070017;
-        public static final int action_add_chime_ok=0x7f070018;
         public static final int action_delete_chime=0x7f070019;
+        public static final int action_delete_event=0x7f07001e;
         public static final int action_save=0x7f07001c;
+        public static final int action_set_chime_ok=0x7f070018;
+        public static final int action_set_event_ok=0x7f07001d;
         public static final int action_set_weather=0x7f07001b;
         /**  Action Bar 
          */
@@ -1524,84 +1532,84 @@ containing a value of this type.
         public static final int app_name=0x7f070000;
         /**  SetChimeActivity 
          */
-        public static final int chime_activity_check_box_preference_enabled=0x7f07003c;
-        public static final int chime_activity_time_preference_repeat=0x7f07003e;
-        public static final int chime_activity_time_preference_time=0x7f07003d;
+        public static final int chime_activity_check_box_preference_enabled=0x7f07003e;
+        public static final int chime_activity_time_preference_repeat=0x7f070040;
+        public static final int chime_activity_time_preference_time=0x7f07003f;
         /**  ChimeFragment 
          */
-        public static final int chime_fragment_button_add=0x7f070038;
+        public static final int chime_fragment_button_add=0x7f07003a;
         /**  Content Description 
          */
-        public static final int desc_list_item_icon=0x7f07001f;
-        public static final int drawer_close=0x7f07001e;
+        public static final int desc_list_item_icon=0x7f070021;
+        public static final int drawer_close=0x7f070020;
         /**  Navigation Drawer 
          */
-        public static final int drawer_open=0x7f07001d;
-        public static final int hello_blank_fragment=0x7f070039;
-        public static final int hello_world=0x7f070048;
-        public static final int init_alert_dialog_button_exit=0x7f070023;
-        public static final int init_alert_dialog_message_network_inavailable=0x7f070022;
-        public static final int init_alert_dialog_title_network_inavailable=0x7f070021;
+        public static final int drawer_open=0x7f07001f;
+        public static final int hello_blank_fragment=0x7f07003b;
+        public static final int hello_world=0x7f07004a;
+        public static final int init_alert_dialog_button_exit=0x7f070025;
+        public static final int init_alert_dialog_message_network_inavailable=0x7f070024;
+        public static final int init_alert_dialog_title_network_inavailable=0x7f070023;
         /**  InitActivity 
          */
-        public static final int init_text_view_text_loading=0x7f070020;
-        public static final int login_button_text_login=0x7f070026;
-        public static final int login_button_text_signup=0x7f070027;
-        public static final int login_edit_text_hint_password=0x7f070025;
+        public static final int init_text_view_text_loading=0x7f070022;
+        public static final int login_button_text_login=0x7f070028;
+        public static final int login_button_text_signup=0x7f070029;
+        public static final int login_edit_text_hint_password=0x7f070027;
         /**  LoginActivity 
          */
-        public static final int login_edit_text_hint_username=0x7f070024;
-        public static final int no_data=0x7f07003b;
-        public static final int progress_dialog_please_wait=0x7f07003a;
-        public static final int set_event_edit_text_hint_end=0x7f07004f;
-        public static final int set_event_edit_text_hint_location=0x7f07004d;
-        public static final int set_event_edit_text_hint_start=0x7f07004e;
+        public static final int login_edit_text_hint_username=0x7f070026;
+        public static final int no_data=0x7f07003d;
+        public static final int progress_dialog_please_wait=0x7f07003c;
+        public static final int set_event_edit_text_hint_end=0x7f070051;
+        public static final int set_event_edit_text_hint_location=0x7f07004f;
+        public static final int set_event_edit_text_hint_start=0x7f070050;
         /**  SetCalendarActivity 
          */
-        public static final int set_event_edit_text_hint_title=0x7f07004c;
+        public static final int set_event_edit_text_hint_title=0x7f07004e;
         /**  SetWeatherActivity 
          */
-        public static final int set_weather_activity_check_box_preference_enabled=0x7f07003f;
-        public static final int set_weather_activity_time_preference_city=0x7f070041;
-        public static final int set_weather_activity_time_preference_time=0x7f070040;
-        public static final int settings_activity_list_preference_speaker=0x7f070043;
+        public static final int set_weather_activity_check_box_preference_enabled=0x7f070041;
+        public static final int set_weather_activity_time_preference_city=0x7f070043;
+        public static final int set_weather_activity_time_preference_time=0x7f070042;
+        public static final int settings_activity_list_preference_speaker=0x7f070045;
         /**  SettingsActivity 
          */
-        public static final int settings_activity_preference_category_tts_settings=0x7f070042;
-        public static final int settings_activity_preference_category_weather_settings=0x7f070046;
-        public static final int settings_activity_seekbar_preference_speed=0x7f070045;
-        public static final int settings_activity_seekbar_preference_volume=0x7f070044;
-        public static final int signup_button_text_sign_up=0x7f07002c;
-        public static final int signup_edit_text_hint_confirm_password=0x7f07002a;
-        public static final int signup_edit_text_hint_email=0x7f07002b;
-        public static final int signup_edit_text_hint_password=0x7f070029;
+        public static final int settings_activity_preference_category_tts_settings=0x7f070044;
+        public static final int settings_activity_preference_category_weather_settings=0x7f070048;
+        public static final int settings_activity_seekbar_preference_speed=0x7f070047;
+        public static final int settings_activity_seekbar_preference_volume=0x7f070046;
+        public static final int signup_button_text_sign_up=0x7f07002e;
+        public static final int signup_edit_text_hint_confirm_password=0x7f07002c;
+        public static final int signup_edit_text_hint_email=0x7f07002d;
+        public static final int signup_edit_text_hint_password=0x7f07002b;
         /**  SignupActivity 
          */
-        public static final int signup_edit_text_hint_username=0x7f070028;
-        public static final int signup_toast_text_signup_sucess=0x7f07002d;
-        public static final int title_activity_alarm=0x7f070047;
-        public static final int title_activity_calendar=0x7f070049;
-        public static final int title_activity_calendars=0x7f07004a;
+        public static final int signup_edit_text_hint_username=0x7f07002a;
+        public static final int signup_toast_text_signup_sucess=0x7f07002f;
+        public static final int title_activity_alarm=0x7f070049;
+        public static final int title_activity_calendar=0x7f07004b;
+        public static final int title_activity_calendars=0x7f07004c;
         public static final int title_activity_init=0x7f070010;
         public static final int title_activity_login=0x7f07000e;
         public static final int title_activity_main=0x7f070011;
         public static final int title_activity_set_chime=0x7f070013;
-        public static final int title_activity_set_event=0x7f07004b;
+        public static final int title_activity_set_event=0x7f07004d;
         public static final int title_activity_set_weather=0x7f070014;
         public static final int title_activity_settings=0x7f070012;
         public static final int title_activity_signup=0x7f07000f;
-        public static final int weather_fragment_alert_dialog_close=0x7f070037;
-        public static final int weather_fragment_button_pause=0x7f070030;
-        public static final int weather_fragment_button_start=0x7f07002f;
-        public static final int weather_fragment_button_stop=0x7f070031;
+        public static final int weather_fragment_alert_dialog_close=0x7f070039;
+        public static final int weather_fragment_button_pause=0x7f070032;
+        public static final int weather_fragment_button_start=0x7f070031;
+        public static final int weather_fragment_button_stop=0x7f070033;
         /**  WeatherFragment 
          */
-        public static final int weather_fragment_spinner_promt=0x7f07002e;
-        public static final int weather_fragment_toast_continue=0x7f070035;
-        public static final int weather_fragment_toast_pause=0x7f070033;
-        public static final int weather_fragment_toast_play_completion=0x7f070036;
-        public static final int weather_fragment_toast_start=0x7f070032;
-        public static final int weather_fragment_toast_stop=0x7f070034;
+        public static final int weather_fragment_spinner_promt=0x7f070030;
+        public static final int weather_fragment_toast_continue=0x7f070037;
+        public static final int weather_fragment_toast_pause=0x7f070035;
+        public static final int weather_fragment_toast_play_completion=0x7f070038;
+        public static final int weather_fragment_toast_start=0x7f070034;
+        public static final int weather_fragment_toast_stop=0x7f070036;
     }
     public static final class style {
         /** 

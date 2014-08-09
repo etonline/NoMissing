@@ -2,26 +2,24 @@ package edu.ntust.cs.idsl.nomissing.model;
 
 public class Event {
 	private long eventID;
+	private long calendarID;
 	private String title;
 	private String location;
 	private String description;
 	private long start;
 	private long end;
-	private String timezone;
-	private long calendarID;
 	
 	public Event() {}
-	
-	public Event(long eventID, String title, String description, long start,
-			long end, String timezone, long calendarID) {
-		super();
+
+	public Event(long eventID, long calendarID, String title, String location,
+			String description, long start, long end) {
 		this.eventID = eventID;
+		this.calendarID = calendarID;
 		this.title = title;
+		this.location = location;
 		this.description = description;
 		this.start = start;
 		this.end = end;
-		this.timezone = timezone;
-		this.calendarID = calendarID;
 	}
 
 	public long getEventID() {
@@ -30,6 +28,14 @@ public class Event {
 
 	public void setEventID(long eventID) {
 		this.eventID = eventID;
+	}
+	
+	public long getCalendarID() {
+		return calendarID;
+	}
+
+	public void setCalendarID(long calendarID) {
+		this.calendarID = calendarID;
 	}
 
 	public String getTitle() {
@@ -72,21 +78,4 @@ public class Event {
 		this.end = end;
 	}
 
-	public String getTimezone() {
-		return timezone;
-	}
-
-	public void setTimezone(String timezone) {
-		this.timezone = timezone;
-	}
-
-	public long getCalendarID() {
-		return calendarID;
-	}
-
-	public void setCalendarID(long calendarID) {
-		this.calendarID = calendarID;
-	}
-	
-	
 }

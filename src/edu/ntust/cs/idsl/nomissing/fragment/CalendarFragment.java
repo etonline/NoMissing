@@ -14,6 +14,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,6 +39,14 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class CalendarFragment extends CaldroidFragment implements OnItemClickListener {
 	
+	private static final int REQUEST_SET = 0;
+	public static final int RESULT_CREATE = 1;
+	public static final int RESULT_UPDATE = 2;
+	public static final int RESULT_CANCEL = 3;
+	public static final int RESULT_DELETE = 4;
+	
+	private long calenderID;
+	
 	private CaldroidFragment caldroidFragment;
 	
 	private TextView textViewDate;
@@ -46,12 +57,15 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
 	private List<Event> monthEvents;
 	private List<Event> dayEvents;
 	
+	final SimpleDateFormat formatter = new SimpleDateFormat("yyyy / M / d (EEE)");
+
 	public CalendarFragment() {
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		
 		eventDAO = EventDAO.getInstance(getActivity());
 		
@@ -63,6 +77,7 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
 		    long key = entry.getKey();
 		    String value = entry.getValue();
 		    Log.v("TAG", key + " | " + value);
+		    calenderID = key;
 		}
 
 	}
@@ -80,9 +95,28 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
         return rootView;
     }
 	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.fragment_calendar, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_add_event:
+			Intent intent = new Intent(getActivity(), SetEventActivity.class);
+			intent.putExtra("calendarID", calenderID);
+			startActivityForResult(intent, REQUEST_SET);
+			return true;
+			
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
 	private void setCaldroid() {
 		caldroidFragment = new CaldroidFragment();
-		final SimpleDateFormat formatter = new SimpleDateFormat("yyyy / M / d (EEE)");
 
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
@@ -99,35 +133,17 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
 
             @Override
             public void onSelectDate(Date date, View view) {
-            	textViewDate.setText(formatter.format(date));
-            	
             	Calendar calendar = Calendar.getInstance();
             	calendar.setTime(date);
-            	long startMillis = calendar.getTimeInMillis();
-            	
-            	calendar.add(Calendar.DAY_OF_YEAR, 1);
-            	long endMillis = calendar.getTimeInMillis();
-            	
-            	dayEvents = eventDAO.find(startMillis, endMillis);
-            	adapter = new EventListAdapter(getActivity(), dayEvents);
-            	listViewEvents.setAdapter(adapter);        
+            	setDayEvents(calendar);
             }
 
             @Override
-            public void onChangeMonth(int month, int year) {          	
-        		Calendar calendar = Calendar.getInstance();
+            public void onChangeMonth(int month, int year) {          
+            	Calendar calendar = Calendar.getInstance();
         		calendar.set(Calendar.MONTH, month - 1);
         		calendar.set(Calendar.DAY_OF_MONTH, 1);
-        		long startMillis = calendar.getTimeInMillis();	
-        		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        		long endMillis = calendar.getTimeInMillis();
-
-        		monthEvents = eventDAO.find(startMillis, endMillis);
-        		for(Event event : monthEvents) {
-        			calendar.setTimeInMillis(event.getStart());
-        			caldroidFragment.setBackgroundResourceForDate(R.color.blue, calendar.getTime());
-        			caldroidFragment.setTextColorForDate(R.color.white, calendar.getTime());
-        		}       
+            	setMonthEvents(calendar);
             }
 
             @Override
@@ -136,12 +152,41 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
 
             @Override
             public void onCaldroidViewCreated() {
-            	textViewDate.setText(formatter.format(new Date()));
+            	Calendar calendar = Calendar.getInstance();
+            	calendar.set(Calendar.HOUR_OF_DAY, 0);
+            	calendar.set(Calendar.MINUTE, 0);
+            	calendar.set(Calendar.SECOND, 0);
+            	setDayEvents(calendar);
             }
 
         };
 
         caldroidFragment.setCaldroidListener(listener);	
+	}
+	
+	private void setMonthEvents(Calendar calendar) {
+		long startMillis = calendar.getTimeInMillis();	
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		long endMillis = calendar.getTimeInMillis();
+
+		monthEvents = eventDAO.find(startMillis, endMillis);
+		for(Event event : monthEvents) {
+			calendar.setTimeInMillis(event.getStart());
+			caldroidFragment.setBackgroundResourceForDate(R.color.blue, calendar.getTime());
+			caldroidFragment.setTextColorForDate(R.color.white, calendar.getTime());
+		}  
+	}
+	
+	private void setDayEvents(Calendar calendar) {
+		textViewDate.setText(formatter.format(calendar.getTime()));
+    	
+    	long startMillis = calendar.getTimeInMillis();
+    	calendar.add(Calendar.DAY_OF_YEAR, 1);
+    	long endMillis = calendar.getTimeInMillis();
+    	
+    	dayEvents = eventDAO.find(startMillis, endMillis);
+    	adapter = new EventListAdapter(getActivity(), dayEvents);
+    	listViewEvents.setAdapter(adapter);  		
 	}
 
 	@Override
@@ -151,11 +196,40 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
     	long endMillis = dayEvents.get(position).getEnd();		
 		
 		Intent intent = new Intent(getActivity(), SetEventActivity.class);
+		intent.putExtra("calendarID", calenderID);
 		intent.putExtra("eventID", eventID);
 		intent.putExtra("startMillis", startMillis);
 		intent.putExtra("endMillis", endMillis);
 		
-		startActivityForResult(intent, 1);
+		ToastMaker.toast(getActivity(), String.valueOf(eventID));
+		startActivityForResult(intent, REQUEST_SET);
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		if (requestCode != REQUEST_SET) return;
+		
+		setCaldroid();
+		
+		switch (resultCode) {
+		case RESULT_CREATE:
+			ToastMaker.toast(getActivity(), "建立");
+			break;
+		case RESULT_UPDATE:
+			ToastMaker.toast(getActivity(), "更新");
+			break;
+		case RESULT_CANCEL:
+			ToastMaker.toast(getActivity(), "取消");
+			break;
+		case RESULT_DELETE:
+			ToastMaker.toast(getActivity(), "刪除");
+			break;
+
+		default:
+			break;
+		}
+		
 	}
 
 

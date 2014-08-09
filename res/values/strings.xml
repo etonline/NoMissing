@@ -20,7 +20,8 @@
     <string name="action_set_weather">提醒設定</string>
     <string name="action_save">儲存</string>
     <string name="action_set_event_ok">完成</string>
-    <string name="action_delete_event">刪除</string>    
+    <string name="action_delete_event">刪除</string> 
+    <string name="action_add_event">新增活動</string>   
 
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
@@ -134,7 +135,8 @@
     <!-- SetCalendarActivity -->
     <string name="set_event_edit_text_hint_title">標題</string>
     <string name="set_event_edit_text_hint_location">地點</string>
-    <string name="set_event_edit_text_hint_start">開始</string>
-    <string name="set_event_edit_text_hint_end">結束</string>
+    <string name="set_event_text_start">從</string>
+    <string name="set_event_text_end">到</string>
+    <string name="set_event_edit_text_hint_description">描述</string>
 
 </resources>

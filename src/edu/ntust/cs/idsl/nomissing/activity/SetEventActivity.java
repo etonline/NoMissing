@@ -2,6 +2,7 @@ package edu.ntust.cs.idsl.nomissing.activity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.dao.EventDAO;
+import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
@@ -35,7 +37,9 @@ public class SetEventActivity extends Activity implements OnClickListener {
 	private EditText editTextStartTime;
 	private EditText editTextEndDate;
 	private EditText editTextEndTime;
+	private EditText editTextDescription;
 	
+	private long calendarID;
 	private long eventID;
 	private long startMillis;
 	private long endMillis;
@@ -66,33 +70,35 @@ public class SetEventActivity extends Activity implements OnClickListener {
         editTextStartTime = (EditText)findViewById(R.id.editTextStartTime);
         editTextEndDate = (EditText)findViewById(R.id.editTextEndDate);
         editTextEndTime = (EditText)findViewById(R.id.editTextEndTime);
+        editTextDescription = (EditText)findViewById(R.id.editTextDescription);
         
         editTextStartDate.setOnClickListener(this);
         editTextStartTime.setOnClickListener(this);
         editTextEndDate.setOnClickListener(this);
         editTextEndTime.setOnClickListener(this);
         
+        calendarID = getIntent().getLongExtra("calendarID", -1);
 		eventID = getIntent().getLongExtra("eventID", -1);
 		startMillis = getIntent().getLongExtra("startMillis", -1);
 		endMillis = getIntent().getLongExtra("endMillis", -1);
 		
 		eventDAO = EventDAO.getInstance(this);
-		
-		event = eventDAO.find(eventID, startMillis, endMillis);
-		ToastMaker.toast(this, event.getLocation());
+		event = (eventID != -1 ) ? eventDAO.find(eventID, startMillis, endMillis) : new Event();
 		
 		editTextTitle.setText(event.getTitle());
 		editTextLocation.setText(event.getLocation());
 		
 		startCalendar = Calendar.getInstance();
-		startCalendar.setTimeInMillis(event.getStart());
+		if(eventID != -1) startCalendar.setTimeInMillis(event.getStart());
 		editTextStartDate.setText(dateFormatter.format(startCalendar.getTime()));
 		editTextStartTime.setText(timeFormatter.format(startCalendar.getTime()));
 		
 		endCalendar = Calendar.getInstance();
-		endCalendar.setTimeInMillis(event.getEnd());
+		if(eventID != -1) endCalendar.setTimeInMillis(event.getEnd());
 		editTextEndDate.setText(dateFormatter.format(endCalendar.getTime()));
 		editTextEndTime.setText(timeFormatter.format(endCalendar.getTime()));
+		
+		editTextDescription.setText(event.getDescription());
 	}
 	
 	@Override
@@ -103,40 +109,38 @@ public class SetEventActivity extends Activity implements OnClickListener {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
+
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			SetEventActivity.this.finish();
 			return true;
 			
 		case R.id.action_set_event_ok:
-			if (eventID == -1) {
-//				createChime();
-//				SetChimeActivity.this.setResult(ChimeFragment.RESULT_CREATE);
-//				SetChimeActivity.this.finish();
-			} else {
-				Log.v("TAG", String.valueOf(eventID));
-				event.setEventID(eventID);
-				event.setTitle(editTextTitle.getText().toString());
-				event.setLocation(editTextLocation.getText().toString());
-				event.setStart(startCalendar.getTimeInMillis());
-				event.setEnd(endCalendar.getTimeInMillis());
-				eventDAO.update(event);
-//				SetEventActivity.this.setResult(CalendarFragment.RESULT_UPDATE);
-				SetEventActivity.this.finish();			
+			
+			if (!isValidDateRange(startCalendar, endCalendar)) {
+				ToastMaker.toast(this, "¤é´Á³]¸m¿ù»~");
+				return false;
 			}
+			
+			if (eventID == -1) {
+				createEvent();
+				SetEventActivity.this.setResult(CalendarFragment.RESULT_CREATE);
+			} else {
+				updateEvent();	
+				SetEventActivity.this.setResult(CalendarFragment.RESULT_UPDATE);
+			}
+			SetEventActivity.this.finish();	
 			return true;
 			
-		case R.id.action_delete_chime:
+		case R.id.action_delete_event:
 			if (eventID == -1) {
-//				SetChimeActivity.this.setResult(ChimeFragment.RESULT_CANCEL);
-//				SetChimeActivity.this.finish();	
+				SetEventActivity.this.setResult(CalendarFragment.RESULT_CANCEL);
 			} else {
-//				chimeDAO.delete(chimeID);
-//				AlarmUtil.cancelChimeAlarm(this, chime);
-//				SetChimeActivity.this.setResult(ChimeFragment.RESULT_DELETE);
-//				SetChimeActivity.this.finish();	
+				eventDAO.delete(eventID);
+				SetEventActivity.this.setResult(CalendarFragment.RESULT_DELETE);
+				
 			}
+			SetEventActivity.this.finish();		
 			return true;
 			
 		default:
@@ -212,6 +216,34 @@ public class SetEventActivity extends Activity implements OnClickListener {
 			break;
 		}
 		
+	}
+	
+	private void createEvent() {
+		event.setCalendarID(calendarID);
+		event.setTitle(editTextTitle.getText().toString());
+		event.setLocation(editTextLocation.getText().toString());
+		event.setStart(startCalendar.getTimeInMillis());
+		event.setEnd(endCalendar.getTimeInMillis());
+		event.setDescription(editTextDescription.getText().toString());
+		long eventID = eventDAO.insert(event);
+		ToastMaker.toast(this, String.valueOf(eventID));
+	}	
+	
+	private void updateEvent() {
+		event.setTitle(editTextTitle.getText().toString());
+		event.setLocation(editTextLocation.getText().toString());
+		event.setStart(startCalendar.getTimeInMillis());
+		event.setEnd(endCalendar.getTimeInMillis());
+		event.setDescription(editTextDescription.getText().toString());
+		eventDAO.update(event);		
+	}
+	
+	private boolean isValidDateRange(Calendar startCalendar, Calendar endCalendar) {
+		boolean isValidDateRange = false;
+		if (startCalendar.compareTo(endCalendar) == -1) {
+			isValidDateRange = true;
+		}
+		return isValidDateRange;
 	}
 
 }

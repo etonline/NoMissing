@@ -57,7 +57,8 @@ public class InitActivity extends Activity {
 			@Override
 			public void run() {
 				if (app.session.isLoggedIn()) {
-					loginTask();
+//					loginTask();
+        			startActivity(new Intent(InitActivity.this, MainActivity.class));
 				}
 				
 				// Go to the LoginActivity if the user isn't logged in.

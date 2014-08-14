@@ -1,7 +1,9 @@
 package edu.ntust.cs.idsl.nomissing.adapter;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
+import android.R.raw;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -45,10 +47,14 @@ public class EventListAdapter extends BaseAdapter {
 		if (convertView == null) {
 			LayoutInflater mInflater = (LayoutInflater) context
 					.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-			convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
+			convertView = mInflater.inflate(R.layout.event_list_item, null);
 		}
 
-		TextView textViewEvent = (TextView) convertView.findViewById(android.R.id.text1);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+		
+		TextView textViewTime = (TextView) convertView.findViewById(R.id.textViewTime);
+		TextView textViewEvent = (TextView) convertView.findViewById(R.id.textViewEvent);
+		textViewTime.setText(simpleDateFormat.format(events.get(position).getStart()));
 		textViewEvent.setText(events.get(position).getTitle());
 
 		return convertView;

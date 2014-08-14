@@ -29,14 +29,14 @@ public class WeatherDAO extends DatabaseDAO<Weather> {
 		open();
 
 		ContentValues values = new ContentValues();
-		values.put(NoMissingDB.KEY_CITYID, weather.getCityID()); 
-		values.put(NoMissingDB.KEY_NAME, weather.getCity());
-		values.put(NoMissingDB.KEY_STNO, weather.getStno());
-		values.put(NoMissingDB.KEY_TIME, weather.getTime());
-		values.put(NoMissingDB.KEY_MEMO, weather.getMemo());
-		values.put(NoMissingDB.KEY_AUDIO, weather.getAudio());
-		values.put(NoMissingDB.KEY_CREATED_AT, weather.getCreatedAt());
-		values.put(NoMissingDB.KEY_UPDATED_AT, weather.getUpdatedAt());
+		values.put(NoMissingDB.WEATHER_KEY_CITYID, weather.getCityID()); 
+		values.put(NoMissingDB.WEATHER_KEY_NAME, weather.getCity());
+		values.put(NoMissingDB.WEATHER_KEY_STNO, weather.getStno());
+		values.put(NoMissingDB.WEATHER_KEY_TIME, weather.getTime());
+		values.put(NoMissingDB.WEATHER_KEY_MEMO, weather.getMemo());
+		values.put(NoMissingDB.WEATHER_KEY_AUDIO, weather.getAudio());
+		values.put(NoMissingDB.WEATHER_KEY_CREATED_AT, weather.getCreatedAt());
+		values.put(NoMissingDB.WEATHER_KEY_UPDATED_AT, weather.getUpdatedAt());
 
 		int row = (int)db.insert(NoMissingDB.TABLE_WEATHER, null, values);
 		close();
@@ -49,16 +49,16 @@ public class WeatherDAO extends DatabaseDAO<Weather> {
 		open();
 
 		ContentValues values = new ContentValues();
-		values.put(NoMissingDB.KEY_CITYID, weather.getCityID()); 
-		values.put(NoMissingDB.KEY_NAME, weather.getCity());
-		values.put(NoMissingDB.KEY_STNO, weather.getStno());
-		values.put(NoMissingDB.KEY_TIME, weather.getTime());
-		values.put(NoMissingDB.KEY_MEMO, weather.getMemo());
-		values.put(NoMissingDB.KEY_AUDIO, weather.getAudio());
-		values.put(NoMissingDB.KEY_CREATED_AT, weather.getCreatedAt());
-		values.put(NoMissingDB.KEY_UPDATED_AT, weather.getUpdatedAt());
+		values.put(NoMissingDB.WEATHER_KEY_CITYID, weather.getCityID()); 
+		values.put(NoMissingDB.WEATHER_KEY_NAME, weather.getCity());
+		values.put(NoMissingDB.WEATHER_KEY_STNO, weather.getStno());
+		values.put(NoMissingDB.WEATHER_KEY_TIME, weather.getTime());
+		values.put(NoMissingDB.WEATHER_KEY_MEMO, weather.getMemo());
+		values.put(NoMissingDB.WEATHER_KEY_AUDIO, weather.getAudio());
+		values.put(NoMissingDB.WEATHER_KEY_CREATED_AT, weather.getCreatedAt());
+		values.put(NoMissingDB.WEATHER_KEY_UPDATED_AT, weather.getUpdatedAt());
 		
-		int row =  db.update(NoMissingDB.TABLE_WEATHER, values, NoMissingDB.KEY_CITYID + " = ?",
+		int row =  db.update(NoMissingDB.TABLE_WEATHER, values, NoMissingDB.WEATHER_KEY_CITYID + " = ?",
 				new String[] { String.valueOf(weather.getCityID()) });
 		
 		close();
@@ -70,7 +70,7 @@ public class WeatherDAO extends DatabaseDAO<Weather> {
 	public int delete(int id) {
 		open();
 		int row = db.delete(NoMissingDB.TABLE_WEATHER, 
-				NoMissingDB.KEY_CITYID + " = ?", new String[] { String.valueOf(id) });
+				NoMissingDB.WEATHER_KEY_CITYID + " = ?", new String[] { String.valueOf(id) });
 		close();
 		
 		return row;
@@ -112,15 +112,15 @@ public class WeatherDAO extends DatabaseDAO<Weather> {
 
 		Cursor cursor = db
 				.query(NoMissingDB.TABLE_WEATHER, new String[] {
-						NoMissingDB.KEY_CITYID, 
-						NoMissingDB.KEY_NAME,
-						NoMissingDB.KEY_STNO, 
-						NoMissingDB.KEY_TIME,
-						NoMissingDB.KEY_MEMO, 
-						NoMissingDB.KEY_AUDIO,
-						NoMissingDB.KEY_CREATED_AT,
-						NoMissingDB.KEY_UPDATED_AT },
-						NoMissingDB.KEY_CITYID + "=?",
+						NoMissingDB.WEATHER_KEY_CITYID, 
+						NoMissingDB.WEATHER_KEY_NAME,
+						NoMissingDB.WEATHER_KEY_STNO, 
+						NoMissingDB.WEATHER_KEY_TIME,
+						NoMissingDB.WEATHER_KEY_MEMO, 
+						NoMissingDB.WEATHER_KEY_AUDIO,
+						NoMissingDB.WEATHER_KEY_CREATED_AT,
+						NoMissingDB.WEATHER_KEY_UPDATED_AT },
+						NoMissingDB.WEATHER_KEY_CITYID + "=?",
 						new String[] { String.valueOf(cityID) }, null, null,
 						null, null);
 		if (cursor != null)

@@ -22,6 +22,7 @@
     <string name="action_set_event_ok">完成</string>
     <string name="action_delete_event">刪除</string> 
     <string name="action_add_event">新增活動</string>   
+    <string name="action_search_date">查詢日期</string>   
 
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
@@ -71,6 +72,9 @@
     <string name="signup_button_text_sign_up">註冊</string>
     <string name="signup_toast_text_signup_sucess">註冊成功！請輸入您的帳號密碼。</string>
 
+    <!-- HomeFragment -->
+    <string name="home_fragment_agenda">待辦事項</string>  
+    
     <!-- WeatherFragment -->
     <string name="weather_fragment_spinner_promt">請選擇城市</string>
     <string name="weather_fragment_button_start">播放</string>
@@ -132,11 +136,37 @@
     <string name="title_activity_calendars">CalendarsActivity</string>
     <string name="title_activity_set_event">SetEventActivity</string>
     
-    <!-- SetCalendarActivity -->
+    <!-- SetEventActivity -->
     <string name="set_event_edit_text_hint_title">標題</string>
     <string name="set_event_edit_text_hint_location">地點</string>
     <string name="set_event_text_start">從</string>
     <string name="set_event_text_end">到</string>
     <string name="set_event_edit_text_hint_description">描述</string>
-
+    <string name="set_event_check_box_all_day">全天</string>
+ 	<string name="set_event_text_frequency">重複頻率</string>
+ 	<string name="set_event_check_box_reminder">設置提醒</string>
+ 	
+ 	<string name="event_frequency_single">單次</string>
+ 	<string name="event_frequency_daily">每日</string>
+	<string name="event_frequency_weekly">每週</string>
+	<string name="event_frequency_monthly">每月</string>
+	<string name="event_frequency_yearly">每年</string>
+	
+ 	<string name="event_reminder_zero_minute">0 分鐘</string>
+ 	<string name="event_reminder_one_minute">1 分鐘</string>
+	<string name="event_reminder_five_minutes">5 分鐘</string>
+	<string name="event_reminder_ten_minutes">10 分鐘</string>
+ 	<string name="event_reminder_fifteen_minutes">15 分鐘</string>
+ 	<string name="event_reminder_twenty_minutes">20 分鐘</string>
+	<string name="event_reminder_twenty_five_minutes">25 分鐘</string>
+	<string name="event_reminder_thirty_minutes">30 分鐘</string>
+  	<string name="event_reminder_forty_five_minutes">45 分鐘</string>
+ 	<string name="event_reminder_one_hour">1 小時</string>
+	<string name="event_reminder_two_hours">2 小時</string>
+	<string name="event_reminder_three_hours">3 小時</string>
+	<string name="event_reminder_half_day">12 小時</string>
+ 	<string name="event_reminder_one_day">1 天</string>
+	<string name="event_reminder_two_days">2 天</string>
+	<string name="event_reminder_one_week">1 週</string>
+	   
 </resources>

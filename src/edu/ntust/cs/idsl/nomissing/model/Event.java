@@ -8,19 +8,11 @@ public class Event {
 	private String description;
 	private long start;
 	private long end;
-	
-	public Event() {}
+	private boolean isAllDay;
+	private String rrule;
+	private int reminder;
 
-	public Event(long eventID, long calendarID, String title, String location,
-			String description, long start, long end) {
-		this.eventID = eventID;
-		this.calendarID = calendarID;
-		this.title = title;
-		this.location = location;
-		this.description = description;
-		this.start = start;
-		this.end = end;
-	}
+	public Event() {}
 
 	public long getEventID() {
 		return eventID;
@@ -76,6 +68,30 @@ public class Event {
 
 	public void setEnd(long end) {
 		this.end = end;
+	}
+	
+	public boolean isAllDay() {
+		return isAllDay;
+	}
+
+	public void setAllDay(boolean isAllDay) {
+		this.isAllDay = isAllDay;
+	}
+
+	public String getRrule() {
+		return rrule;
+	}
+
+	public void setRrule(String rrule) {
+		this.rrule = rrule;
+	}
+
+	public int getReminder() {
+		return reminder;
+	}
+
+	public void setReminder(int reminder) {
+		this.reminder = reminder;
 	}
 
 }

@@ -30,15 +30,15 @@ public class ChimeDAO extends DatabaseDAO<Chime> {
 		open();
 
 		ContentValues values = new ContentValues();
-		values.put(NoMissingDB.KEY_ID, chime.getId()); 
-		values.put(NoMissingDB.KEY_HOUR, chime.getHour());
-		values.put(NoMissingDB.KEY_MINUTE, chime.getMinute());
-		values.put(NoMissingDB.KEY_IS_ENABLED, chime.isEnabled());
-		values.put(NoMissingDB.KEY_IS_REPEATING, chime.isRepeating());
-		values.put(NoMissingDB.KEY_IS_TRIGGERED, chime.isTriggered());
-		values.put(NoMissingDB.KEY_AUDIO, chime.getAudio());
-		values.put(NoMissingDB.KEY_CREATED_AT, chime.getCreatedAt());
-		values.put(NoMissingDB.KEY_UPDATED_AT, chime.getUpdatedAt());
+		values.put(NoMissingDB.CHIMES_KEY_ID, chime.getId()); 
+		values.put(NoMissingDB.CHIMES_KEY_HOUR, chime.getHour());
+		values.put(NoMissingDB.CHIMES_KEY_MINUTE, chime.getMinute());
+		values.put(NoMissingDB.CHIMES_KEY_IS_ENABLED, chime.isEnabled());
+		values.put(NoMissingDB.CHIMES_KEY_IS_REPEATING, chime.isRepeating());
+		values.put(NoMissingDB.CHIMES_KEY_IS_TRIGGERED, chime.isTriggered());
+		values.put(NoMissingDB.CHIMES_KEY_AUDIO, chime.getAudio());
+		values.put(NoMissingDB.CHIMES_KEY_CREATED_AT, chime.getCreatedAt());
+		values.put(NoMissingDB.CHIMES_KEY_UPDATED_AT, chime.getUpdatedAt());
 
 		int row = (int)db.insert(NoMissingDB.TABLE_CHIMES, null, values);
 		close();
@@ -51,17 +51,17 @@ public class ChimeDAO extends DatabaseDAO<Chime> {
 		open();
 
 		ContentValues values = new ContentValues();
-		values.put(NoMissingDB.KEY_ID, chime.getId()); 
-		values.put(NoMissingDB.KEY_HOUR, chime.getHour());
-		values.put(NoMissingDB.KEY_MINUTE, chime.getMinute());
-		values.put(NoMissingDB.KEY_IS_ENABLED, chime.isEnabled());
-		values.put(NoMissingDB.KEY_IS_REPEATING, chime.isRepeating());
-		values.put(NoMissingDB.KEY_IS_TRIGGERED, chime.isTriggered());
-		values.put(NoMissingDB.KEY_AUDIO, chime.getAudio());
-		values.put(NoMissingDB.KEY_CREATED_AT, chime.getCreatedAt());
-		values.put(NoMissingDB.KEY_UPDATED_AT, chime.getUpdatedAt());		
+		values.put(NoMissingDB.CHIMES_KEY_ID, chime.getId()); 
+		values.put(NoMissingDB.CHIMES_KEY_HOUR, chime.getHour());
+		values.put(NoMissingDB.CHIMES_KEY_MINUTE, chime.getMinute());
+		values.put(NoMissingDB.CHIMES_KEY_IS_ENABLED, chime.isEnabled());
+		values.put(NoMissingDB.CHIMES_KEY_IS_REPEATING, chime.isRepeating());
+		values.put(NoMissingDB.CHIMES_KEY_IS_TRIGGERED, chime.isTriggered());
+		values.put(NoMissingDB.CHIMES_KEY_AUDIO, chime.getAudio());
+		values.put(NoMissingDB.CHIMES_KEY_CREATED_AT, chime.getCreatedAt());
+		values.put(NoMissingDB.CHIMES_KEY_UPDATED_AT, chime.getUpdatedAt());		
 
-		int row =  db.update(NoMissingDB.TABLE_CHIMES, values, NoMissingDB.KEY_ID + " = ?",
+		int row =  db.update(NoMissingDB.TABLE_CHIMES, values, NoMissingDB.CHIMES_KEY_ID + " = ?",
 				new String[] { String.valueOf(chime.getId()) });
 		
 		close();
@@ -73,7 +73,7 @@ public class ChimeDAO extends DatabaseDAO<Chime> {
 	public int delete(int id) {
 		open();
 		int row = db.delete(NoMissingDB.TABLE_CHIMES, 
-				NoMissingDB.KEY_ID + " = ?", new String[] { String.valueOf(id) });
+				NoMissingDB.CHIMES_KEY_ID + " = ?", new String[] { String.valueOf(id) });
 		close();
 		
 		return row;
@@ -116,16 +116,16 @@ public class ChimeDAO extends DatabaseDAO<Chime> {
 
 		Cursor cursor = db
 				.query(NoMissingDB.TABLE_CHIMES, new String[] {
-						NoMissingDB.KEY_ID,
-						NoMissingDB.KEY_HOUR,
-						NoMissingDB.KEY_MINUTE,
-						NoMissingDB.KEY_IS_ENABLED,
-						NoMissingDB.KEY_IS_REPEATING,
-						NoMissingDB.KEY_IS_TRIGGERED,
-						NoMissingDB.KEY_AUDIO,
-						NoMissingDB.KEY_CREATED_AT,
-						NoMissingDB.KEY_UPDATED_AT },
-						NoMissingDB.KEY_ID + "=?",
+						NoMissingDB.CHIMES_KEY_ID,
+						NoMissingDB.CHIMES_KEY_HOUR,
+						NoMissingDB.CHIMES_KEY_MINUTE,
+						NoMissingDB.CHIMES_KEY_IS_ENABLED,
+						NoMissingDB.CHIMES_KEY_IS_REPEATING,
+						NoMissingDB.CHIMES_KEY_IS_TRIGGERED,
+						NoMissingDB.CHIMES_KEY_AUDIO,
+						NoMissingDB.CHIMES_KEY_CREATED_AT,
+						NoMissingDB.CHIMES_KEY_UPDATED_AT },
+						NoMissingDB.CHIMES_KEY_ID + "=?",
 						new String[] { String.valueOf(id) }, null, null,
 						null, null);
 		if (cursor != null)
@@ -156,7 +156,7 @@ public class ChimeDAO extends DatabaseDAO<Chime> {
 	 */
 	public int getNextID() {
 
-		String selectQuery = "SELECT MAX(" + NoMissingDB.KEY_ID +
+		String selectQuery = "SELECT MAX(" + NoMissingDB.CHIMES_KEY_ID +
 				") FROM " + NoMissingDB.TABLE_CHIMES;
 		open();
 		Cursor cursor = db.rawQuery(selectQuery, null);

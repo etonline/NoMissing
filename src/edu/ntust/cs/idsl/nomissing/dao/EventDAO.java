@@ -29,6 +29,8 @@ public class EventDAO implements ICalendarDAO<Event> {
 	    Instances.DESCRIPTION,
 	    Instances.BEGIN,    
 	    Instances.END,
+	    Instances.ALL_DAY,
+	    Instances.RRULE,
 	};
 	  
 	private static final int PROJECTION_EVENT_ID_INDEX = 0;
@@ -38,6 +40,8 @@ public class EventDAO implements ICalendarDAO<Event> {
 	private static final int PROJECTION_DESCRIPTION_INDEX = 4;
 	private static final int PROJECTION_BEGIN_INDEX = 5;
 	private static final int PROJECTION_END_INDEX = 6;
+	private static final int PROJECTION_ALL_DAY_INDEX = 7;
+	private static final int PROJECTION_RRULE_INDEX = 8;
 
 	private EventDAO(Context context) {
 		this.context = context;
@@ -60,7 +64,9 @@ public class EventDAO implements ICalendarDAO<Event> {
 		values.put(Events.DESCRIPTION, entity.getDescription());
 		values.put(Events.DTSTART, entity.getStart());
 		values.put(Events.DTEND, entity.getEnd());
+		values.put(Events.ALL_DAY, entity.isAllDay());
 		values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getDisplayName());
+		values.put(Events.RRULE, entity.getRrule());
 		Uri uri = cr.insert(Events.CONTENT_URI, values);
 
 		long eventID = Long.parseLong(uri.getLastPathSegment());
@@ -74,9 +80,12 @@ public class EventDAO implements ICalendarDAO<Event> {
 		Uri updateUri = null;
 		values.put(Events.DTSTART, entity.getStart());
 		values.put(Events.DTEND, entity.getEnd());
+		values.put(Events.ALL_DAY, entity.isAllDay());
 		values.put(Events.TITLE, entity.getTitle());
 		values.put(Events.EVENT_LOCATION, entity.getLocation());
-		values.put(Events.DESCRIPTION, entity.getDescription());		
+		values.put(Events.DESCRIPTION, entity.getDescription());	
+		values.put(Events.RRULE, entity.getRrule());
+
 		String[] selArgs = new String[]{Long.toString(entity.getEventID())};
 
 		updateUri = ContentUris.withAppendedId(Events.CONTENT_URI, entity.getEventID());
@@ -115,6 +124,8 @@ public class EventDAO implements ICalendarDAO<Event> {
 		    event.setDescription(cur.getString(PROJECTION_DESCRIPTION_INDEX));
 		    event.setStart(cur.getLong(PROJECTION_BEGIN_INDEX));
 		    event.setEnd(cur.getLong(PROJECTION_END_INDEX));
+		    event.setAllDay(cur.getInt(PROJECTION_ALL_DAY_INDEX) > 0);
+		    event.setRrule(cur.getString(PROJECTION_RRULE_INDEX));
 		    
 		    events.add(event);
 		}
@@ -145,6 +156,8 @@ public class EventDAO implements ICalendarDAO<Event> {
 		    event.setDescription(cur.getString(PROJECTION_DESCRIPTION_INDEX));
 		    event.setStart(cur.getLong(PROJECTION_BEGIN_INDEX));
 		    event.setEnd(cur.getLong(PROJECTION_END_INDEX));
+		    event.setAllDay(cur.getInt(PROJECTION_ALL_DAY_INDEX) > 0);
+		    event.setRrule(cur.getString(PROJECTION_RRULE_INDEX));
 		}
 		cur.close();
 		

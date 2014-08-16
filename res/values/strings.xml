@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">NoMissing</string>
+    
     <string name="title_activity_login">登入</string>
     <string name="title_activity_signup">註冊</string>
     <string name="title_activity_init">InitActivity</string>
@@ -9,6 +10,8 @@
     <string name="title_activity_settings">設定</string>
     <string name="title_activity_set_chime">語音報時設定</string>
     <string name="title_activity_set_weather">語音天氣設定</string>
+    <string name="title_activity_alarm">AlarmActivity</string>
+    <string name="title_activity_set_event">活動設定</string>
 
     <!-- Action Bar -->
     <string name="action_settings">設定</string>
@@ -30,8 +33,8 @@
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item>NoMissing</item>
-        <item>行事曆</item>
+        <item>待辦事項</item>
+        <item>我的日曆</item>
         <item>語音報時</item>
         <item>語音天氣</item>
         <item>設定</item>
@@ -41,12 +44,12 @@
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_action_view_as_list</item>
+        <item>@drawable/ic_action_go_to_today</item>
+        <item>@drawable/ic_action_alarms</item>
+        <item>@drawable/ic_action_cloud</item>
+        <item>@drawable/ic_action_settings</item>
+        <item>@android:drawable/ic_lock_power_off</item>
     </array>
 
     <!-- Content Description -->
@@ -76,27 +79,21 @@
     <string name="home_fragment_agenda">待辦事項</string>  
     
     <!-- WeatherFragment -->
-    <string name="weather_fragment_spinner_promt">請選擇城市</string>
-    <string name="weather_fragment_button_start">播放</string>
-    <string name="weather_fragment_button_pause">暫停</string>
-    <string name="weather_fragment_button_stop">停止</string>
-    <string name="weather_fragment_toast_start">播放</string>
-    <string name="weather_fragment_toast_pause">暫停</string>
-    <string name="weather_fragment_toast_stop">停止</string>
-    <string name="weather_fragment_toast_continue">繼續</string>
-    <string name="weather_fragment_toast_play_completion">完成</string>
-    <string name="weather_fragment_alert_dialog_close">關閉</string>
+    <string name="alert_dialog_close">關閉</string>
+    <string name="toast_save_settings">已儲存設定</string>
 
     <!-- ChimeFragment -->
-    <string name="chime_fragment_button_add">新增</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="progress_dialog_please_wait">Please wait...</string>
+    
     <string name="no_data"></string>
+    <string name="toast_create_chime">已建立語音報時</string>
+    <string name="toast_update_chime">已更新語音報時</string>
+    <string name="toast_cancel_chime">已取消語音報時</string>
+    <string name="toast_delete_chime">已刪除語音報時</string>
 
     <!-- SetChimeActivity -->
-    <string name="chime_activity_check_box_preference_enabled">開啟報時</string>
-    <string name="chime_activity_time_preference_time">時間</string>
-    <string name="chime_activity_time_preference_repeat">重複</string>
+    <string name="pref_chime_enabled">開啟報時</string>
+    <string name="pref_chime_time">時間</string>
+    <string name="pref_chime_repeating">重複</string>
 
     <string-array name="chime_activity_time_preference_repeat_key">
         <item>一次</item>
@@ -108,33 +105,29 @@
     </string-array>
 
     <!-- SetWeatherActivity -->
-    <string name="set_weather_activity_check_box_preference_enabled">定時提醒</string>
-    <string name="set_weather_activity_time_preference_time">提醒時間</string>
-    <string name="set_weather_activity_time_preference_city">所在城市</string>
+    <string name="pref_tts_enabled">開啟語音</string>
+    <string name="pref_reminder_enabled">定時提醒</string>
+    <string name="pref_reminder_time">提醒時間</string>
+    <string name="pref_reminder_city">選擇城市</string>
 
     <!-- SettingsActivity -->
     <string name="settings_activity_preference_category_tts_settings">Text-to-Speech</string>
     <string name="settings_activity_list_preference_speaker">音源</string>
 
-    <string-array name="settings_activity_list_preference_speaker_key">
+    <string-array name="pref_tts_speaker_key">
         <item>Bruce (男生語音)</item>
         <item>Theresa (女生語音)</item>
         <item>Angela (小女孩語音)</item>
     </string-array>
-    <string-array name="settings_activity_list_preference_speaker_value">
+    <string-array name="pref_tts_speaker_value">
         <item>Bruce</item>
         <item>Theresa</item>
         <item>Angela</item>
     </string-array>
 
-    <string name="settings_activity_seekbar_preference_volume">音量</string>
-    <string name="settings_activity_seekbar_preference_speed">聲速</string>
+    <string name="pref_tts_volume">音量</string>
+    <string name="pref_tts_speed">聲速</string>
     <string name="settings_activity_preference_category_weather_settings">語音天氣</string>
-    <string name="title_activity_alarm">AlarmActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_calendar">CalendarActivity</string>
-    <string name="title_activity_calendars">CalendarsActivity</string>
-    <string name="title_activity_set_event">SetEventActivity</string>
     
     <!-- SetEventActivity -->
     <string name="set_event_edit_text_hint_title">標題</string>
@@ -168,5 +161,42 @@
  	<string name="event_reminder_one_day">1 天</string>
 	<string name="event_reminder_two_days">2 天</string>
 	<string name="event_reminder_one_week">1 週</string>
+	
+	<string name="taipei_city">台北市</string>
+	<string name="new_taipei_city">新北市</string>
+	<string name="keelung_city">基隆市</string>
+	<string name="hualien_county">花蓮縣</string>
+	<string name="yilan_county">宜蘭縣</string>
+	<string name="kinmen_county">金門縣</string>
+	<string name="penghu_county">澎湖縣</string>
+	<string name="tainan_city">台南市</string>
+	<string name="kaohsiung_city">高雄市</string>
+	<string name="chiayi_county">嘉義縣</string>
+	<string name="chiayi_city">嘉義市</string>
+	<string name="miaoli_county">苗栗縣</string>
+	<string name="taichung_city">台中市</string>
+	<string name="taoyuan_county">桃園縣</string>
+	<string name="hsinchu_county">新竹縣</string>
+	<string name="hsinchu_city">新竹市</string>
+	<string name="pingtung_county">屏東縣</string>
+	<string name="nantou_county">南投縣</string>
+	<string name="taitung_county">台東縣</string>
+	<string name="changhua_county">彰化縣</string>
+	<string name="yunlin_county">雲林縣</string>
+	<string name="lienchiang_county">連江縣</string>
+	
+	<string name="northern_region">北部地區</string>
+	<string name="central_region">中部地區</string>
+	<string name="southern_region">南部地區</string>
+	<string name="eastern_region">東部地區</string>
+	<string name="offshore_islands_region">離島地區</string>
+	
+	<string name="northern_region_cities">台北市, 新北市, 基隆市, 桃園縣, 新竹縣, 新竹市, 宜蘭縣</string>
+	<string name="central_region_cities">苗栗縣, 台中市, 彰化縣, 南投縣, 雲林縣</string>
+	<string name="southern_region_cities">嘉義縣, 嘉義市, 台南市, 高雄市, 屏東縣</string>
+	<string name="eastern_region_cities">花蓮縣, 台東縣</string>
+	<string name="offshore_islands_region_cities">澎湖縣, 金門縣, 連江縣</string>	
 	   
+	<string name="progress_dialog_please_wait">Please wait...</string>
+	
 </resources>

@@ -2,16 +2,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <CheckBoxPreference
-        android:key="enabled"
-        android:title="@string/set_weather_activity_check_box_preference_enabled" />
+        android:key="tts_enabled"
+        android:title="@string/pref_tts_enabled" />    
+    
+    <CheckBoxPreference
+        android:key="reminder_enabled"
+        android:title="@string/pref_reminder_enabled" />
 
-	<Preference android:key="time" 
+	<Preference android:key="reminder_time" 
 	        android:persistent="false"
-	        android:title="@string/set_weather_activity_time_preference_time"/>
+	        android:title="@string/pref_reminder_time"/>
 
     <ListPreference
-        android:key="city"
-        android:title="@string/set_weather_activity_time_preference_city" >
+        android:key="reminder_city"
+        android:title="@string/pref_reminder_city" >
     </ListPreference>
 
 </PreferenceScreen>

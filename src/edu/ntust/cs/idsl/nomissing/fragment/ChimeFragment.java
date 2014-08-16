@@ -16,31 +16,26 @@ import android.widget.ListView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetChimeActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.ChimeListAdapter;
-import edu.ntust.cs.idsl.nomissing.dao.ChimeDAO;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
+import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 @SuppressLint("NewApi")
 public class ChimeFragment extends ListFragment {
 	
-	private ChimeDAO chimeDAO;
 	private List<Chime> chimeList;
 	private ChimeListAdapter adapter;	
-	
-	private static final int REQUEST_SET = 0;
-	public static final int RESULT_CREATE = 1;
-	public static final int RESULT_UPDATE = 2;
-	public static final int RESULT_CANCEL = 3;
-	public static final int RESULT_DELETE = 4;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		
-		chimeDAO = ChimeDAO.getInstance(getActivity());
-		chimeList = chimeDAO.findAll();
-		
+		chimeList = SQLiteDAOFactory.getChimeDAO(getActivity()).findAll();
 		adapter = new ChimeListAdapter(getActivity(), chimeList);
 		setListAdapter(adapter);
 	}
@@ -61,8 +56,7 @@ public class ChimeFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_add_chime:
-			Intent intent = new Intent(getActivity(), SetChimeActivity.class);
-			startActivityForResult(intent, REQUEST_SET);
+			setChime(0);
 			return true;
 			
 		default:
@@ -72,38 +66,41 @@ public class ChimeFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {	
-		Intent intent = new Intent(getActivity(), SetChimeActivity.class);
-		intent.putExtra("chimeID", (int) id);
-		startActivityForResult(intent, REQUEST_SET);
+		setChime((int)id);
 	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode != Constant.REQUEST_CODE_SET) return;
 		
-		if (requestCode != REQUEST_SET) return;
-		
-		chimeList = chimeDAO.findAll();
+		chimeList = SQLiteDAOFactory.getChimeDAO(getActivity()).findAll();
 		adapter = new ChimeListAdapter(getActivity(), chimeList);
 		setListAdapter(adapter);
 		
 		switch (resultCode) {
-		case RESULT_CREATE:
-			ToastMaker.toast(getActivity(), "建立");
+		case Constant.RESULT_CODE_CREATE:
+			ToastMaker.toast(getActivity(), getString(R.string.toast_create_chime));
 			break;
-		case RESULT_UPDATE:
-			ToastMaker.toast(getActivity(), "更新");
+		case Constant.RESULT_CODE_UPDATE:
+			ToastMaker.toast(getActivity(), getString(R.string.toast_update_chime));
 			break;
-		case RESULT_CANCEL:
-			ToastMaker.toast(getActivity(), "取消");
+		case Constant.RESULT_CODE_CANCEL:
+//			ToastMaker.toast(getActivity(), getString(R.string.toast_cancel_chime));
 			break;
-		case RESULT_DELETE:
-			ToastMaker.toast(getActivity(), "刪除");
+		case Constant.RESULT_CODE_DELETE:
+			ToastMaker.toast(getActivity(), getString(R.string.toast_delete_chime));
 			break;
 
 		default:
 			break;
 		}
 		
+	}
+	
+	private void setChime(int chimeID) {
+		Intent intent = new Intent(getActivity(), SetChimeActivity.class);
+		intent.putExtra("chimeID", chimeID);
+		startActivityForResult(intent, Constant.REQUEST_CODE_SET);	
 	}
 	
 }

@@ -62,7 +62,7 @@ public class CalendarUtil {
 		    ownerName = cur.getString(PROJECTION_OWNER_ACCOUNT_INDEX);
 		    availbility = cur.getString(PROJECTION_ALLOWED_AVAILABILITY_INDEX);
 		    
-		    ToastMaker.toast(context, calID + " | " + displayName + " | " + availbility);
+//		    ToastMaker.toast(context, calID + " | " + displayName + " | " + availbility);
 		    calendar.put(calID, displayName);
 		}		
 		

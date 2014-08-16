@@ -1,9 +1,9 @@
 package edu.ntust.cs.idsl.nomissing.pref;
 
-import edu.ntust.cs.idsl.nomissing.model.City;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import edu.ntust.cs.idsl.nomissing.model.City;
 
 public class UserSettings {
 	
@@ -20,9 +20,10 @@ public class UserSettings {
 	private static final String KEY_TTS_SPEAKER = "tts_speaker";
 	private static final String KEY_TTS_VOLUME = "tts_volume";
 	private static final String KEY_TTS_SPEED = "tts_speed";
-	private static final String KEY_WEATHER_ENABLED = "weather_enabled";
-	private static final String KEY_WEATHER_TIME = "weather_time";
-	private static final String KEY_WEATHER_CITY = "weather_city";
+	private static final String KEY_WEATHER_TTS_ENABLED = "weather_tts_enabled";
+	private static final String KEY_WEATHER_REMINDER_ENABLED = "weather_reminder_enabled";
+	private static final String KEY_WEATHER_REMINDER_TIME = "weather_reminder_time";
+	private static final String KEY_WEATHER_REMINDER_CITY = "weather_reminder_city";
 	
 	private UserSettings(Context context) {
 		this.context = context;
@@ -52,18 +53,23 @@ public class UserSettings {
 		editor.commit();
 	}
 	
-	public void setWeatherEnabled(boolean value) {
-		editor.putBoolean(KEY_WEATHER_ENABLED, value);
+	public void setWeatherTTSEnabled(boolean value) {
+		editor.putBoolean(KEY_WEATHER_TTS_ENABLED, value);
+		editor.commit();
+	}	
+	
+	public void setWeatherReminderEnabled(boolean value) {
+		editor.putBoolean(KEY_WEATHER_REMINDER_ENABLED, value);
 		editor.commit();
 	}
 	
-	public void setWeatherTime(long value) {
-		editor.putLong(KEY_WEATHER_TIME, value);
+	public void setWeatherReminderTime(long value) {
+		editor.putLong(KEY_WEATHER_REMINDER_TIME, value);
 		editor.commit();
 	}
 	
-	public void setWeatherCity(int value) {
-		editor.putInt(KEY_WEATHER_CITY, value);
+	public void setWeatherReminderCity(int value) {
+		editor.putInt(KEY_WEATHER_REMINDER_CITY, value);
 		editor.commit();
 	}
 	
@@ -79,16 +85,20 @@ public class UserSettings {
 		return pref.getInt(KEY_TTS_SPEED, 0);
 	}
 	
-	public boolean isWeatherEnabled() {
-		return pref.getBoolean(KEY_WEATHER_ENABLED, false);
+	public boolean isWeatherTTSEnabled() {
+		return pref.getBoolean(KEY_WEATHER_TTS_ENABLED, false);
 	}
 	
-	public long getWeatherTime() {
-		return pref.getLong(KEY_WEATHER_TIME, 0);
+	public boolean isWeatherReminderEnabled() {
+		return pref.getBoolean(KEY_WEATHER_REMINDER_ENABLED, false);
+	}	
+	
+	public long getWeatherReminderTime() {
+		return pref.getLong(KEY_WEATHER_REMINDER_TIME, 0);
 	}
 	
-	public int getWeatherCity() {
-		return pref.getInt(KEY_WEATHER_CITY, City.TAIPEI_CITY.getCityID());
+	public int getWeatherReminderCity() {
+		return pref.getInt(KEY_WEATHER_REMINDER_CITY, City.TAIPEI_CITY.getCityID());
 	}
 	
 }

@@ -23,6 +23,7 @@ import edu.ntust.cs.idsl.nomissing.adapter.NavDrawerListAdapter;
 import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.ChimeFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.HomeFragment;
+import edu.ntust.cs.idsl.nomissing.fragment.SettingsFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.WeatherFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.NavDrawerItem;
@@ -194,7 +195,7 @@ public class MainActivity extends FragmentActivity {
 			fragment = new WeatherFragment();	
 			break;
 		case 4:
-			startActivity(new Intent(this, SettingsActivity.class));
+			fragment = new SettingsFragment();	
 			break;			
 		case 5:
 			app.session.logoutUser();

@@ -2,20 +2,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <CheckBoxPreference
-        android:key="enabled"
+        android:key="chime_enabled"
         android:persistent="false"
-        android:title="@string/chime_activity_check_box_preference_enabled" />
+        android:title="@string/pref_chime_enabled" />
 
-	<Preference android:key="time" 
+	<Preference android:key="chime_time" 
 	        android:persistent="false"
-	        android:title="@string/chime_activity_time_preference_time"/>
+	        android:title="@string/pref_chime_time"/>
 
     <ListPreference
         android:entries="@array/chime_activity_time_preference_repeat_key"
         android:entryValues="@array/chime_activity_time_preference_repeat_value"
-        android:key="repeat"
+        android:key="chime_repeating"
         android:summary="一次"
-        android:title="@string/chime_activity_time_preference_repeat" >
+        android:title="@string/pref_chime_repeating" >
     </ListPreference>
 
 </PreferenceScreen>

@@ -1,52 +1,54 @@
 package edu.ntust.cs.idsl.nomissing.fragment;
 
-import java.util.List;
-
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetWeatherActivity;
-import edu.ntust.cs.idsl.nomissing.adapter.WeatherListAdapter;
+import edu.ntust.cs.idsl.nomissing.adapter.WeatherExpandListAdapter;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
 import edu.ntust.cs.idsl.nomissing.dao.WeatherDAO;
+import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
 
-@SuppressLint("NewApi")
-public class WeatherFragment extends ListFragment {
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
+public class WeatherFragment extends Fragment implements OnChildClickListener {
 
-	private WeatherDAO weatherDAO;
-	private List<Weather> weatherList;
-	private WeatherListAdapter adapter;
+	private NoMissingApp app;
+	private ExpandableListView expandableListView;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		
-		weatherDAO = WeatherDAO.getInstance(getActivity());
-		weatherList = weatherDAO.findAll();
-
-		adapter = new WeatherListAdapter(getActivity(), weatherList);
-		setListAdapter(adapter);
+		app = (NoMissingApp)getActivity().getApplicationContext();
 	}
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_weather, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_weather, container, false);
+        
+        expandableListView = (ExpandableListView)rootView.findViewById(R.id.expandableListView);
+        WeatherExpandListAdapter weatherExpandListAdapter = new WeatherExpandListAdapter(getActivity());
+        expandableListView.setAdapter(weatherExpandListAdapter);
+        expandableListView.setOnChildClickListener(this);
+        
+        return rootView;
 	}
-	
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -64,25 +66,20 @@ public class WeatherFragment extends ListFragment {
 			return super.onOptionsItemSelected(item);
 		}
 	}	
-	
+
 	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {	
-		Weather weather = weatherDAO.find((int)id);
-		
-		Intent startIntent = new Intent(getActivity(), MediaPlayerService.class);
-		startIntent.setAction(MediaPlayerService.ACTION_PLAY);
-		startIntent.putExtra("audioURL", weather.getAudio());		
-		getActivity().startService(startIntent);
-		
+	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+		Weather weather = SQLiteDAOFactory.getWeatherDAO(getActivity()).find((int)id);
 		openCityWeatherDialog(weather);
+		return true;
 	}
 	
-	private void openCityWeatherDialog(Weather weather) {
+	private void openCityWeatherDialog(final Weather weather) {
 		AlertDialog cityWeatherDialog = new AlertDialog.Builder(getActivity())
 		.setTitle(weather.getCity())
 		.setIcon(android.R.drawable.ic_dialog_info)
 		.setMessage(weather.getMemo())
-		.setNegativeButton(R.string.weather_fragment_alert_dialog_close,
+		.setNegativeButton(R.string.alert_dialog_close,
 			new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -90,16 +87,36 @@ public class WeatherFragment extends ListFragment {
 			})
 		.create();
 
-		cityWeatherDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+		cityWeatherDialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
-			public void onDismiss(DialogInterface dialog) {
-				Intent stopIntent = new Intent(getActivity(), MediaPlayerService.class);
-				stopIntent.setAction(MediaPlayerService.ACTION_STOP);
-				getActivity().startService(stopIntent);	
+			public void onShow(DialogInterface dialog) {
+				if (app.userSettings.isWeatherTTSEnabled()) 
+					startTTSAudio(weather.getAudio());
 			}
 		});
 		
-		cityWeatherDialog.show();			
+		cityWeatherDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				if (app.userSettings.isWeatherTTSEnabled()) 
+					stopTTSAudio();
+			}
+		});
+		
+		cityWeatherDialog.show();
+	}
+	
+	private void startTTSAudio(String audioURL) {
+		Intent startIntent = new Intent(getActivity(), MediaPlayerService.class);
+		startIntent.setAction(MediaPlayerService.ACTION_PLAY);
+		startIntent.putExtra("audioURL", audioURL);		
+		getActivity().startService(startIntent);			
+	}
+	
+	private void stopTTSAudio() {
+		Intent stopIntent = new Intent(getActivity(), MediaPlayerService.class);
+		stopIntent.setAction(MediaPlayerService.ACTION_STOP);
+		getActivity().startService(stopIntent);			
 	}
 
 }

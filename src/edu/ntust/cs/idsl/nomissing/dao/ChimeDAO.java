@@ -10,7 +10,7 @@ import android.database.Cursor;
 import edu.ntust.cs.idsl.nomissing.database.NoMissingDB;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 
-public class ChimeDAO extends DatabaseDAO<Chime> {
+public class ChimeDAO extends SQLiteDAO<Chime> {
 
 	private static ChimeDAO instance;
 	

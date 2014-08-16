@@ -6,12 +6,12 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.util.SeekBarPreference;
+import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
@@ -20,9 +20,13 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	private static final String TAG = SettingsActivity.class.getSimpleName();
 	private NoMissingApp app;
 	
-	private ListPreference prefSpeaker;
-	private SeekBarPreference prefVolume;
-	private SeekBarPreference prefSpeed;
+	private ListPreference prefTTSSpeaker;
+	private SeekBarPreference prefTTSVolume;
+	private SeekBarPreference prefTTSSpeed;
+	
+	private String mTTSSpeaker;
+	private int mTTSVolume;
+	private int mTTSSpeed;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -35,21 +39,34 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);	
         
-        prefSpeaker = (ListPreference) findPreference("tts_speaker");
-        prefVolume = (SeekBarPreference) findPreference("tts_volume");
-        prefSpeed = (SeekBarPreference) findPreference("tts_speed");
-
-        prefVolume.init(0, 100, app.userSettings.getTTSVolume());
-        prefSpeed.init(-10, 10, app.userSettings.getTTSSpeed());
-        
-        prefSpeaker.setOnPreferenceChangeListener(this);
-        prefVolume.setOnPreferenceChangeListener(this);
-        prefSpeed.setOnPreferenceChangeListener(this);
-        
-        prefSpeaker.setSummary(app.userSettings.getTTSSpeaker());
-        prefVolume.setSummary(String.valueOf(app.userSettings.getTTSVolume()));
-        prefSpeed.setSummary(String.valueOf(app.userSettings.getTTSSpeed()));
+		mTTSSpeaker = app.userSettings.getTTSSpeaker();
+		mTTSVolume = app.userSettings.getTTSVolume();
+		mTTSSpeed = app.userSettings.getTTSSpeed();
+		
+		setPrefTTSSpeaker();
+		setPrefTTSVolume();
+		setPrefTTSSpeed();
 	}
+	
+	private void setPrefTTSSpeaker() {
+        prefTTSSpeaker = (ListPreference) findPreference("tts_speaker");
+        prefTTSSpeaker.setSummary(mTTSSpeaker);
+        prefTTSSpeaker.setOnPreferenceChangeListener(this);
+	}
+	
+	private void setPrefTTSVolume() {
+		prefTTSVolume = (SeekBarPreference) findPreference("tts_volume");
+        prefTTSVolume.init(0, 100, mTTSVolume);
+        prefTTSVolume.setSummary(String.valueOf(mTTSVolume));
+        prefTTSVolume.setOnPreferenceChangeListener(this);
+	}
+	
+	private void setPrefTTSSpeed() {
+		prefTTSSpeed = (SeekBarPreference) findPreference("tts_speed");
+		prefTTSSpeed.init(-10, 10, mTTSSpeed);
+		prefTTSSpeed.setSummary(String.valueOf(mTTSSpeed));	
+		prefTTSSpeed.setOnPreferenceChangeListener(this);
+	}	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,11 +79,12 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 		
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			SettingsActivity.this.finish();
+			finish();
 			return true;
 			
 		case R.id.action_settings_ok:
-			SettingsActivity.this.finish();
+			saveSettings();
+			finish();
 			return true;
 			
 		default:
@@ -76,24 +94,29 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		
-		if (preference == prefSpeaker) {
-			app.userSettings.setTTSSpeaker((String)newValue);
+		if (preference == prefTTSSpeaker) {
+			mTTSSpeaker = (String)newValue;
 			preference.setSummary((String)newValue);
 		}
 		
-		if (preference == prefVolume) {
-			app.userSettings.setTTSVolume((int)newValue);
+		else if (preference == prefTTSVolume) {
+			mTTSVolume = (int)newValue;
 			preference.setSummary(String.valueOf(newValue));
 		}
 		
-		if (preference == prefSpeed) {
-			app.userSettings.setTTSSpeed((int)newValue);
+		else if (preference == prefTTSSpeed) {
+			mTTSSpeed = (int)newValue;
 			preference.setSummary(String.valueOf(newValue));
 		}
-		
-		return false;
+		return true;
 	}
 
-
+	private void saveSettings() {
+		app.userSettings.setTTSSpeaker(mTTSSpeaker);
+		app.userSettings.setTTSVolume(mTTSVolume);
+		app.userSettings.setTTSSpeed(mTTSSpeed);
+		
+		ToastMaker.toast(this, getString(R.string.toast_save_settings));
+	}
+	
 }

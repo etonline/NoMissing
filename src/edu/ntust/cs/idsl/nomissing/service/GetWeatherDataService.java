@@ -13,6 +13,8 @@ import android.util.Log;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAO;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
 import edu.ntust.cs.idsl.nomissing.dao.WeatherDAO;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
@@ -63,8 +65,9 @@ public class GetWeatherDataService extends IntentService {
 						String updatedAt = jsonObject.getString("updated_at");	
 						
 						Weather weather = new Weather(cityid, city,stno,time,
-								memo,audio,createdAt,updatedAt);	
-						WeatherDAO weatherDAO = WeatherDAO.getInstance(getApplicationContext());
+								memo,audio,createdAt,updatedAt);
+						
+						SQLiteDAO<Weather> weatherDAO = SQLiteDAOFactory.getWeatherDAO(getApplicationContext());
 						weatherDAO.update(weather);	
 					}
 				} 

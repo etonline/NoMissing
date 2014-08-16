@@ -28,6 +28,9 @@ import edu.ntust.cs.idsl.nomissing.util.AccountUtil;
 import edu.ntust.cs.idsl.nomissing.util.CalendarUtil;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class HomeFragment extends Fragment implements OnItemClickListener {
 	

@@ -5,8 +5,8 @@
         
         <ListPreference
             android:persistent="true"
-            android:entries="@array/settings_activity_list_preference_speaker_key"
-            android:entryValues="@array/settings_activity_list_preference_speaker_value"
+            android:entries="@array/pref_tts_speaker_key"
+            android:entryValues="@array/pref_tts_speaker_value"
             android:key="tts_speaker"
             android:summary="Bruce (預設)"
             android:title="@string/settings_activity_list_preference_speaker" >
@@ -14,18 +14,18 @@
 
         <edu.ntust.cs.idsl.nomissing.util.SeekBarPreference
             android:dialogLayout="@layout/pref_seekbar"
-            android:dialogTitle="@string/settings_activity_seekbar_preference_volume"
+            android:dialogTitle="@string/pref_tts_volume"
             android:key="tts_volume"
             android:summary="100 (預設)"
-            android:title="@string/settings_activity_seekbar_preference_volume" >
+            android:title="@string/pref_tts_volume" >
         </edu.ntust.cs.idsl.nomissing.util.SeekBarPreference>
         
         <edu.ntust.cs.idsl.nomissing.util.SeekBarPreference
             android:dialogLayout="@layout/pref_seekbar"
-            android:dialogTitle="@string/settings_activity_seekbar_preference_speed"
+            android:dialogTitle="@string/pref_tts_speed"
             android:key="tts_speed"
             android:summary="0 (預設)"
-            android:title="@string/settings_activity_seekbar_preference_speed" >
+            android:title="@string/pref_tts_speed" >
         </edu.ntust.cs.idsl.nomissing.util.SeekBarPreference>
         
     </PreferenceCategory>

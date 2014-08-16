@@ -9,7 +9,7 @@ import android.database.Cursor;
 import edu.ntust.cs.idsl.nomissing.database.NoMissingDB;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 
-public class WeatherDAO extends DatabaseDAO<Weather> {
+public class WeatherDAO extends SQLiteDAO<Weather> {
 
 	private static WeatherDAO instance;
 	

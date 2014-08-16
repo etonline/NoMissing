@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -13,17 +12,14 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceScreen;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.dao.ChimeDAO;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
-import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.City;
 import edu.ntust.cs.idsl.nomissing.util.AlarmUtil;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
@@ -32,119 +28,92 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
-public class SetWeatherActivity extends PreferenceActivity implements OnPreferenceChangeListener,
-		TimePickerDialog.OnTimeSetListener {
+public class SetWeatherActivity extends PreferenceActivity implements OnPreferenceClickListener, OnPreferenceChangeListener {
 	
-	private static final String TAG = SetWeatherActivity.class.getSimpleName();
 	private NoMissingApp app;
 	
-	private CheckBoxPreference prefEnabled;
-	private Preference prefTime;
-	private ListPreference prefCity;
+	private CheckBoxPreference prefTTSEnabled;
+	private CheckBoxPreference prefReminderEnabled;
+	private Preference prefReminderTime;
+	private ListPreference prefReminderCity;
 	
-	private boolean isEnabled;
-	private long time;
-	private int city;
+	private boolean isTTSEnabled;
+	private boolean isReminderEnabled;
+	private long reminderTime;
+	private int reminderCity;
 	
-	private ChimeDAO chimeDAO;
-	private AlarmUtil chimeAlarm;
-	private Chime chime;
 	private Calendar calendar;
+	private SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
 	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.activity_add_chime);
 		addPreferencesFromResource(R.xml.pref_weather);
 		
 		app = (NoMissingApp)getApplicationContext();
-		
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);	
-
-		prefEnabled = (CheckBoxPreference) findPreference("enabled");
-		prefTime = (Preference) findPreference("time");
-		prefCity = (ListPreference) findPreference("city");
 		
-		prefEnabled.setOnPreferenceChangeListener(this);
-		prefCity.setOnPreferenceChangeListener(this);
+		isTTSEnabled = app.userSettings.isWeatherTTSEnabled();
+		isReminderEnabled = app.userSettings.isWeatherReminderEnabled();
+		reminderTime = app.userSettings.getWeatherReminderTime();
+		reminderCity = app.userSettings.getWeatherReminderCity();
 		
-		// init prefEnabled
-		prefEnabled.setChecked(app.userSettings.isWeatherEnabled());
-		isEnabled = app.userSettings.isWeatherEnabled();
-		
-		// init prefCity
-		List<String> cityValueList = new ArrayList<String>();		
-		for (City city : City.values()) {	
-			cityValueList.add(city.getCityName());
-		}	
-		prefCity.setEntries((CharSequence[]) cityValueList.toArray(new CharSequence[cityValueList.size()]));
-		
-		List<String> cityKeyList = new ArrayList<String>();		
-		for (City city : City.values()) {	
-			cityKeyList.add(String.valueOf(city.getCityID()));
-		}	
-		prefCity.setEntryValues((CharSequence[]) cityKeyList.toArray(new CharSequence[cityKeyList.size()]));
-		
-		prefCity.setSummary(City.getCityNameByCityID(app.userSettings.getWeatherCity()));
-		city = app.userSettings.getWeatherCity();
-		
-		// init prefTime
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
-		if (app.userSettings.getWeatherTime() != 0) {
-			time = app.userSettings.getWeatherTime();
-			calendar = Calendar.getInstance();
-			calendar.setTimeInMillis(time);
-			prefTime.setSummary(simpleDateFormat.format(calendar.getTime()));
-		} else {
-			calendar = Calendar.getInstance();
-			time = calendar.getTimeInMillis();		
-			prefTime.setSummary(simpleDateFormat.format(calendar.getTime()));
-		}
-		time = app.userSettings.getWeatherTime();
+		setPrefTTSEnabled();
+		setPrefWeatherReminder();
+		setPrefReminderTime();
+		setPrefReminderCity();
 	}
-
 	
-	@SuppressWarnings("deprecation")
-	@Override
-	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
-			Preference preference) {
-		
-		if (preference == prefTime) {
-			int hour = calendar.get(Calendar.HOUR_OF_DAY);
-			int minute = calendar.get(Calendar.MINUTE);			
-			new TimePickerDialog(this, this, hour, minute, DateFormat.is24HourFormat(this)).show();
-		} 
-
-		return super.onPreferenceTreeClick(preferenceScreen, preference);
+	private void setPrefTTSEnabled() {
+		prefTTSEnabled = (CheckBoxPreference) findPreference("tts_enabled");
+		prefTTSEnabled.setChecked(isTTSEnabled);
+		prefTTSEnabled.setOnPreferenceChangeListener(this);
 	}
-
-	@Override
-	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		
-		if (preference == prefEnabled) {
-			isEnabled = (boolean)newValue;
-		}
-		
-		if (preference == prefCity) {
-			city = Integer.valueOf((String)newValue);
-			prefCity.setSummary(City.getCityNameByCityID(city));
-		}
-		
-		return true;
+	
+	private void setPrefWeatherReminder() {
+		prefReminderEnabled = (CheckBoxPreference) findPreference("reminder_enabled");
+		prefReminderEnabled.setChecked(isReminderEnabled);
+		prefReminderEnabled.setOnPreferenceChangeListener(this);
 	}
+	
+	private void setPrefReminderTime() {
+		prefReminderTime = (Preference) findPreference("reminder_time");
 
-	@Override
-	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-		calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-		calendar.set(Calendar.MINUTE, minute);		
-		time = calendar.getTimeInMillis();
+		calendar = Calendar.getInstance();
+		if (reminderTime != 0) {
+			calendar.setTimeInMillis(reminderTime);			
+			prefReminderTime.setSummary(formatter.format(calendar.getTime()));
+		} else {
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			prefReminderTime.setSummary(formatter.format(calendar.getTime()));
+		}
+
+		prefReminderTime.setOnPreferenceClickListener(this);
+	}
+	
+	private void setPrefReminderCity() {
+		prefReminderCity = (ListPreference) findPreference("reminder_city");
 		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
-		prefTime.setSummary(simpleDateFormat.format(calendar.getTime()));	
-	}	
-
+		List<String> cityKeys = new ArrayList<String>();		
+		for (City city : City.values()) {	
+			cityKeys.add(String.valueOf(city.getCityID()));
+		}	
+		
+		List<String> cityValues = new ArrayList<String>();		
+		for (City city : City.values()) {	
+			cityValues.add(getString(city.getCityName()));
+		}	
+		
+		prefReminderCity.setEntries((CharSequence[]) cityValues.toArray(new CharSequence[cityValues.size()]));		
+		prefReminderCity.setEntryValues((CharSequence[]) cityKeys.toArray(new CharSequence[cityKeys.size()]));
+		prefReminderCity.setSummary(getString(City.getCity(reminderCity).getCityName()));
+		prefReminderCity.setOnPreferenceChangeListener(this);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_set_weather, menu);
@@ -156,22 +125,68 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 		
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			SetWeatherActivity.this.finish();
+			finish();
 			return true;
 			
 		case R.id.action_save:	
-			AlarmUtil.cancelWeatherAlarm(this);
-			app.userSettings.setWeatherEnabled(isEnabled);
-			app.userSettings.setWeatherTime(time);
-			app.userSettings.setWeatherCity(city);
-			if (isEnabled) AlarmUtil.setWeatherAlarm(this);
-			SetWeatherActivity.this.finish();
-
+			saveSettings();
+			finish();
 			return true;
 			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}	
+
+	@Override
+	public boolean onPreferenceClick(Preference preference) {
+		if (preference == prefReminderTime) {
+			new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+				@Override
+				public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+					calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+					calendar.set(Calendar.MINUTE, minute);		
+					reminderTime = calendar.getTimeInMillis();
+					prefReminderTime.setSummary(formatter.format(calendar.getTime()));		
+				}
+			}, 
+			calendar.get(Calendar.HOUR_OF_DAY),
+			calendar.get(Calendar.MINUTE),
+			DateFormat.is24HourFormat(this)).show();			
+		} 
+		
+		return true;
+	}		
+	
+	@Override
+	public boolean onPreferenceChange(Preference preference, Object newValue) {
+		
+		if (preference == prefTTSEnabled) {
+			isTTSEnabled = (boolean)newValue;
+		}	
+		
+		else if (preference == prefReminderEnabled) {
+			isReminderEnabled = (boolean)newValue;
+		}
+		
+		else if (preference == prefReminderCity) {
+			reminderCity = Integer.valueOf((String)newValue);
+			prefReminderCity.setSummary(getString(City.getCity(reminderCity).getCityName()));
+		}
+		
+		return true;
+	}
+	
+	private void saveSettings() {
+		app.userSettings.setWeatherTTSEnabled(isTTSEnabled);
+		app.userSettings.setWeatherReminderEnabled(isReminderEnabled);
+		app.userSettings.setWeatherReminderTime(reminderTime);
+		app.userSettings.setWeatherReminderCity(reminderCity);
+		
+		AlarmUtil.cancelWeatherAlarm(this);
+		if (isReminderEnabled) AlarmUtil.setWeatherAlarm(this);
+		
+		ToastMaker.toast(this, getString(R.string.toast_save_settings));
+	}
 
 }

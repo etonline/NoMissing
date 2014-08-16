@@ -1,36 +1,36 @@
 package edu.ntust.cs.idsl.nomissing.model;
 
-import android.R.integer;
+import edu.ntust.cs.idsl.nomissing.R;
 
 public enum City {
 	
-	TAIPEI_CITY(63000, "台北市"),
-	NEW_TAIPEI_CITY(65000, "新北市"),
-	KEELUNG_CITY(10017, "基隆市"),
-	HUALIEN_COUNTY(10015, "花蓮縣"),
-	YILAN_COUNTY(10002, "宜蘭縣"),
-	KINMEN_COUNTY(9020, "金門縣"),	
-	PENGHU_COUNTY(10016, "澎湖縣"),
-	TAINAN_CITY(67000, "台南市"),
-	KAOHSIUNG_CITY(64000, "高雄市"),
-	CHIAYI_COUNTY(10010, "嘉義縣"),
-	CHIAYI_CITY(10020, "嘉義市"),
-	MIAOLI_COUNTY(10005, "苗栗縣"),
-	TAICHUNG_CITY(66000, "台中市"),
-	TAOYUAN_COUNTY(10003, "桃園縣"),
-	HSINCHU_COUNTY(10004, "新竹縣"),		
-	HSINCHU_CITY(10018, "新竹市"),	
-	PINGTUNG_COUNTY(10013, "屏東縣"),
-	NANTOU_COUNTY(10008, "南投縣"),
-	TAITUNG_COUNTY(10014, "台東縣"),
-	CHANGHUA_COUNTY(10007, "彰化縣"),
-	YUNLIN_COUNTY(10009, "雲林縣"),
-	LIENCHIANG_COUNTY(9007, "連江縣"); 		
+	TAIPEI_CITY(63000, R.string.taipei_city),
+	NEW_TAIPEI_CITY(65000, R.string.new_taipei_city),
+	KEELUNG_CITY(10017, R.string.keelung_city),
+	HUALIEN_COUNTY(10015, R.string.hualien_county),
+	YILAN_COUNTY(10002, R.string.yilan_county),
+	KINMEN_COUNTY(9020, R.string.kinmen_county),	
+	PENGHU_COUNTY(10016, R.string.penghu_county),
+	TAINAN_CITY(67000, R.string.tainan_city),
+	KAOHSIUNG_CITY(64000, R.string.kaohsiung_city),
+	CHIAYI_COUNTY(10010, R.string.chiayi_county),
+	CHIAYI_CITY(10020, R.string.chiayi_city),
+	MIAOLI_COUNTY(10005, R.string.miaoli_county),
+	TAICHUNG_CITY(66000, R.string.taichung_city),
+	TAOYUAN_COUNTY(10003, R.string.taoyuan_county),
+	HSINCHU_COUNTY(10004, R.string.hsinchu_county),		
+	HSINCHU_CITY(10018, R.string.hsinchu_city),	
+	PINGTUNG_COUNTY(10013, R.string.pingtung_county),
+	NANTOU_COUNTY(10008, R.string.nantou_county),
+	TAITUNG_COUNTY(10014, R.string.taitung_county),
+	CHANGHUA_COUNTY(10007, R.string.changhua_county),
+	YUNLIN_COUNTY(10009, R.string.yunlin_county),
+	LIENCHIANG_COUNTY(9007, R.string.lienchiang_county); 		
 	
 	private int cityID;
-	private String cityName;
+	private int cityName;
 	
-	private City(int cityID, String cityName) {
+	private City(int cityID, int cityName) {
 		this.cityID = cityID;
 		this.cityName = cityName;
 	}
@@ -43,23 +43,23 @@ public enum City {
 		this.cityID = cityID;
 	}
 
-	public String getCityName() {
+	public int getCityName() {
 		return cityName;
 	}
 
-	public void setCityName(String cityName) {
+	public void setCityName(int cityName) {
 		this.cityName = cityName;
 	}
 	
-	public static String getCityNameByCityID(int cityID) {
-		String CityName = new String();
-		for (City city : City.values()) {
-			if (city.getCityID() == cityID) {
-				CityName = city.getCityName();
+	public static City getCity(int cityID) {
+		City city = null;
+		for (City c : City.values()) {
+			if (c.getCityID() == cityID) {
+				city = c;
 				break;
 			}
 		}
-		return CityName;
+		return city;
 	}
 	
 }

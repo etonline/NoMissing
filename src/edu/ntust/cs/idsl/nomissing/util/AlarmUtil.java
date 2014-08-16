@@ -42,8 +42,8 @@ public final class AlarmUtil {
 	
 	public static void setWeatherAlarm(Context context) {
 		UserSettings userSettings = UserSettings.getInstance(context);
-		long timeInMillis = calculateAlarm(userSettings.getWeatherTime()).getTimeInMillis();
-		int cityID = userSettings.getWeatherCity();
+		long timeInMillis = calculateAlarm(userSettings.getWeatherReminderTime()).getTimeInMillis();
+		int cityID = userSettings.getWeatherReminderCity();
 		
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);	
 		alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, getPendingIntent(context, AlarmReceiver.ACTION_WEATHER_ALARM, cityID));
@@ -55,7 +55,7 @@ public final class AlarmUtil {
 	
 	public static void cancelWeatherAlarm(Context context) {
 		UserSettings userSettings = UserSettings.getInstance(context);
-		int cityID = userSettings.getWeatherCity();
+		int cityID = userSettings.getWeatherReminderCity();
 		
 		PendingIntent pendingIntent = getPendingIntent(context, AlarmReceiver.ACTION_WEATHER_ALARM, cityID);
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);		

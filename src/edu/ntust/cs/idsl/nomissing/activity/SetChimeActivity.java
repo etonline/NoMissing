@@ -11,15 +11,15 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceScreen;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.dao.ChimeDAO;
-import edu.ntust.cs.idsl.nomissing.fragment.ChimeFragment;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
+import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.service.TTSConvertTextService;
@@ -29,106 +29,74 @@ import edu.ntust.cs.idsl.nomissing.util.AlarmUtil;
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
-public class SetChimeActivity extends PreferenceActivity implements OnPreferenceChangeListener,
-		TimePickerDialog.OnTimeSetListener {
+public class SetChimeActivity extends PreferenceActivity implements OnPreferenceClickListener, OnPreferenceChangeListener {
 	
-	private static final String TAG = SetChimeActivity.class.getSimpleName();
 	private NoMissingApp app;
 	
-	private CheckBoxPreference enabledPref;
-	private Preference timePref;
-	private ListPreference repeatPref;
+	private CheckBoxPreference prefChimeEnabled;
+	private Preference prefChimeTime;
+	private ListPreference prefChimeRepeating;
 	
 	private int chimeID;
-	private int hour;
-	private int minute;
-	private boolean isEnabled;
-	private boolean isRepeating;
+	private int chimeHour;
+	private int chimeMinute;
+	private boolean isChimeEnabled;
+	private boolean isChimeRepeating;
 	private final boolean isTrigged = false;
 	
-	private ChimeDAO chimeDAO;
 	private Chime chime;
 	private Calendar calendar;
+	private SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
 	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.activity_add_chime);
 		addPreferencesFromResource(R.xml.pref_chime);
 		
 		app = (NoMissingApp)getApplicationContext();
-		
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);	
-
-		enabledPref = (CheckBoxPreference) findPreference("enabled");
-		timePref = (Preference) findPreference("time");
-		repeatPref = (ListPreference) findPreference("repeat");
 		
-		enabledPref.setOnPreferenceChangeListener(this);
-		repeatPref.setOnPreferenceChangeListener(this);
+		chimeID = getIntent().getIntExtra("chimeID", 0);
+		chime = (chimeID != 0 ) ? SQLiteDAOFactory.getChimeDAO(this).find(chimeID) : new Chime();
 		
-		chimeDAO = ChimeDAO.getInstance(this);
+		chimeHour = chime.getHour();
+		chimeMinute = chime.getMinute();
+		isChimeEnabled = chime.isEnabled();
+		isChimeRepeating = chime.isRepeating();
 		
-		chimeID = getIntent().getIntExtra("chimeID", -1);
-		chime = (chimeID != -1 ) ? chimeDAO.find(chimeID) : new Chime();
-		
-		hour = chime.getHour();
-		minute = chime.getMinute();
-		isEnabled = chime.isEnabled();
-		isRepeating = chime.isRepeating();
-		
-		enabledPref.setChecked(isEnabled);
-		repeatPref.setSummary(chime.getRepeating());
-		updateTime();
+		setPrefChimeEnabled();
+		setPrefChimeTime();
+		setPrefChimeRepeating();
 	}
 	
-	@SuppressWarnings("deprecation")
-	@Override
-	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
-			Preference preference) {
-		
-		if (preference == timePref) {
-			calendar = Calendar.getInstance();
-			hour = calendar.get(Calendar.HOUR_OF_DAY);
-			minute = calendar.get(Calendar.MINUTE);			
-			new TimePickerDialog(this, this, hour, minute, DateFormat.is24HourFormat(this)).show();
-		} 
-
-		return super.onPreferenceTreeClick(preferenceScreen, preference);
+	private void setPrefChimeEnabled() {
+		prefChimeEnabled = (CheckBoxPreference) findPreference("chime_enabled");
+		prefChimeEnabled.setChecked(isChimeEnabled);
+		prefChimeEnabled.setOnPreferenceChangeListener(this);
 	}
-
-	@Override
-	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		
-		if (preference == repeatPref) {
-			isRepeating = (newValue.equals("1")) ? true : false;
-			String summmary = (newValue.equals("0")) ? "一次" : "每天";
-			preference.setSummary(summmary);
-		}
-		
-		if (preference == enabledPref) {
-			isEnabled = (boolean)newValue;
-		}
-		
-		return true;
-	}
-
-	@Override
-	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-		this.hour = hourOfDay;
-		this.minute = minute;
-		updateTime();
-	}	
 	
-	private void updateTime() {
+	private void setPrefChimeTime() {
+		prefChimeTime = (Preference) findPreference("chime_time");
+		
 		calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, hour);
-		calendar.set(Calendar.MINUTE, minute);		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
-		String timeString = simpleDateFormat.format(calendar.getTime());
-		timePref.setSummary(timeString);		
+		if (chimeID != 0) {
+			calendar.set(Calendar.HOUR_OF_DAY, chimeHour);
+			calendar.set(Calendar.MINUTE, chimeMinute);					
+		} else {
+			chimeHour = calendar.get(Calendar.HOUR);
+			chimeMinute = calendar.get(Calendar.MINUTE);
+		}
+		prefChimeTime.setSummary(formatter.format(calendar.getTime()));		
+		
+		prefChimeTime.setOnPreferenceClickListener(this);
+	}
+	
+	private void setPrefChimeRepeating() {
+		prefChimeRepeating = (ListPreference) findPreference("chime_repeating");
+		prefChimeRepeating.setSummary(chime.getRepeating());
+		prefChimeRepeating.setOnPreferenceChangeListener(this);
 	}
 
 	@Override
@@ -146,74 +114,106 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 			return true;
 			
 		case R.id.action_set_chime_ok:
-			if (chimeID == -1) {
+			if (chimeID == 0) {
 				createChime();
-				SetChimeActivity.this.setResult(ChimeFragment.RESULT_CREATE);
-				SetChimeActivity.this.finish();
+				getTTSAudio();
+				setResult(Constant.RESULT_CODE_CREATE);
 			} else {
 				updateChime();
-				SetChimeActivity.this.setResult(ChimeFragment.RESULT_UPDATE);
-				SetChimeActivity.this.finish();			
+				getTTSAudio();
+				setResult(Constant.RESULT_CODE_UPDATE);		
 			}
+			finish();
 			return true;
 			
 		case R.id.action_delete_chime:
-			if (chimeID == -1) {
-				SetChimeActivity.this.setResult(ChimeFragment.RESULT_CANCEL);
-				SetChimeActivity.this.finish();	
+			if (chimeID == 0) {
+				setResult(Constant.RESULT_CODE_CANCEL);
 			} else {
-				chimeDAO.delete(chimeID);
-				AlarmUtil.cancelChimeAlarm(this, chime);
-				SetChimeActivity.this.setResult(ChimeFragment.RESULT_DELETE);
-				SetChimeActivity.this.finish();	
+				deleteChime();
+				setResult(Constant.RESULT_CODE_DELETE);
 			}
+			finish();	
 			return true;
 			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}		
+	
+	@Override
+	public boolean onPreferenceClick(Preference preference) {
+		if (preference == prefChimeTime) {
+			new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+				@Override
+				public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+					chimeHour = hourOfDay;
+					chimeMinute = minute;
+					calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+					calendar.set(Calendar.MINUTE, minute);		
+					prefChimeTime.setSummary(formatter.format(calendar.getTime()));		
+				}
+			}, 
+			calendar.get(Calendar.HOUR_OF_DAY),
+			calendar.get(Calendar.MINUTE),
+			DateFormat.is24HourFormat(this)).show();			
+		} 
+		return true;
 	}	
 	
+	@Override
+	public boolean onPreferenceChange(Preference preference, Object newValue) {
+		
+		if (preference == prefChimeEnabled) {
+			isChimeEnabled = (boolean)newValue;
+		}
+		
+		else if (preference == prefChimeRepeating) {
+			isChimeRepeating = (newValue.equals("1")) ? true : false;
+			String summmary = (newValue.equals("0")) ? "一次" : "每天";
+			preference.setSummary(summmary);
+		}
+		
+		return true;
+	}
+	
 	private void createChime() {
-		chimeID = chimeDAO.getNextID();
+		chimeID = SQLiteDAOFactory.getChimeDAO(this).getNextID();
 		long currentTime = System.currentTimeMillis();
 		
 		chime.setId(chimeID);
-		chime.setHour(hour);
-		chime.setMinute(minute);
-		chime.setEnabled(isEnabled);
-		chime.setRepeating(isRepeating);
+		chime.setHour(chimeHour);
+		chime.setMinute(chimeMinute);
+		chime.setEnabled(isChimeEnabled);
+		chime.setRepeating(isChimeRepeating);
 		chime.setTriggered(isTrigged);
 		chime.setCreatedAt(currentTime);
 		chime.setUpdatedAt(currentTime);
 		
-		chimeDAO.insert(chime);
+		SQLiteDAOFactory.getChimeDAO(this).insert(chime);
 		AlarmUtil.setChimeAlarm(this, chime);		
-		
-		Intent intent = new Intent(this, TTSConvertTextService.class);
-		intent.setAction(TTSConvertTextService.ACTION_CONVERT_TEXT);
-		intent.putExtra("chimeID", chime.getId());
-		intent.putExtra(TTSConvertTextService.PARAM_TTS_TEXT, chime.getStringForTTS());
-		intent.putExtra(TTSConvertTextService.PARAM_TTS_SPEAKER, app.userSettings.getTTSSpeaker());
-		intent.putExtra(TTSConvertTextService.PARAM_VOLUME, app.userSettings.getTTSVolume());
-		intent.putExtra(TTSConvertTextService.PARAM_SPEED, app.userSettings.getTTSSpeed());
-		intent.putExtra(TTSConvertTextService.PARAM_OUTPUT_TYPE, "wav");
-		SetChimeActivity.this.startService(intent);
 	}
 	
 	private void updateChime() {
 		long currentTime = System.currentTimeMillis();
 		
-		chime.setHour(hour);
-		chime.setMinute(minute);
-		chime.setEnabled(isEnabled);
-		chime.setRepeating(isRepeating);
+		chime.setHour(chimeHour);
+		chime.setMinute(chimeMinute);
+		chime.setEnabled(isChimeEnabled);
+		chime.setRepeating(isChimeRepeating);
 		chime.setTriggered(isTrigged);
 		chime.setUpdatedAt(currentTime);
 		
-		chimeDAO.update(chime);
+		SQLiteDAOFactory.getChimeDAO(this).update(chime);
 		AlarmUtil.setChimeAlarm(this, chime);		
-		
+	}
+	
+	private void deleteChime() {
+		SQLiteDAOFactory.getChimeDAO(this).delete(chimeID);
+		AlarmUtil.cancelChimeAlarm(this, chime);		
+	}
+	
+	private void getTTSAudio() {
 		Intent intent = new Intent(this, TTSConvertTextService.class);
 		intent.setAction(TTSConvertTextService.ACTION_CONVERT_TEXT);
 		intent.putExtra("chimeID", chime.getId());
@@ -222,7 +222,7 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 		intent.putExtra(TTSConvertTextService.PARAM_VOLUME, app.userSettings.getTTSVolume());
 		intent.putExtra(TTSConvertTextService.PARAM_SPEED, app.userSettings.getTTSSpeed());
 		intent.putExtra(TTSConvertTextService.PARAM_OUTPUT_TYPE, "wav");
-		SetChimeActivity.this.startService(intent);		
+		SetChimeActivity.this.startService(intent);				
 	}
 
 }

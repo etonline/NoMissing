@@ -2,6 +2,7 @@ package edu.ntust.cs.idsl.nomissing.util;
 
 import java.util.Calendar;
 
+import android.R.integer;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -15,22 +16,17 @@ import edu.ntust.cs.idsl.nomissing.receiver.AlarmReceiver;
 public final class AlarmUtil {
 
 	public static void setChimeAlarm(Context context, Chime chime) {
-		int hour = chime.getHour();
-		int minute = chime.getMinute();
-
-		if (chime.isEnabled() && !chime.isTriggered()) {
-			long timeInMillis = calculateAlarm(hour, minute).getTimeInMillis();
-			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);	
-			
-			if (chime.isRepeating()) {
-				alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, 86400 * 1000, getPendingIntent(context, AlarmReceiver.ACTION_CHIME_ALARM ,chime.getId()));
-			} else {
-				alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, getPendingIntent(context, AlarmReceiver.ACTION_CHIME_ALARM, chime.getId()));
-			}	
+		long triggerAtMillis = calculateAlarm(chime.getHour(), chime.getMinute()).getTimeInMillis();
+		long intervalMillis = 86400 * 1000; // one day
+		
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		PendingIntent pendingIntent = getPendingIntent(context, AlarmReceiver.ACTION_CHIME_ALARM ,chime.getId());
+		
+		if (chime.isRepeating()) {
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerAtMillis, intervalMillis, pendingIntent);
 		} else {
-			cancelChimeAlarm(context, chime);
-		}
-
+			alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+		}	
 	}
 	
 	public static void cancelChimeAlarm(Context context, Chime chime) {
@@ -42,15 +38,13 @@ public final class AlarmUtil {
 	
 	public static void setWeatherAlarm(Context context) {
 		UserSettings userSettings = UserSettings.getInstance(context);
-		long timeInMillis = calculateAlarm(userSettings.getWeatherReminderTime()).getTimeInMillis();
 		int cityID = userSettings.getWeatherReminderCity();
+		long triggerAtMillis = calculateAlarm(userSettings.getWeatherReminderHour(), userSettings.getWeatherReminderMinute()).getTimeInMillis();
+		long intervalMillis = 86400 * 1000; // one day
 		
-		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);	
-		alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, getPendingIntent(context, AlarmReceiver.ACTION_WEATHER_ALARM, cityID));
-		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, 86400 * 1000, getPendingIntent(context, AlarmReceiver.ACTION_WEATHER_ALARM, cityID));
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(timeInMillis);
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		PendingIntent pendingIntent = getPendingIntent(context, AlarmReceiver.ACTION_WEATHER_ALARM, cityID);
+		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerAtMillis, intervalMillis, pendingIntent);
 	}
 	
 	public static void cancelWeatherAlarm(Context context) {
@@ -87,26 +81,8 @@ public final class AlarmUtil {
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);		
-        
+
         return calendar;
 	}
-	
-	private static Calendar calculateAlarm(long timeMillis) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-
-        // if alarm is behind current time, advance one day
-        if (timeMillis < calendar.getTimeInMillis()) {
-        	calendar.setTimeInMillis(timeMillis);
-        	calendar.add(Calendar.DAY_OF_YEAR, 1);
-        } else {
-        	calendar.setTimeInMillis(timeMillis);
-        }
-        
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);	
-        
-        return calendar;
-	}	
 	
 }

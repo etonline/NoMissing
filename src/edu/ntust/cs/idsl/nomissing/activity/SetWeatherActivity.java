@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -39,7 +40,8 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	
 	private boolean isTTSEnabled;
 	private boolean isReminderEnabled;
-	private long reminderTime;
+	private int reminderHour;
+	private int reminderMinute;
 	private int reminderCity;
 	
 	private Calendar calendar;
@@ -57,7 +59,8 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 		
 		isTTSEnabled = app.userSettings.isWeatherTTSEnabled();
 		isReminderEnabled = app.userSettings.isWeatherReminderEnabled();
-		reminderTime = app.userSettings.getWeatherReminderTime();
+		reminderHour = app.userSettings.getWeatherReminderHour();
+		reminderMinute = app.userSettings.getWeatherReminderMinute();
 		reminderCity = app.userSettings.getWeatherReminderCity();
 		
 		setPrefTTSEnabled();
@@ -82,15 +85,11 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 		prefReminderTime = (Preference) findPreference("reminder_time");
 
 		calendar = Calendar.getInstance();
-		if (reminderTime != 0) {
-			calendar.setTimeInMillis(reminderTime);			
-			prefReminderTime.setSummary(formatter.format(calendar.getTime()));
-		} else {
-			calendar.set(Calendar.HOUR_OF_DAY, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			prefReminderTime.setSummary(formatter.format(calendar.getTime()));
-		}
+		calendar.set(Calendar.HOUR_OF_DAY, reminderHour);	
+		calendar.set(Calendar.MINUTE, reminderMinute);			
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		prefReminderTime.setSummary(formatter.format(calendar.getTime()));
 
 		prefReminderTime.setOnPreferenceClickListener(this);
 	}
@@ -144,9 +143,10 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 			new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
 				@Override
 				public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+					reminderHour = hourOfDay;
+					reminderMinute = minute;
 					calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
 					calendar.set(Calendar.MINUTE, minute);		
-					reminderTime = calendar.getTimeInMillis();
 					prefReminderTime.setSummary(formatter.format(calendar.getTime()));		
 				}
 			}, 
@@ -178,13 +178,16 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	}
 	
 	private void saveSettings() {
+		AlarmUtil.cancelWeatherAlarm(this);
+		
 		app.userSettings.setWeatherTTSEnabled(isTTSEnabled);
 		app.userSettings.setWeatherReminderEnabled(isReminderEnabled);
-		app.userSettings.setWeatherReminderTime(reminderTime);
+		app.userSettings.setWeatherReminderHour(reminderHour);
+		app.userSettings.setWeatherReminderMinute(reminderMinute);
 		app.userSettings.setWeatherReminderCity(reminderCity);
 		
-		AlarmUtil.cancelWeatherAlarm(this);
-		if (isReminderEnabled) AlarmUtil.setWeatherAlarm(this);
+		if (isReminderEnabled) 
+			AlarmUtil.setWeatherAlarm(this);	
 		
 		ToastMaker.toast(this, getString(R.string.toast_save_settings));
 	}

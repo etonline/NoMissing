@@ -1,9 +1,12 @@
 package edu.ntust.cs.idsl.nomissing.model;
 
 import android.annotation.SuppressLint;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import edu.ntust.cs.idsl.nomissing.R;
 
 @SuppressLint("SimpleDateFormat")
 public class Chime {
@@ -139,8 +142,8 @@ public class Chime {
 		return timeString;
 	}
 	
-	public String getRepeating() {
-		return isRepeating ? "每天" : "一次";
+	public int getRepeating() {
+		return isRepeating ? R.string.pref_chime_repeating_every_day : R.string.pref_chime_repeating_one_time;
 	}
 	
 	public String getStringForTTS() {

@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">NoMissing</string>
-    
     <string name="title_activity_login">登入</string>
     <string name="title_activity_signup">註冊</string>
     <string name="title_activity_init">InitActivity</string>
@@ -10,8 +9,9 @@
     <string name="title_activity_settings">設定</string>
     <string name="title_activity_set_chime">語音報時設定</string>
     <string name="title_activity_set_weather">語音天氣設定</string>
-    <string name="title_activity_alarm">AlarmActivity</string>
+    <string name="title_activity_chime">語音報時</string>
     <string name="title_activity_set_event">活動設定</string>
+    
 
     <!-- Action Bar -->
     <string name="action_settings">設定</string>
@@ -23,9 +23,9 @@
     <string name="action_set_weather">提醒設定</string>
     <string name="action_save">儲存</string>
     <string name="action_set_event_ok">完成</string>
-    <string name="action_delete_event">刪除</string> 
-    <string name="action_add_event">新增活動</string>   
-    <string name="action_search_date">查詢日期</string>   
+    <string name="action_delete_event">刪除</string>
+    <string name="action_add_event">新增活動</string>
+    <string name="action_search_date">查詢日期</string>
 
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
@@ -76,14 +76,14 @@
     <string name="signup_toast_text_signup_sucess">註冊成功！請輸入您的帳號密碼。</string>
 
     <!-- HomeFragment -->
-    <string name="home_fragment_agenda">待辦事項</string>  
-    
+    <string name="home_fragment_agenda">待辦事項</string>
+
     <!-- WeatherFragment -->
     <string name="alert_dialog_close">關閉</string>
     <string name="toast_save_settings">已儲存設定</string>
 
     <!-- ChimeFragment -->
-    
+
     <string name="no_data"></string>
     <string name="toast_create_chime">已建立語音報時</string>
     <string name="toast_update_chime">已更新語音報時</string>
@@ -95,14 +95,17 @@
     <string name="pref_chime_time">時間</string>
     <string name="pref_chime_repeating">重複</string>
 
-    <string-array name="chime_activity_time_preference_repeat_key">
+    <string-array name="pref_chime_repeating_key">
         <item>一次</item>
         <item>每天</item>
     </string-array>
-    <string-array name="chime_activity_time_preference_repeat_value">
+    <string-array name="pref_chime_repeating_value">
         <item>0</item>
         <item>1</item>
     </string-array>
+
+    <string name="pref_chime_repeating_one_time">一次</string>
+    <string name="pref_chime_repeating_every_day">每天</string>
 
     <!-- SetWeatherActivity -->
     <string name="pref_tts_enabled">開啟語音</string>
@@ -128,7 +131,7 @@
     <string name="pref_tts_volume">音量</string>
     <string name="pref_tts_speed">聲速</string>
     <string name="settings_activity_preference_category_weather_settings">語音天氣</string>
-    
+
     <!-- SetEventActivity -->
     <string name="set_event_edit_text_hint_title">標題</string>
     <string name="set_event_edit_text_hint_location">地點</string>
@@ -136,67 +139,66 @@
     <string name="set_event_text_end">到</string>
     <string name="set_event_edit_text_hint_description">描述</string>
     <string name="set_event_check_box_all_day">全天</string>
- 	<string name="set_event_text_frequency">重複頻率</string>
- 	<string name="set_event_check_box_reminder">設置提醒</string>
- 	
- 	<string name="event_frequency_single">單次</string>
- 	<string name="event_frequency_daily">每日</string>
-	<string name="event_frequency_weekly">每週</string>
-	<string name="event_frequency_monthly">每月</string>
-	<string name="event_frequency_yearly">每年</string>
+    <string name="set_event_text_frequency">重複頻率</string>
+    <string name="set_event_check_box_reminder">設置提醒</string>
+    <string name="event_frequency_single">單次</string>
+    <string name="event_frequency_daily">每日</string>
+    <string name="event_frequency_weekly">每週</string>
+    <string name="event_frequency_monthly">每月</string>
+    <string name="event_frequency_yearly">每年</string>
+    <string name="event_reminder_zero_minute">0 分鐘</string>
+    <string name="event_reminder_one_minute">1 分鐘</string>
+    <string name="event_reminder_five_minutes">5 分鐘</string>
+    <string name="event_reminder_ten_minutes">10 分鐘</string>
+    <string name="event_reminder_fifteen_minutes">15 分鐘</string>
+    <string name="event_reminder_twenty_minutes">20 分鐘</string>
+    <string name="event_reminder_twenty_five_minutes">25 分鐘</string>
+    <string name="event_reminder_thirty_minutes">30 分鐘</string>
+    <string name="event_reminder_forty_five_minutes">45 分鐘</string>
+    <string name="event_reminder_one_hour">1 小時</string>
+    <string name="event_reminder_two_hours">2 小時</string>
+    <string name="event_reminder_three_hours">3 小時</string>
+    <string name="event_reminder_half_day">12 小時</string>
+    <string name="event_reminder_one_day">1 天</string>
+    <string name="event_reminder_two_days">2 天</string>
+    <string name="event_reminder_one_week">1 週</string>
+    <string name="taipei_city">台北市</string>
+    <string name="new_taipei_city">新北市</string>
+    <string name="keelung_city">基隆市</string>
+    <string name="hualien_county">花蓮縣</string>
+    <string name="yilan_county">宜蘭縣</string>
+    <string name="kinmen_county">金門縣</string>
+    <string name="penghu_county">澎湖縣</string>
+    <string name="tainan_city">台南市</string>
+    <string name="kaohsiung_city">高雄市</string>
+    <string name="chiayi_county">嘉義縣</string>
+    <string name="chiayi_city">嘉義市</string>
+    <string name="miaoli_county">苗栗縣</string>
+    <string name="taichung_city">台中市</string>
+    <string name="taoyuan_county">桃園縣</string>
+    <string name="hsinchu_county">新竹縣</string>
+    <string name="hsinchu_city">新竹市</string>
+    <string name="pingtung_county">屏東縣</string>
+    <string name="nantou_county">南投縣</string>
+    <string name="taitung_county">台東縣</string>
+    <string name="changhua_county">彰化縣</string>
+    <string name="yunlin_county">雲林縣</string>
+    <string name="lienchiang_county">連江縣</string>
+    <string name="northern_region">北部地區</string>
+    <string name="central_region">中部地區</string>
+    <string name="southern_region">南部地區</string>
+    <string name="eastern_region">東部地區</string>
+    <string name="offshore_islands_region">離島地區</string>
+    <string name="northern_region_cities">台北市, 新北市, 基隆市, 桃園縣, 新竹縣, 新竹市, 宜蘭縣</string>
+    <string name="central_region_cities">苗栗縣, 台中市, 彰化縣, 南投縣, 雲林縣</string>
+    <string name="southern_region_cities">嘉義縣, 嘉義市, 台南市, 高雄市, 屏東縣</string>
+    <string name="eastern_region_cities">花蓮縣, 台東縣</string>
+    <string name="offshore_islands_region_cities">澎湖縣, 金門縣, 連江縣</string>
+    <string name="progress_dialog_please_wait">Please wait...</string>
+    
+    <string name="hello_world">Hello world!</string>
+	<string name="title_activity_weather">語音天氣</string>
 	
- 	<string name="event_reminder_zero_minute">0 分鐘</string>
- 	<string name="event_reminder_one_minute">1 分鐘</string>
-	<string name="event_reminder_five_minutes">5 分鐘</string>
-	<string name="event_reminder_ten_minutes">10 分鐘</string>
- 	<string name="event_reminder_fifteen_minutes">15 分鐘</string>
- 	<string name="event_reminder_twenty_minutes">20 分鐘</string>
-	<string name="event_reminder_twenty_five_minutes">25 分鐘</string>
-	<string name="event_reminder_thirty_minutes">30 分鐘</string>
-  	<string name="event_reminder_forty_five_minutes">45 分鐘</string>
- 	<string name="event_reminder_one_hour">1 小時</string>
-	<string name="event_reminder_two_hours">2 小時</string>
-	<string name="event_reminder_three_hours">3 小時</string>
-	<string name="event_reminder_half_day">12 小時</string>
- 	<string name="event_reminder_one_day">1 天</string>
-	<string name="event_reminder_two_days">2 天</string>
-	<string name="event_reminder_one_week">1 週</string>
-	
-	<string name="taipei_city">台北市</string>
-	<string name="new_taipei_city">新北市</string>
-	<string name="keelung_city">基隆市</string>
-	<string name="hualien_county">花蓮縣</string>
-	<string name="yilan_county">宜蘭縣</string>
-	<string name="kinmen_county">金門縣</string>
-	<string name="penghu_county">澎湖縣</string>
-	<string name="tainan_city">台南市</string>
-	<string name="kaohsiung_city">高雄市</string>
-	<string name="chiayi_county">嘉義縣</string>
-	<string name="chiayi_city">嘉義市</string>
-	<string name="miaoli_county">苗栗縣</string>
-	<string name="taichung_city">台中市</string>
-	<string name="taoyuan_county">桃園縣</string>
-	<string name="hsinchu_county">新竹縣</string>
-	<string name="hsinchu_city">新竹市</string>
-	<string name="pingtung_county">屏東縣</string>
-	<string name="nantou_county">南投縣</string>
-	<string name="taitung_county">台東縣</string>
-	<string name="changhua_county">彰化縣</string>
-	<string name="yunlin_county">雲林縣</string>
-	<string name="lienchiang_county">連江縣</string>
-	
-	<string name="northern_region">北部地區</string>
-	<string name="central_region">中部地區</string>
-	<string name="southern_region">南部地區</string>
-	<string name="eastern_region">東部地區</string>
-	<string name="offshore_islands_region">離島地區</string>
-	
-	<string name="northern_region_cities">台北市, 新北市, 基隆市, 桃園縣, 新竹縣, 新竹市, 宜蘭縣</string>
-	<string name="central_region_cities">苗栗縣, 台中市, 彰化縣, 南投縣, 雲林縣</string>
-	<string name="southern_region_cities">嘉義縣, 嘉義市, 台南市, 高雄市, 屏東縣</string>
-	<string name="eastern_region_cities">花蓮縣, 台東縣</string>
-	<string name="offshore_islands_region_cities">澎湖縣, 金門縣, 連江縣</string>	
-	   
-	<string name="progress_dialog_please_wait">Please wait...</string>
+	<string name="click_back_again_to_exit">再按一次離開</string>
 	
 </resources>

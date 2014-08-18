@@ -4,12 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import edu.ntust.cs.idsl.nomissing.activity.AlarmActivity;
-import edu.ntust.cs.idsl.nomissing.dao.ChimeDAO;
-import edu.ntust.cs.idsl.nomissing.dao.WeatherDAO;
+import edu.ntust.cs.idsl.nomissing.activity.ChimeActivity;
+import edu.ntust.cs.idsl.nomissing.activity.WeatherActivity;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
-import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
 import edu.ntust.cs.idsl.nomissing.util.NotificationUtil;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -27,19 +26,21 @@ public class AlarmReceiver extends BroadcastReceiver {
 		Log.v(TAG, intent.getAction());		
 		
 		if (intent.getAction().equals(ACTION_CHIME_ALARM)) {
-			Intent newIntent = new Intent(context, AlarmActivity.class);
-			newIntent.setAction(AlarmActivity.ACTION_CHIME_ALARM_DIALOG);
-			newIntent.putExtra("id", intent.getIntExtra("id", -1));
+			int chimeID = intent.getIntExtra("id", 0);
+			Chime chime = SQLiteDAOFactory.getChimeDAO(context).find(chimeID);
+			
+			NotificationUtil.sendNotification(context, chime);
+			
+			Intent newIntent = new Intent(context, ChimeActivity.class);
+			newIntent.putExtra("id", chimeID);
 			newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-			context.startActivity(newIntent);			
+			context.startActivity(newIntent);	
 		}
 		
 		if (intent.getAction().equals(ACTION_WEATHER_ALARM)) {
-			Intent newIntent = new Intent(context, AlarmActivity.class);
-			newIntent.setAction(AlarmActivity.ACTION_WEATHER_ALARM_DIALOG);
-			newIntent.putExtra("id", intent.getIntExtra("id", -1));
-			newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-			context.startActivity(newIntent);	
+			int cityID = intent.getIntExtra("id", 0);
+			Weather weather = SQLiteDAOFactory.getWeatherDAO(context).find(cityID);
+			NotificationUtil.sendNotification(context, weather);
 		}
 
 	}

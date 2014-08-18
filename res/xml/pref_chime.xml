@@ -11,8 +11,8 @@
 	        android:title="@string/pref_chime_time"/>
 
     <ListPreference
-        android:entries="@array/chime_activity_time_preference_repeat_key"
-        android:entryValues="@array/chime_activity_time_preference_repeat_value"
+        android:entries="@array/pref_chime_repeating_key"
+        android:entryValues="@array/pref_chime_repeating_value"
         android:key="chime_repeating"
         android:summary="一次"
         android:title="@string/pref_chime_repeating" >

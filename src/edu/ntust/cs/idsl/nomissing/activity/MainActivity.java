@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.adapter.NavDrawerListAdapter;
 import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
@@ -53,6 +55,8 @@ public class MainActivity extends FragmentActivity {
 
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
+	
+	private boolean doubleBackToExitPressedOnce = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -244,6 +248,29 @@ public class MainActivity extends FragmentActivity {
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+	
+	/**
+	 * Back button listener.
+	 * Will close the application if the back button pressed twice.
+	 */
+	public void onBackPressed()
+	{
+		   if (doubleBackToExitPressedOnce) {
+		        super.onBackPressed();
+		        return;
+		    }
+
+		    this.doubleBackToExitPressedOnce = true;
+		    Toast.makeText(this, getString(R.string.click_back_again_to_exit), Toast.LENGTH_SHORT).show();
+
+		    new Handler().postDelayed(new Runnable() {
+
+		        @Override
+		        public void run() {
+		            doubleBackToExitPressedOnce=false;                       
+		        }
+		    }, 2000);
 	}
 	
 }

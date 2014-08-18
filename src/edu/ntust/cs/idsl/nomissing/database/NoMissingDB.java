@@ -20,6 +20,17 @@ public class NoMissingDB extends SQLiteOpenHelper {
 	public static final String TABLE_WEATHER = "weather";
 
 	// Column names
+	public static final String EVENTS_KEY_ID = "_id";
+	public static final String EVENTS_KEY_CALENDAR_ID = "calendar_id";
+	public static final String EVENTS_KEY_TITLE = "title";
+	public static final String EVENTS_KEY_LOCATION = "location";
+	public static final String EVENTS_KEY_DESCRIPTION = "description";
+	public static final String EVENTS_KEY_START = "start";
+	public static final String EVENTS_KEY_END = "end";
+	public static final String EVENTS_KEY_ALL_DAY = "all_day";
+	public static final String EVENTS_KEY_RRULE = "rrule";
+	public static final String EVENTS_KEY_REMINDER = "reminder";
+	
 	public static final String CHIMES_KEY_ID = "_id";
 	public static final String CHIMES_KEY_HOUR = "hour";
 	public static final String CHIMES_KEY_MINUTE = "minute";

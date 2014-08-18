@@ -92,13 +92,20 @@
             android:label="@string/title_activity_set_weather" >
         </activity>
         <activity
-            android:name=".activity.AlarmActivity"
-            android:label="@string/title_activity_alarm"
-            android:theme="@android:style/Theme.Dialog" >
+            android:name=".activity.ChimeActivity"
+            android:label="@string/title_activity_chime"
+            android:theme="@android:style/Theme.Wallpaper.NoTitleBar"
+            android:launchMode="singleInstance" >
         </activity>
         <activity
-            android:name="edu.ntust.cs.idsl.nomissing.activity.SetEventActivity"
+            android:name=".activity.SetEventActivity"
             android:label="@string/title_activity_set_event" >
+        </activity>
+        <activity
+            android:name=".activity.WeatherActivity"
+            android:label="@string/title_activity_weather" 
+            android:theme="@android:style/Theme.Wallpaper.NoTitleBar"
+            android:launchMode="singleInstance" >
         </activity>
     </application>
 

@@ -95,7 +95,7 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 	
 	private void setPrefChimeRepeating() {
 		prefChimeRepeating = (ListPreference) findPreference("chime_repeating");
-		prefChimeRepeating.setSummary(chime.getRepeating());
+		prefChimeRepeating.setSummary(getString(chime.getRepeating()));
 		prefChimeRepeating.setOnPreferenceChangeListener(this);
 	}
 
@@ -170,7 +170,8 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 		
 		else if (preference == prefChimeRepeating) {
 			isChimeRepeating = (newValue.equals("1")) ? true : false;
-			String summmary = (newValue.equals("0")) ? "一次" : "每天";
+			String summmary = isChimeRepeating ? getString(R.string.pref_chime_repeating_every_day)
+					: getString(R.string.pref_chime_repeating_one_time);
 			preference.setSummary(summmary);
 		}
 		
@@ -191,26 +192,29 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 		chime.setUpdatedAt(currentTime);
 		
 		SQLiteDAOFactory.getChimeDAO(this).insert(chime);
-		AlarmUtil.setChimeAlarm(this, chime);		
+		
+		if (isChimeEnabled)
+			AlarmUtil.setChimeAlarm(this, chime);		
 	}
 	
 	private void updateChime() {
 		long currentTime = System.currentTimeMillis();
-		
 		chime.setHour(chimeHour);
 		chime.setMinute(chimeMinute);
 		chime.setEnabled(isChimeEnabled);
 		chime.setRepeating(isChimeRepeating);
 		chime.setTriggered(isTrigged);
 		chime.setUpdatedAt(currentTime);
-		
 		SQLiteDAOFactory.getChimeDAO(this).update(chime);
-		AlarmUtil.setChimeAlarm(this, chime);		
+		
+		AlarmUtil.cancelChimeAlarm(this, chime);
+		if (isChimeEnabled)
+			AlarmUtil.setChimeAlarm(this, chime);		
 	}
 	
 	private void deleteChime() {
+		AlarmUtil.cancelChimeAlarm(this, chime);	
 		SQLiteDAOFactory.getChimeDAO(this).delete(chimeID);
-		AlarmUtil.cancelChimeAlarm(this, chime);		
 	}
 	
 	private void getTTSAudio() {

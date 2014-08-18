@@ -22,7 +22,8 @@ public class UserSettings {
 	private static final String KEY_TTS_SPEED = "tts_speed";
 	private static final String KEY_WEATHER_TTS_ENABLED = "weather_tts_enabled";
 	private static final String KEY_WEATHER_REMINDER_ENABLED = "weather_reminder_enabled";
-	private static final String KEY_WEATHER_REMINDER_TIME = "weather_reminder_time";
+	private static final String KEY_WEATHER_REMINDER_HOUR = "weather_reminder_hour";
+	private static final String KEY_WEATHER_REMINDER_MINUTE = "weather_reminder_minute";
 	private static final String KEY_WEATHER_REMINDER_CITY = "weather_reminder_city";
 	
 	private UserSettings(Context context) {
@@ -63,8 +64,13 @@ public class UserSettings {
 		editor.commit();
 	}
 	
-	public void setWeatherReminderTime(long value) {
-		editor.putLong(KEY_WEATHER_REMINDER_TIME, value);
+	public void setWeatherReminderHour(int value) {
+		editor.putInt(KEY_WEATHER_REMINDER_HOUR, value);
+		editor.commit();
+	}
+	
+	public void setWeatherReminderMinute(int value) {
+		editor.putInt(KEY_WEATHER_REMINDER_MINUTE, value);
 		editor.commit();
 	}
 	
@@ -93,8 +99,12 @@ public class UserSettings {
 		return pref.getBoolean(KEY_WEATHER_REMINDER_ENABLED, false);
 	}	
 	
-	public long getWeatherReminderTime() {
-		return pref.getLong(KEY_WEATHER_REMINDER_TIME, 0);
+	public int getWeatherReminderHour() {
+		return pref.getInt(KEY_WEATHER_REMINDER_HOUR, 0);
+	}
+	
+	public int getWeatherReminderMinute() {
+		return pref.getInt(KEY_WEATHER_REMINDER_MINUTE, 0);
 	}
 	
 	public int getWeatherReminderCity() {

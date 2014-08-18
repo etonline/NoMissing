@@ -15,6 +15,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetWeatherActivity;
+import edu.ntust.cs.idsl.nomissing.activity.WeatherActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.WeatherExpandListAdapter;
 import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
 import edu.ntust.cs.idsl.nomissing.dao.WeatherDAO;
@@ -69,54 +70,10 @@ public class WeatherFragment extends Fragment implements OnChildClickListener {
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-		Weather weather = SQLiteDAOFactory.getWeatherDAO(getActivity()).find((int)id);
-		openCityWeatherDialog(weather);
+		Intent intent = new Intent(getActivity(), WeatherActivity.class);
+		intent.putExtra("id", (int)id);
+		getActivity().startActivity(intent);	
 		return true;
-	}
-	
-	private void openCityWeatherDialog(final Weather weather) {
-		AlertDialog cityWeatherDialog = new AlertDialog.Builder(getActivity())
-		.setTitle(weather.getCity())
-		.setIcon(android.R.drawable.ic_dialog_info)
-		.setMessage(weather.getMemo())
-		.setNegativeButton(R.string.alert_dialog_close,
-			new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			})
-		.create();
-
-		cityWeatherDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-			@Override
-			public void onShow(DialogInterface dialog) {
-				if (app.userSettings.isWeatherTTSEnabled()) 
-					startTTSAudio(weather.getAudio());
-			}
-		});
-		
-		cityWeatherDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				if (app.userSettings.isWeatherTTSEnabled()) 
-					stopTTSAudio();
-			}
-		});
-		
-		cityWeatherDialog.show();
-	}
-	
-	private void startTTSAudio(String audioURL) {
-		Intent startIntent = new Intent(getActivity(), MediaPlayerService.class);
-		startIntent.setAction(MediaPlayerService.ACTION_PLAY);
-		startIntent.putExtra("audioURL", audioURL);		
-		getActivity().startService(startIntent);			
-	}
-	
-	private void stopTTSAudio() {
-		Intent stopIntent = new Intent(getActivity(), MediaPlayerService.class);
-		stopIntent.setAction(MediaPlayerService.ACTION_STOP);
-		getActivity().startService(stopIntent);			
 	}
 
 }

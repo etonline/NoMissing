@@ -6,7 +6,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import edu.ntust.cs.idsl.nomissing.dao.ChimeDAO;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
+import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
+import edu.ntust.cs.idsl.nomissing.model.Weather;
+import edu.ntust.cs.idsl.nomissing.pref.UserSettings;
 import edu.ntust.cs.idsl.nomissing.util.AlarmUtil;
 
 public class BootReceiver extends BroadcastReceiver {
@@ -16,20 +20,22 @@ public class BootReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		
-		ChimeDAO chimeDAO = ChimeDAO.getInstance(context);
-	    List<Chime> chimes = chimeDAO.findAll();
-		
+		setChimeAlarms(context);
+		setWeatherAlarm(context);
+	}
+	
+	private void setChimeAlarms(Context context) {
+	    List<Chime> chimes = SQLiteDAOFactory.getChimeDAO(context).findAll();
 		for(Chime chime : chimes) {
 			AlarmUtil.cancelChimeAlarm(context, chime);
-			AlarmUtil.setChimeAlarm(context, chime);
-		}
-		
-		
-//		Intent mBootintent = new Intent(context, ChimeAlarmInitService.class);
-//		mBootintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		
-//		context.startService(mBootintent);
+			if (chime.isEnabled() && !chime.isTriggered())
+				AlarmUtil.setChimeAlarm(context, chime);
+		}		
+	}
+	
+	private void setWeatherAlarm(Context context) {
+		AlarmUtil.cancelWeatherAlarm(context);
+		AlarmUtil.setWeatherAlarm(context);
 	}
 	
 }

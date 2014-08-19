@@ -1570,132 +1570,138 @@ containing a value of this type.
         public static final int action_settings_ok=0x7f08001f;
         /**  WeatherFragment 
          */
-        public static final int alert_dialog_close=0x7f080038;
+        public static final int alert_dialog_close=0x7f08003e;
         public static final int app_name=0x7f080003;
         /**   Strings for possible PreferenceActivity Back/Next buttons 
          */
         public static final int back_button_label=0x7f080000;
-        public static final int central_region=0x7f080081;
-        public static final int central_region_cities=0x7f080086;
-        public static final int changhua_county=0x7f08007d;
-        public static final int chiayi_city=0x7f080074;
-        public static final int chiayi_county=0x7f080073;
-        public static final int click_back_again_to_exit=0x7f08008d;
+        public static final int central_region=0x7f080087;
+        public static final int central_region_cities=0x7f08008c;
+        public static final int changhua_county=0x7f080083;
+        public static final int chiayi_city=0x7f08007a;
+        public static final int chiayi_county=0x7f080079;
+        public static final int click_back_again_to_exit=0x7f080093;
         /**  Content Description 
          */
-        public static final int desc_list_item_icon=0x7f080028;
+        public static final int desc_list_item_icon=0x7f08002e;
         public static final int drawer_close=0x7f080027;
         /**  Navigation Drawer 
          */
         public static final int drawer_open=0x7f080026;
-        public static final int eastern_region=0x7f080083;
-        public static final int eastern_region_cities=0x7f080088;
-        public static final int event_frequency_daily=0x7f080056;
-        public static final int event_frequency_monthly=0x7f080058;
-        public static final int event_frequency_single=0x7f080055;
-        public static final int event_frequency_weekly=0x7f080057;
-        public static final int event_frequency_yearly=0x7f080059;
-        public static final int event_reminder_fifteen_minutes=0x7f08005e;
-        public static final int event_reminder_five_minutes=0x7f08005c;
-        public static final int event_reminder_forty_five_minutes=0x7f080062;
-        public static final int event_reminder_half_day=0x7f080066;
-        public static final int event_reminder_one_day=0x7f080067;
-        public static final int event_reminder_one_hour=0x7f080063;
-        public static final int event_reminder_one_minute=0x7f08005b;
-        public static final int event_reminder_one_week=0x7f080069;
-        public static final int event_reminder_ten_minutes=0x7f08005d;
-        public static final int event_reminder_thirty_minutes=0x7f080061;
-        public static final int event_reminder_three_hours=0x7f080065;
-        public static final int event_reminder_twenty_five_minutes=0x7f080060;
-        public static final int event_reminder_twenty_minutes=0x7f08005f;
-        public static final int event_reminder_two_days=0x7f080068;
-        public static final int event_reminder_two_hours=0x7f080064;
-        public static final int event_reminder_zero_minute=0x7f08005a;
-        public static final int hello_world=0x7f08008b;
+        public static final int eastern_region=0x7f080089;
+        public static final int eastern_region_cities=0x7f08008e;
+        public static final int event_frequency_daily=0x7f08005c;
+        public static final int event_frequency_monthly=0x7f08005e;
+        public static final int event_frequency_single=0x7f08005b;
+        public static final int event_frequency_weekly=0x7f08005d;
+        public static final int event_frequency_yearly=0x7f08005f;
+        public static final int event_reminder_fifteen_minutes=0x7f080064;
+        public static final int event_reminder_five_minutes=0x7f080062;
+        public static final int event_reminder_forty_five_minutes=0x7f080068;
+        public static final int event_reminder_half_day=0x7f08006c;
+        public static final int event_reminder_one_day=0x7f08006d;
+        public static final int event_reminder_one_hour=0x7f080069;
+        public static final int event_reminder_one_minute=0x7f080061;
+        public static final int event_reminder_one_week=0x7f08006f;
+        public static final int event_reminder_ten_minutes=0x7f080063;
+        public static final int event_reminder_thirty_minutes=0x7f080067;
+        public static final int event_reminder_three_hours=0x7f08006b;
+        public static final int event_reminder_twenty_five_minutes=0x7f080066;
+        public static final int event_reminder_twenty_minutes=0x7f080065;
+        public static final int event_reminder_two_days=0x7f08006e;
+        public static final int event_reminder_two_hours=0x7f08006a;
+        public static final int event_reminder_zero_minute=0x7f080060;
+        public static final int hello_world=0x7f080091;
         /**  HomeFragment 
          */
-        public static final int home_fragment_agenda=0x7f080037;
-        public static final int hsinchu_city=0x7f080079;
-        public static final int hsinchu_county=0x7f080078;
-        public static final int hualien_county=0x7f08006d;
-        public static final int init_alert_dialog_button_exit=0x7f08002c;
-        public static final int init_alert_dialog_message_network_inavailable=0x7f08002b;
-        public static final int init_alert_dialog_title_network_inavailable=0x7f08002a;
+        public static final int home_fragment_agenda=0x7f08003d;
+        public static final int hsinchu_city=0x7f08007f;
+        public static final int hsinchu_county=0x7f08007e;
+        public static final int hualien_county=0x7f080073;
+        public static final int init_alert_dialog_button_exit=0x7f080032;
+        public static final int init_alert_dialog_message_network_inavailable=0x7f080031;
+        public static final int init_alert_dialog_title_network_inavailable=0x7f080030;
         /**  InitActivity 
          */
-        public static final int init_text_view_text_loading=0x7f080029;
-        public static final int kaohsiung_city=0x7f080072;
-        public static final int keelung_city=0x7f08006c;
-        public static final int kinmen_county=0x7f08006f;
-        public static final int lienchiang_county=0x7f08007f;
-        public static final int login_button_text_login=0x7f08002f;
-        public static final int login_button_text_signup=0x7f080030;
-        public static final int login_edit_text_hint_password=0x7f08002e;
+        public static final int init_text_view_text_loading=0x7f08002f;
+        public static final int kaohsiung_city=0x7f080078;
+        public static final int keelung_city=0x7f080072;
+        public static final int kinmen_county=0x7f080075;
+        public static final int lienchiang_county=0x7f080085;
+        public static final int login_button_text_login=0x7f080035;
+        public static final int login_button_text_signup=0x7f080036;
+        public static final int login_edit_text_hint_password=0x7f080034;
         /**  LoginActivity 
          */
-        public static final int login_edit_text_hint_username=0x7f08002d;
-        public static final int miaoli_county=0x7f080075;
-        public static final int nantou_county=0x7f08007b;
-        public static final int new_taipei_city=0x7f08006b;
+        public static final int login_edit_text_hint_username=0x7f080033;
+        public static final int miaoli_county=0x7f08007b;
+        public static final int nantou_county=0x7f080081;
+        public static final int nav_calendar=0x7f080029;
+        public static final int nav_chime=0x7f08002a;
+        public static final int nav_home=0x7f080028;
+        public static final int nav_logout=0x7f08002d;
+        public static final int nav_settings=0x7f08002c;
+        public static final int nav_weather=0x7f08002b;
+        public static final int new_taipei_city=0x7f080071;
         public static final int next_button_label=0x7f080001;
         /**  ChimeFragment 
          */
-        public static final int no_data=0x7f08003a;
-        public static final int northern_region=0x7f080080;
-        public static final int northern_region_cities=0x7f080085;
-        public static final int offshore_islands_region=0x7f080084;
-        public static final int offshore_islands_region_cities=0x7f080089;
-        public static final int penghu_county=0x7f080070;
-        public static final int pingtung_county=0x7f08007a;
+        public static final int no_data=0x7f080040;
+        public static final int northern_region=0x7f080086;
+        public static final int northern_region_cities=0x7f08008b;
+        public static final int offshore_islands_region=0x7f08008a;
+        public static final int offshore_islands_region_cities=0x7f08008f;
+        public static final int penghu_county=0x7f080076;
+        public static final int pingtung_county=0x7f080080;
         /**  SetChimeActivity 
          */
-        public static final int pref_chime_enabled=0x7f08003f;
-        public static final int pref_chime_repeating=0x7f080041;
-        public static final int pref_chime_repeating_every_day=0x7f080043;
-        public static final int pref_chime_repeating_one_time=0x7f080042;
-        public static final int pref_chime_time=0x7f080040;
-        public static final int pref_reminder_city=0x7f080047;
-        public static final int pref_reminder_enabled=0x7f080045;
-        public static final int pref_reminder_time=0x7f080046;
+        public static final int pref_chime_enabled=0x7f080045;
+        public static final int pref_chime_repeating=0x7f080047;
+        public static final int pref_chime_repeating_every_day=0x7f080049;
+        public static final int pref_chime_repeating_one_time=0x7f080048;
+        public static final int pref_chime_time=0x7f080046;
+        public static final int pref_reminder_city=0x7f08004d;
+        public static final int pref_reminder_enabled=0x7f08004b;
+        public static final int pref_reminder_time=0x7f08004c;
         /**  SetWeatherActivity 
          */
-        public static final int pref_tts_enabled=0x7f080044;
-        public static final int pref_tts_speed=0x7f08004b;
-        public static final int pref_tts_volume=0x7f08004a;
-        public static final int progress_dialog_please_wait=0x7f08008a;
-        public static final int set_event_check_box_all_day=0x7f080052;
-        public static final int set_event_check_box_reminder=0x7f080054;
-        public static final int set_event_edit_text_hint_description=0x7f080051;
-        public static final int set_event_edit_text_hint_location=0x7f08004e;
+        public static final int pref_tts_enabled=0x7f08004a;
+        public static final int pref_tts_speed=0x7f080051;
+        public static final int pref_tts_volume=0x7f080050;
+        public static final int progress_dialog_please_wait=0x7f080090;
+        public static final int set_event_check_box_all_day=0x7f080058;
+        public static final int set_event_check_box_reminder=0x7f08005a;
+        public static final int set_event_edit_text_hint_description=0x7f080057;
+        public static final int set_event_edit_text_hint_location=0x7f080054;
         /**  SetEventActivity 
          */
-        public static final int set_event_edit_text_hint_title=0x7f08004d;
-        public static final int set_event_text_end=0x7f080050;
-        public static final int set_event_text_frequency=0x7f080053;
-        public static final int set_event_text_start=0x7f08004f;
-        public static final int settings_activity_list_preference_speaker=0x7f080049;
+        public static final int set_event_edit_text_hint_title=0x7f080053;
+        public static final int set_event_text_end=0x7f080056;
+        public static final int set_event_text_frequency=0x7f080059;
+        public static final int set_event_text_start=0x7f080055;
+        public static final int settings_activity_list_preference_speaker=0x7f08004f;
         /**  SettingsActivity 
          */
-        public static final int settings_activity_preference_category_tts_settings=0x7f080048;
-        public static final int settings_activity_preference_category_weather_settings=0x7f08004c;
-        public static final int signup_button_text_sign_up=0x7f080035;
-        public static final int signup_edit_text_hint_confirm_password=0x7f080033;
-        public static final int signup_edit_text_hint_email=0x7f080034;
-        public static final int signup_edit_text_hint_password=0x7f080032;
+        public static final int settings_activity_preference_category_tts_settings=0x7f08004e;
+        public static final int settings_activity_preference_category_weather_settings=0x7f080052;
+        public static final int signup_button_text_sign_up=0x7f08003b;
+        public static final int signup_edit_text_hint_confirm_password=0x7f080039;
+        public static final int signup_edit_text_hint_email=0x7f08003a;
+        public static final int signup_edit_text_hint_password=0x7f080038;
         /**  SignupActivity 
          */
-        public static final int signup_edit_text_hint_username=0x7f080031;
-        public static final int signup_toast_text_signup_sucess=0x7f080036;
+        public static final int signup_edit_text_hint_username=0x7f080037;
+        public static final int signup_toast_text_signup_sucess=0x7f08003c;
         /**  Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] 
          */
         public static final int skip_button_label=0x7f080002;
-        public static final int southern_region=0x7f080082;
-        public static final int southern_region_cities=0x7f080087;
-        public static final int taichung_city=0x7f080076;
-        public static final int tainan_city=0x7f080071;
-        public static final int taipei_city=0x7f08006a;
-        public static final int taitung_county=0x7f08007c;
-        public static final int taoyuan_county=0x7f080077;
+        public static final int southern_region=0x7f080088;
+        public static final int southern_region_cities=0x7f08008d;
+        public static final int taichung_city=0x7f08007c;
+        public static final int tainan_city=0x7f080077;
+        public static final int taipei_city=0x7f080070;
+        public static final int taitung_county=0x7f080082;
+        public static final int taoyuan_county=0x7f08007d;
         public static final int title_activity_chime=0x7f080018;
         public static final int title_activity_init=0x7f080013;
         public static final int title_activity_login=0x7f080011;
@@ -1705,14 +1711,14 @@ containing a value of this type.
         public static final int title_activity_set_weather=0x7f080017;
         public static final int title_activity_settings=0x7f080015;
         public static final int title_activity_signup=0x7f080012;
-        public static final int title_activity_weather=0x7f08008c;
-        public static final int toast_cancel_chime=0x7f08003d;
-        public static final int toast_create_chime=0x7f08003b;
-        public static final int toast_delete_chime=0x7f08003e;
-        public static final int toast_save_settings=0x7f080039;
-        public static final int toast_update_chime=0x7f08003c;
-        public static final int yilan_county=0x7f08006e;
-        public static final int yunlin_county=0x7f08007e;
+        public static final int title_activity_weather=0x7f080092;
+        public static final int toast_cancel_chime=0x7f080043;
+        public static final int toast_create_chime=0x7f080041;
+        public static final int toast_delete_chime=0x7f080044;
+        public static final int toast_save_settings=0x7f08003f;
+        public static final int toast_update_chime=0x7f080042;
+        public static final int yilan_county=0x7f080074;
+        public static final int yunlin_county=0x7f080084;
     }
     public static final class style {
         /** 

@@ -1,6 +1,7 @@
 package edu.ntust.cs.idsl.nomissing.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,22 +17,21 @@ import edu.ntust.cs.idsl.nomissing.model.NavDrawerItem;
 public class NavDrawerListAdapter extends BaseAdapter {
 
 	private Context context;
-	private ArrayList<NavDrawerItem> navDrawerItems;
+	private List<NavDrawerItem> navItems;
 
-	public NavDrawerListAdapter(Context context,
-			ArrayList<NavDrawerItem> navDrawerItems) {
+	public NavDrawerListAdapter(Context context, List<NavDrawerItem> navItems) {
 		this.context = context;
-		this.navDrawerItems = navDrawerItems;
+		this.navItems = navItems;
 	}
 
 	@Override
 	public int getCount() {
-		return navDrawerItems.size();
+		return navItems.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return navDrawerItems.get(position);
+		return navItems.get(position);
 	}
 
 	@Override
@@ -51,13 +51,13 @@ public class NavDrawerListAdapter extends BaseAdapter {
 		TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
 		TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
 
-		imgIcon.setImageResource(navDrawerItems.get(position).getIcon());
-		txtTitle.setText(navDrawerItems.get(position).getTitle());
+		imgIcon.setImageResource(navItems.get(position).getIcon());
+		txtTitle.setText(navItems.get(position).getTitle());
 
 		// displaying count
 		// check whether it set visible or not
-		if (navDrawerItems.get(position).getCounterVisibility()) {
-			txtCount.setText(navDrawerItems.get(position).getCount());
+		if (navItems.get(position).isCounterVisible()) {
+			txtCount.setText(String.valueOf(navItems.get(position).getCount()));
 		} else {
 			// hide the counter view
 			txtCount.setVisibility(View.GONE);

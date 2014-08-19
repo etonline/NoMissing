@@ -31,6 +31,14 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
+    
+    <string name="nav_home">待辦事項</string>
+    <string name="nav_calendar">我的日曆</string>
+    <string name="nav_chime">語音報時</string>
+    <string name="nav_weather">語音天氣</string>
+    <string name="nav_settings">設定</string>
+    <string name="nav_logout">登出</string>
+    
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
         <item>待辦事項</item>

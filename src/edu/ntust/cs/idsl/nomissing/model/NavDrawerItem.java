@@ -1,59 +1,74 @@
 package edu.ntust.cs.idsl.nomissing.model;
 
-public class NavDrawerItem {
+import java.util.ArrayList;
+import java.util.List;
 
-	private String title;
-	private int icon;
-	private String count = "0";
+import edu.ntust.cs.idsl.nomissing.R;
+
+public enum NavDrawerItem {
+
+	HOME(R.drawable.ic_action_view_as_list, R.string.nav_home),
+	CALENDAR(R.drawable.ic_action_go_to_today, R.string.nav_calendar),
+	CHIME(R.drawable.ic_action_alarms, R.string.nav_chime),
+	WEATHER(R.drawable.ic_action_cloud, R.string.nav_weather),
+	SETTING(R.drawable.ic_action_settings, R.string.nav_settings),
+	LOGOUT(android.R.drawable.ic_lock_power_off, R.string.nav_logout);
 	
-	// boolean to set visiblity of the counter
+	private int icon;
+	private int title;
+	private int count;
 	private boolean isCounterVisible = false;
-
-	public NavDrawerItem() {
-	}
-
-	public NavDrawerItem(String title, int icon) {
-		this.title = title;
+	
+	private NavDrawerItem(int icon, int title) {
 		this.icon = icon;
-	}
-
-	public NavDrawerItem(String title, int icon, boolean isCounterVisible, String count) {
 		this.title = title;
+	}	
+	
+	private NavDrawerItem(int icon, int title, int count, boolean isCounterVisible) {
 		this.icon = icon;
-		this.isCounterVisible = isCounterVisible;
+		this.title = title;
 		this.count = count;
-	}
-
-	public String getTitle() {
-		return this.title;
+		this.isCounterVisible = isCounterVisible;
 	}
 
 	public int getIcon() {
-		return this.icon;
-	}
-
-	public String getCount() {
-		return this.count;
-	}
-
-	public boolean getCounterVisibility() {
-		return this.isCounterVisible;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
+		return icon;
 	}
 
 	public void setIcon(int icon) {
 		this.icon = icon;
 	}
 
-	public void setCount(String count) {
+	public int getTitle() {
+		return title;
+	}
+
+	public void setTitle(int title) {
+		this.title = title;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
 		this.count = count;
 	}
 
-	public void setCounterVisibility(boolean isCounterVisible) {
-		this.isCounterVisible = isCounterVisible;
+	public boolean isCounterVisible() {
+		return isCounterVisible;
 	}
 
+	public void setCounterVisible(boolean isCounterVisible) {
+		this.isCounterVisible = isCounterVisible;
+	}
+	
+	public static List<NavDrawerItem> getNavDrawerItems() {
+		List<NavDrawerItem> navItems = new ArrayList<NavDrawerItem>();
+		for (NavDrawerItem navItem : NavDrawerItem.values()) {
+			navItems.add(navItem);
+		}
+		return navItems;
+	}
+	
 }

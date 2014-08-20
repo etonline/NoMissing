@@ -1,8 +1,13 @@
 package edu.ntust.cs.idsl.nomissing.activity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +15,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.adapter.NavDrawerListAdapter;
@@ -26,7 +33,9 @@ import edu.ntust.cs.idsl.nomissing.fragment.HomeFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.SettingsFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.WeatherFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
+import edu.ntust.cs.idsl.nomissing.model.Calendar;
 import edu.ntust.cs.idsl.nomissing.model.NavDrawerItem;
+import edu.ntust.cs.idsl.nomissing.util.CalendarUtil;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
@@ -38,7 +47,8 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 	private NoMissingApp app;
 	
 	private DrawerLayout drawerLayout;
-	private ListView drawerList;
+	private LinearLayout drawerNavigation;
+	private ListView drawerMenu;
 	private ActionBarDrawerToggle drawerToggle;
 
 	private CharSequence drawerTitle;
@@ -64,6 +74,14 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 			displayView(0);
 		}
 	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		if (app.userSettings.getCalendarID() == 0)
+			openSettingCalendarDialog();
+	}
 
 	private void setActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -71,12 +89,9 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 	}
 	
 	private void setNavigationDrawer() {
-		navDrawerItems = NavDrawerItem.getNavDrawerItems();
-		drawerList = (ListView) findViewById(R.id.list_slidermenu);
-		drawerList.setAdapter(new NavDrawerListAdapter(getApplicationContext(), navDrawerItems));
-		drawerList.setOnItemClickListener(this);
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+		drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 		
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
 				R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
 			@Override
@@ -92,6 +107,12 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 			}
 		};
 		drawerLayout.setDrawerListener(drawerToggle);
+		
+		navDrawerItems = NavDrawerItem.getNavDrawerItems();
+		drawerNavigation = (LinearLayout) findViewById(R.id.drawerNavigation);
+		drawerMenu = (ListView) findViewById(R.id.drawerMenu);
+		drawerMenu.setAdapter(new NavDrawerListAdapter(getApplicationContext(), navDrawerItems));
+		drawerMenu.setOnItemClickListener(this);
 	}
 
 	@Override
@@ -102,7 +123,7 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
+		boolean drawerOpen = drawerLayout.isDrawerOpen(drawerNavigation);
 		menu.findItem(R.id.action_about).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}	
@@ -173,10 +194,10 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 			FragmentManager fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
 
-			drawerList.setItemChecked(position, true);
-			drawerList.setSelection(position);
+			drawerMenu.setItemChecked(position, true);
+			drawerMenu.setSelection(position);
 			setTitle(navDrawerItems.get(position).getTitle());
-			drawerLayout.closeDrawer(drawerList);
+			drawerLayout.closeDrawer(drawerNavigation);
 		} else {
 			Log.e("MainActivity", "Error in creating fragment");
 		}
@@ -198,6 +219,24 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 				doubleBackToExitPressedOnce = false;
 			}
 		}, 2000);
+	}
+	
+	private void openSettingCalendarDialog() {
+		final List<Calendar> calendars = CalendarUtil.getCalendars(this);
+		List<String> items = new ArrayList<String>();
+		for (Calendar calendar : calendars) {
+			items.add(calendar.getName());
+		}
+	
+		new AlertDialog.Builder(this)
+		.setTitle(R.string.dialog_set_calendar)
+		.setIcon(android.R.drawable.ic_dialog_info)
+		.setItems(items.toArray(new String[calendars.size()]), new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				app.userSettings.setCalendarID(calendars.get(which).getId());
+			}
+		}).show();
 	}
 	
 }

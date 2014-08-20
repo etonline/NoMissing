@@ -1,5 +1,8 @@
 package edu.ntust.cs.idsl.nomissing.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
@@ -16,9 +19,9 @@ public class AccountUtil {
 		return accounts;
 	}
 	
-	public static Account getGoogleAccount(Context context) {
+	public static Account[] getGoogleAccounts(Context context) {
 		AccountManager accountManager = AccountManager.get(context);
 		Account[] accounts = accountManager.getAccountsByType(ACCOUNT_TYPE_GOOGLE);
-		return accounts[0];
+		return accounts;
 	}
 }

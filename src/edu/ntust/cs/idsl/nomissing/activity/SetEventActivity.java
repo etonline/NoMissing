@@ -102,7 +102,7 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 		endMillis = getIntent().getLongExtra("endMillis", -1);
 		
 		eventDAO = EventDAO.getInstance(this);
-		event = (eventID != -1 ) ? eventDAO.find(eventID, startMillis, endMillis) : new Event();
+		event = (eventID != -1 ) ? eventDAO.find(calendarID, eventID, startMillis, endMillis) : new Event();
 		
 		editTextTitle.setText(event.getTitle());
 		editTextLocation.setText(event.getLocation());

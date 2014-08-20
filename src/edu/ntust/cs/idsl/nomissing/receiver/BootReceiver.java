@@ -10,7 +10,7 @@ import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
-import edu.ntust.cs.idsl.nomissing.pref.UserSettings;
+import edu.ntust.cs.idsl.nomissing.pref.SettingsManager;
 import edu.ntust.cs.idsl.nomissing.util.AlarmUtil;
 
 public class BootReceiver extends BroadcastReceiver {

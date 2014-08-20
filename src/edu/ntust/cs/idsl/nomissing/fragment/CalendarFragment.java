@@ -3,16 +3,14 @@ package edu.ntust.cs.idsl.nomissing.fragment;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
-import android.accounts.Account;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,8 +34,8 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetEventActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.EventListAdapter;
 import edu.ntust.cs.idsl.nomissing.dao.EventDAO;
+import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
-import edu.ntust.cs.idsl.nomissing.util.AccountUtil;
 import edu.ntust.cs.idsl.nomissing.util.CalendarUtil;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
@@ -53,6 +51,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 	public static final int RESULT_CANCEL = 3;
 	public static final int RESULT_DELETE = 4;
 	
+	private NoMissingApp app;
 	private long calenderID;
 	
 	private CaldroidFragment caldroidFragment;
@@ -77,27 +76,9 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		
-//		Intent addAccountIntent = new Intent(android.provider.Settings.ACTION_ADD_ACCOUNT)
-//	    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//	    addAccountIntent.putExtra(Settings.EXTRA_ACCOUNT_TYPES, new String[] {"com.google"});
-//	    getActivity().startActivity(addAccountIntent); 
-		
 		eventDAO = EventDAO.getInstance(getActivity());
-	
-		// get calendars
-		Account account = AccountUtil.getGoogleAccount(getActivity());
-		
-		HashMap<Long, String> calendars = CalendarUtil.getCalendar(getActivity(), account.name);
-		
-		for(Entry<Long, String> entry : calendars.entrySet()) {
-		    long key = entry.getKey();
-		    String value = entry.getValue();
-		    Log.v("TAG", key + " | " + value);
-		    calenderID = key;
-		    
-		    //ToastMaker.toast(getActivity(), key + " | " + value);
-		}
-
+		app = (NoMissingApp)getActivity().getApplicationContext();
+		calenderID = app.userSettings.getCalendarID();
 	}
 
 	@Override
@@ -237,7 +218,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 		calendar.add(Calendar.DAY_OF_YEAR, 1);
 		long endMillis = calendar.getTimeInMillis();
 
-		monthEvents = eventDAO.find(startMillis, endMillis);
+		monthEvents = eventDAO.find(calenderID, startMillis, endMillis);
 		for(Event event : monthEvents) {
 			calendar.setTimeInMillis(event.getStart());
 			caldroidFragment.setBackgroundResourceForDate(R.color.indianred, calendar.getTime());
@@ -258,7 +239,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
     	day.add(Calendar.DAY_OF_YEAR, 1);
     	long endMillis = day.getTimeInMillis();
     	
-    	dayEvents = eventDAO.find(startMillis, endMillis);
+    	dayEvents = eventDAO.find(calenderID, startMillis, endMillis);
     	adapter = new EventListAdapter(getActivity(), dayEvents);
     	listViewEvents.setAdapter(adapter);  		
 	}

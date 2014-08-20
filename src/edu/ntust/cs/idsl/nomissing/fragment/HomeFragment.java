@@ -23,6 +23,7 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetEventActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.AgendaListAdapter;
 import edu.ntust.cs.idsl.nomissing.dao.EventDAO;
+import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.util.AccountUtil;
 import edu.ntust.cs.idsl.nomissing.util.CalendarUtil;
@@ -40,6 +41,7 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
 	public static final int RESULT_CANCEL = 3;
 	public static final int RESULT_DELETE = 4;
 	
+	private NoMissingApp app;
 	private long calenderID;
 	
 	private EventDAO eventDAO;
@@ -53,19 +55,9 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// get calendars
-		Account account = AccountUtil.getGoogleAccount(getActivity());
-		
-		HashMap<Long, String> calendars = CalendarUtil.getCalendar(getActivity(), account.name);
-		
-		for(Entry<Long, String> entry : calendars.entrySet()) {
-		    long key = entry.getKey();
-		    String value = entry.getValue();
-		    Log.v("TAG", key + " | " + value);
-		    calenderID = key;
-		    
-		    //ToastMaker.toast(getActivity(), key + " | " + value);
-		}
+		eventDAO = EventDAO.getInstance(getActivity());
+		app = (NoMissingApp)getActivity().getApplicationContext();
+		calenderID = app.userSettings.getCalendarID();
 		
 	}
 	
@@ -135,7 +127,7 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
 		long endMillis = calendar.getTimeInMillis();
 		
 		eventDAO = EventDAO.getInstance(getActivity());
-		events = eventDAO.find(startMillis, endMillis);		
+		events = eventDAO.find(calenderID, startMillis, endMillis);		
         AgendaListAdapter adapter = new AgendaListAdapter(getActivity(), events);
 		listViewAgenda.setAdapter(adapter);
 	}

@@ -122,7 +122,9 @@
     <string name="pref_reminder_city">選擇城市</string>
 
     <!-- SettingsActivity -->
-    <string name="settings_activity_preference_category_tts_settings">Text-to-Speech</string>
+    <string name="pref_category_tts_settings">Text-to-Speech</string>
+    <string name="pref_category_calendar_settings">Calendar</string>
+    <string name="pref_calendar">日曆</string>
     <string name="settings_activity_list_preference_speaker">音源</string>
 
     <string-array name="pref_tts_speaker_key">
@@ -208,5 +210,7 @@
 	<string name="title_activity_weather">語音天氣</string>
 	
 	<string name="click_back_again_to_exit">再按一次離開</string>
+	
+	<string name="dialog_set_calendar">設定日曆</string>
 	
 </resources>

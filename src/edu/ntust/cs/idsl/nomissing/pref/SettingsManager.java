@@ -5,9 +5,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import edu.ntust.cs.idsl.nomissing.model.City;
 
-public class UserSettings {
+public class SettingsManager {
 	
-	private static UserSettings instance;
+	private static SettingsManager instance;
 	
 	private Context context;
 	private SharedPreferences pref;
@@ -15,8 +15,9 @@ public class UserSettings {
 
 	private int PRIVATE_MODE = 0;
 
-	private static final String PREF_NAME = "UserSettingsPref";
+	private static final String PREF_NAME = "SettingsPref";
 
+	private static final String KEY_CALENDAR_ID = "calendar_id";
 	private static final String KEY_TTS_SPEAKER = "tts_speaker";
 	private static final String KEY_TTS_VOLUME = "tts_volume";
 	private static final String KEY_TTS_SPEED = "tts_speed";
@@ -26,17 +27,22 @@ public class UserSettings {
 	private static final String KEY_WEATHER_REMINDER_MINUTE = "weather_reminder_minute";
 	private static final String KEY_WEATHER_REMINDER_CITY = "weather_reminder_city";
 	
-	private UserSettings(Context context) {
+	private SettingsManager(Context context) {
 		this.context = context;
 		pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
 		editor = pref.edit();
 	}
 
-	public static synchronized UserSettings getInstance(Context context) {
+	public static synchronized SettingsManager getInstance(Context context) {
 		if (instance == null) {
-			instance = new UserSettings(context);
+			instance = new SettingsManager(context);
 		}
 		return instance;
+	}
+	
+	public void setCalendarID(long value) {
+		editor.putLong(KEY_CALENDAR_ID, value);
+		editor.commit();
 	}
 	
 	public void setTTSSpeaker(String value) {
@@ -77,6 +83,10 @@ public class UserSettings {
 	public void setWeatherReminderCity(int value) {
 		editor.putInt(KEY_WEATHER_REMINDER_CITY, value);
 		editor.commit();
+	}
+	
+	public long getCalendarID() {
+		return pref.getLong(KEY_CALENDAR_ID, 0);
 	}
 	
 	public String getTTSSpeaker() {

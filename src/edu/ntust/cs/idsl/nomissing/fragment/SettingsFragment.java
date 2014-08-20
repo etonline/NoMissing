@@ -1,29 +1,40 @@
 package edu.ntust.cs.idsl.nomissing.fragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.support.v4.preference.PreferenceFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
+import edu.ntust.cs.idsl.nomissing.model.Calendar;
+import edu.ntust.cs.idsl.nomissing.util.CalendarUtil;
 import edu.ntust.cs.idsl.nomissing.util.SeekBarPreference;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
-public class SettingsFragment extends PreferenceFragment implements OnPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragment implements OnPreferenceClickListener, OnPreferenceChangeListener {
 
 	private NoMissingApp app;
 	
+	private Preference prefCalendar;
 	private ListPreference prefTTSSpeaker;
 	private SeekBarPreference prefTTSVolume;
 	private SeekBarPreference prefTTSSpeed;
 	
+	private long mCalendarID;
 	private String mTTSSpeaker;
 	private int mTTSVolume;
 	private int mTTSSpeed;
@@ -35,13 +46,27 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		setHasOptionsMenu(true);
 		app = (NoMissingApp)getActivity().getApplicationContext();	
 		
+		mCalendarID = app.userSettings.getCalendarID();
 		mTTSSpeaker = app.userSettings.getTTSSpeaker();
 		mTTSVolume = app.userSettings.getTTSVolume();
 		mTTSSpeed = app.userSettings.getTTSSpeed();
 		
+		setPrefCalendar();
 		setPrefTTSSpeaker();
 		setPrefTTSVolume();
 		setPrefTTSSpeed();
+	}
+	
+	private void setPrefCalendar() {
+		prefCalendar = (Preference) findPreference("calendar_id");
+		List<Calendar> calendars = CalendarUtil.getCalendars(getActivity());
+		for(Calendar calendar : calendars) {
+			if (calendar.getId() == mCalendarID) {
+				prefCalendar.setSummary(calendar.getName());
+				break;
+			}
+		}
+		prefCalendar.setOnPreferenceClickListener(this);
 	}
 	
 	private void setPrefTTSSpeaker() {
@@ -102,11 +127,39 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	}
 	
 	private void saveSettings() {
+		app.userSettings.setCalendarID(mCalendarID);
 		app.userSettings.setTTSSpeaker(mTTSSpeaker);
 		app.userSettings.setTTSVolume(mTTSVolume);
 		app.userSettings.setTTSSpeed(mTTSSpeed);
 		
 		ToastMaker.toast(getActivity(), getString(R.string.toast_save_settings));
+	}
+
+	@Override
+	public boolean onPreferenceClick(Preference preference) {
+		if (preference == prefCalendar) {
+			openSettingCalendarDialog();
+		}
+		return true;
+	}
+	
+	private void openSettingCalendarDialog() {
+		final List<Calendar> calendars = CalendarUtil.getCalendars(getActivity());
+		List<String> items = new ArrayList<String>();
+		for (Calendar calendar : calendars) {
+			items.add(calendar.getName());
+		}
+	
+		new AlertDialog.Builder(getActivity())
+		.setTitle(R.string.dialog_set_calendar)
+		.setIcon(android.R.drawable.ic_dialog_info)
+		.setItems(items.toArray(new String[calendars.size()]), new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				mCalendarID = calendars.get(which).getId();
+				prefCalendar.setSummary(calendars.get(which).getName());
+			}
+		}).show();
 	}
 
 }

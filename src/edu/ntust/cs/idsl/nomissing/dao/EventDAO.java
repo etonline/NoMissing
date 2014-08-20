@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Instances;
 import edu.ntust.cs.idsl.nomissing.model.Event;
@@ -104,17 +105,21 @@ public class EventDAO implements ICalendarDAO<Event> {
 	}
 
 	@Override
-	public List<Event> find(long startMillis, long endMillis) {
+	public List<Event> find(long calendarID, long startMillis, long endMillis) {
 		List<Event> events = new ArrayList<Event>();
 		  
 		Cursor cur = null;
-		ContentResolver cr = context.getContentResolver();
-
+		ContentResolver cr = context.getContentResolver();	
+		
+		String selection = Instances.CALENDAR_ID + " = ?";
+		String[] selectionArgs = new String[] {String.valueOf(calendarID)};
+		
 		Uri.Builder builder = Instances.CONTENT_URI.buildUpon();
 		ContentUris.appendId(builder, startMillis);
 		ContentUris.appendId(builder, endMillis);
 
-		cur =  cr.query(builder.build(), INSTANCE_PROJECTION, null, null, null);
+		cur =  cr.query(builder.build(), INSTANCE_PROJECTION, selection, selectionArgs, null);
+//		cur =  cr.query(builder.build(), INSTANCE_PROJECTION, null, null, null);
 		while (cur.moveToNext()) {
 			Event event = new Event();    
 		    event.setEventID(cur.getLong(PROJECTION_EVENT_ID_INDEX));
@@ -134,7 +139,7 @@ public class EventDAO implements ICalendarDAO<Event> {
 	}
 
 	@Override
-	public Event find(long id, long startMillis, long endMillis) {
+	public Event find(long calendarID, long id, long startMillis, long endMillis) {
 		Event event = new Event();
 		
 		Cursor cur = null;

@@ -73,7 +73,7 @@ public class InitActivity extends Activity {
 	 * Open the alert dialog.
 	 */	
 	private void openNetworkUnavailableDialog() {
-		new AlertDialog.Builder(InitActivity.this)
+		new AlertDialog.Builder(this)
 		.setTitle(R.string.init_alert_dialog_title_network_inavailable)
 		.setIcon(android.R.drawable.ic_dialog_alert)
 		.setMessage(R.string.init_alert_dialog_message_network_inavailable)

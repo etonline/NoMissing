@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.util.Log;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
-import edu.ntust.cs.idsl.nomissing.pref.UserSettings;
+import edu.ntust.cs.idsl.nomissing.pref.SettingsManager;
 import edu.ntust.cs.idsl.nomissing.receiver.AlarmReceiver;
 
 public final class AlarmUtil {
@@ -37,7 +37,7 @@ public final class AlarmUtil {
 	}
 	
 	public static void setWeatherAlarm(Context context) {
-		UserSettings userSettings = UserSettings.getInstance(context);
+		SettingsManager userSettings = SettingsManager.getInstance(context);
 		int cityID = userSettings.getWeatherReminderCity();
 		long triggerAtMillis = calculateAlarm(userSettings.getWeatherReminderHour(), userSettings.getWeatherReminderMinute()).getTimeInMillis();
 		long intervalMillis = 86400 * 1000; // one day
@@ -48,7 +48,7 @@ public final class AlarmUtil {
 	}
 	
 	public static void cancelWeatherAlarm(Context context) {
-		UserSettings userSettings = UserSettings.getInstance(context);
+		SettingsManager userSettings = SettingsManager.getInstance(context);
 		int cityID = userSettings.getWeatherReminderCity();
 		
 		PendingIntent pendingIntent = getPendingIntent(context, AlarmReceiver.ACTION_WEATHER_ALARM, cityID);

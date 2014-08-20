@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/settings_activity_preference_category_tts_settings" >
+    <PreferenceCategory 
+        android:title="@string/pref_category_calendar_settings" >
+        
+		<Preference android:key="calendar_id" 
+	        android:persistent="true"
+	        android:title="@string/pref_calendar"/>     
+        
+    </PreferenceCategory>
+        
+    <PreferenceCategory 
+        android:title="@string/pref_category_tts_settings" >
         
         <ListPreference
             android:persistent="true"

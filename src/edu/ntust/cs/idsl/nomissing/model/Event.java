@@ -6,13 +6,30 @@ public class Event {
 	private String title;
 	private String location;
 	private String description;
-	private long start;
-	private long end;
-	private boolean isAllDay;
+	private long startTime;
+	private long endTime;
+	private boolean allDay;
 	private String rrule;
 	private int reminder;
 
-	public Event() {}
+	public Event() {
+	}
+
+	public Event(long eventID, long calendarID, String title, String location,
+			String description, long startTime, long endTime, boolean allDay,
+			String rrule, int reminder) {
+		super();
+		this.eventID = eventID;
+		this.calendarID = calendarID;
+		this.title = title;
+		this.location = location;
+		this.description = description;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.allDay = allDay;
+		this.rrule = rrule;
+		this.reminder = reminder;
+	}
 
 	public long getEventID() {
 		return eventID;
@@ -21,7 +38,7 @@ public class Event {
 	public void setEventID(long eventID) {
 		this.eventID = eventID;
 	}
-	
+
 	public long getCalendarID() {
 		return calendarID;
 	}
@@ -37,14 +54,14 @@ public class Event {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public String getLocation() {
 		return location;
 	}
 
 	public void setLocation(String location) {
 		this.location = location;
-	}	
+	}
 
 	public String getDescription() {
 		return description;
@@ -54,28 +71,28 @@ public class Event {
 		this.description = description;
 	}
 
-	public long getStart() {
-		return start;
+	public long getStartTime() {
+		return startTime;
 	}
 
-	public void setStart(long start) {
-		this.start = start;
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
 	}
 
-	public long getEnd() {
-		return end;
+	public long getEndTime() {
+		return endTime;
 	}
 
-	public void setEnd(long end) {
-		this.end = end;
+	public void setEndTime(long endTime) {
+		this.endTime = endTime;
 	}
-	
+
 	public boolean isAllDay() {
-		return isAllDay;
+		return allDay;
 	}
 
-	public void setAllDay(boolean isAllDay) {
-		this.isAllDay = isAllDay;
+	public void setAllDay(boolean allDay) {
+		this.allDay = allDay;
 	}
 
 	public String getRrule() {

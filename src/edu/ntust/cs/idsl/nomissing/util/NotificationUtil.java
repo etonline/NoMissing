@@ -9,7 +9,7 @@ import android.support.v4.app.NotificationCompat;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.MainActivity;
 import edu.ntust.cs.idsl.nomissing.activity.WeatherActivity;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 

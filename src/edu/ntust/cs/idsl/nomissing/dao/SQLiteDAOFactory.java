@@ -2,14 +2,14 @@ package edu.ntust.cs.idsl.nomissing.dao;
 
 import android.content.Context;
 
-public class SQLiteDAOFactory {
+public class SQLiteDaoFactory {
 	
-	public static WeatherDAO getWeatherDAO(Context context) {
-		return WeatherDAO.getInstance(context);
+	public static WeatherDao getWeatherDao(Context context) {
+		return new WeatherDao(context);
 	}
 	
-	public static ChimeDAO getChimeDAO(Context context) {
-		return ChimeDAO.getInstance(context);
+	public static ChimeDao getChimeDao(Context context) {
+		return new ChimeDao(context);
 	}		
 	
 }

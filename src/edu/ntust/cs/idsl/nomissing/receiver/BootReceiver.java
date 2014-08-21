@@ -5,8 +5,8 @@ import java.util.List;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import edu.ntust.cs.idsl.nomissing.dao.ChimeDAO;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
+import edu.ntust.cs.idsl.nomissing.dao.ChimeDao;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
@@ -25,7 +25,7 @@ public class BootReceiver extends BroadcastReceiver {
 	}
 	
 	private void setChimeAlarms(Context context) {
-	    List<Chime> chimes = SQLiteDAOFactory.getChimeDAO(context).findAll();
+	    List<Chime> chimes = SQLiteDaoFactory.getChimeDao(context).findAll();
 		for(Chime chime : chimes) {
 			AlarmUtil.cancelChimeAlarm(context, chime);
 			if (chime.isEnabled() && !chime.isTriggered())

@@ -13,8 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -25,17 +23,15 @@ import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.adapter.EventFreqSpinnerAdapter;
 import edu.ntust.cs.idsl.nomissing.adapter.EventReminderSpinnerAdapter;
-import edu.ntust.cs.idsl.nomissing.dao.EventDAO;
-import edu.ntust.cs.idsl.nomissing.dao.RemindersDAO;
+import edu.ntust.cs.idsl.nomissing.calendar.CalendarProviderDaoFactory;
 import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.model.EventFreq;
-import edu.ntust.cs.idsl.nomissing.model.EventReminder;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
-public class SetEventActivity extends Activity implements OnClickListener, OnCheckedChangeListener, OnItemSelectedListener {
+public class SetEventActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
 
 	public static final String TAG = SetEventActivity.class.getSimpleName();
 	private NoMissingApp app;
@@ -57,8 +53,6 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 	private long startMillis;
 	private long endMillis;
 	
-	private EventDAO eventDAO;
-	
 	final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy/M/d (EEE)");
 	final SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
 	
@@ -71,12 +65,44 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_set_event);
-		
 		app = (NoMissingApp)getApplicationContext();
+
+        calendarID = getIntent().getLongExtra("calendarID", 0);
+		eventID = getIntent().getLongExtra("eventID", 0);
+		startMillis = getIntent().getLongExtra("startMillis", 0);
+		endMillis = getIntent().getLongExtra("endMillis", 0);
 		
+		setEvent();
+		setStartCalendar();
+		setEndCalendar();
+		setActionBar();
+		setViewComponents();
+	}
+	
+	private void setEvent() {
+		event = (eventID != 0) 
+				? CalendarProviderDaoFactory.getEventDao(this).find(calendarID, eventID, startMillis, endMillis)
+				: new Event();
+	}
+	
+	private void setStartCalendar() {
+		startCalendar = Calendar.getInstance();
+		if(startMillis != 0) startCalendar.setTimeInMillis(startMillis);
+		if(eventID != 0) startCalendar.setTimeInMillis(event.getStartTime());		
+	}
+	
+	private void setEndCalendar() {
+		endCalendar = Calendar.getInstance();
+		if(endMillis != -1) endCalendar.setTimeInMillis(endMillis);
+		if(eventID != -1) endCalendar.setTimeInMillis(event.getEndTime());			
+	}
+	
+	private void setActionBar() {
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);	
-		
+        getActionBar().setHomeButtonEnabled(true);		
+	}
+	
+	private void setViewComponents() {
         editTextTitle = (EditText)findViewById(R.id.editTextTitle);
         editTextLocation = (EditText)findViewById(R.id.editTextLocation);
         editTextStartDate = (EditText)findViewById(R.id.editTextStartDate);
@@ -89,45 +115,26 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
         spinnerFrequency = (Spinner)findViewById(R.id.spinnerFrequency);
         spinnerReminder = (Spinner)findViewById(R.id.spinnerReminider);
         
+		editTextTitle.setText(event.getTitle());
+		editTextLocation.setText(event.getLocation());
+		editTextStartDate.setText(dateFormatter.format(startCalendar.getTime()));
+		editTextStartTime.setText(timeFormatter.format(startCalendar.getTime()));
+		editTextEndDate.setText(dateFormatter.format(endCalendar.getTime()));
+		editTextEndTime.setText(timeFormatter.format(endCalendar.getTime()));	
+		editTextDescription.setText(event.getDescription());
+		checkBoxAllDay.setChecked(event.isAllDay());
+		
         editTextStartDate.setOnClickListener(this);
         editTextStartTime.setOnClickListener(this);
         editTextEndDate.setOnClickListener(this);
         editTextEndTime.setOnClickListener(this);
         checkBoxAllDay.setOnCheckedChangeListener(this);
-        checkBoxRemider.setOnCheckedChangeListener(this);
+        checkBoxRemider.setOnCheckedChangeListener(this);		
         
-        calendarID = getIntent().getLongExtra("calendarID", -1);
-		eventID = getIntent().getLongExtra("eventID", -1);
-		startMillis = getIntent().getLongExtra("startMillis", -1);
-		endMillis = getIntent().getLongExtra("endMillis", -1);
-		
-		eventDAO = EventDAO.getInstance(this);
-		event = (eventID != -1 ) ? eventDAO.find(calendarID, eventID, startMillis, endMillis) : new Event();
-		
-		editTextTitle.setText(event.getTitle());
-		editTextLocation.setText(event.getLocation());
-		
-		startCalendar = Calendar.getInstance();
-		if(startMillis != -1) startCalendar.setTimeInMillis(startMillis);
-		if(eventID != -1) startCalendar.setTimeInMillis(event.getStart());
-		editTextStartDate.setText(dateFormatter.format(startCalendar.getTime()));
-		editTextStartTime.setText(timeFormatter.format(startCalendar.getTime()));
-		
-		endCalendar = Calendar.getInstance();
-		if(endMillis != -1) endCalendar.setTimeInMillis(endMillis);
-		if(eventID != -1) endCalendar.setTimeInMillis(event.getEnd());
-		editTextEndDate.setText(dateFormatter.format(endCalendar.getTime()));
-		editTextEndTime.setText(timeFormatter.format(endCalendar.getTime()));
-		
-		editTextDescription.setText(event.getDescription());
-		checkBoxAllDay.setChecked(event.isAllDay());
-		
-		EventFreqSpinnerAdapter eventFreqSpinnerAdapter = new EventFreqSpinnerAdapter(this);
-		spinnerFrequency.setAdapter(eventFreqSpinnerAdapter);
+		spinnerFrequency.setAdapter(new EventFreqSpinnerAdapter(this));
 		spinnerFrequency.setSelection(EventFreq.getIdByRrule(event.getRrule()));
 		
-		EventReminderSpinnerAdapter eventReminderSpinnerAdapter = new EventReminderSpinnerAdapter(this);
-		spinnerReminder.setAdapter(eventReminderSpinnerAdapter);
+		spinnerReminder.setAdapter(new EventReminderSpinnerAdapter(this));
 //		spinnerReminder.setSelection(EventFreq.getIdByRrule(event.getRrule()));
 	}
 	
@@ -166,7 +173,7 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 			if (eventID == -1) {
 				SetEventActivity.this.setResult(CalendarFragment.RESULT_CANCEL);
 			} else {
-				eventDAO.delete(eventID);
+				CalendarProviderDaoFactory.getEventDao(this).delete(eventID);
 				SetEventActivity.this.setResult(CalendarFragment.RESULT_DELETE);
 				
 			}
@@ -252,27 +259,27 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 		event.setCalendarID(calendarID);
 		event.setTitle(editTextTitle.getText().toString());
 		event.setLocation(editTextLocation.getText().toString());
-		event.setStart(startCalendar.getTimeInMillis());
-		event.setEnd(endCalendar.getTimeInMillis());
+		event.setStartTime(startCalendar.getTimeInMillis());
+		event.setEndTime(endCalendar.getTimeInMillis());
 		event.setDescription(editTextDescription.getText().toString());
 		event.setAllDay(checkBoxAllDay.isChecked());
 		event.setRrule((String)spinnerFrequency.getSelectedItem());
-		long eventID = eventDAO.insert(event);
+		long eventID = CalendarProviderDaoFactory.getEventDao(this).insert(event);
 		ToastMaker.toast(this, String.valueOf(eventID));
 	}	
 	
 	private void updateEvent() {
 		event.setTitle(editTextTitle.getText().toString());
 		event.setLocation(editTextLocation.getText().toString());
-		event.setStart(startCalendar.getTimeInMillis());
-		event.setEnd(endCalendar.getTimeInMillis());
+		event.setStartTime(startCalendar.getTimeInMillis());
+		event.setEndTime(endCalendar.getTimeInMillis());
 		event.setDescription(editTextDescription.getText().toString());
 		event.setAllDay(checkBoxAllDay.isChecked());
 		event.setRrule((String)spinnerFrequency.getSelectedItem());
-		eventDAO.update(event);		
+		CalendarProviderDaoFactory.getEventDao(this).update(event);		
 		
-		RemindersDAO remindersDAO = RemindersDAO.getInstance(this);
-		remindersDAO.insert(eventID, EventReminder.ONE_DAY.getMinutes());
+//		RemindersDao remindersDAO = RemindersDao.getInstance(this);
+//		remindersDAO.insert(eventID, EventReminder.ONE_DAY.getMinutes());
 	}
 	
 	private boolean isValidDateRange(Calendar startCalendar, Calendar endCalendar) {
@@ -298,19 +305,6 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 		} else {
 			spinnerReminder.setVisibility(Spinner.INVISIBLE);
 		}
-	}
-
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position,
-			long id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> parent) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

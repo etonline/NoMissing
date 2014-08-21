@@ -11,6 +11,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.CalendarContract.Calendars;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -27,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.adapter.NavDrawerListAdapter;
+import edu.ntust.cs.idsl.nomissing.calendar.CalendarProviderDaoFactory;
 import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.ChimeFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.HomeFragment;
@@ -222,16 +224,13 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 	}
 	
 	private void openSettingCalendarDialog() {
-		final List<Calendar> calendars = CalendarUtil.getCalendars(this);
-		List<String> items = new ArrayList<String>();
-		for (Calendar calendar : calendars) {
-			items.add(calendar.getName());
-		}
+		final List<Calendar> calendars = 
+				CalendarProviderDaoFactory.getCalendarDao(this).findByAccessLevel(Calendars.CAL_ACCESS_OWNER);
 	
 		new AlertDialog.Builder(this)
 		.setTitle(R.string.dialog_set_calendar)
 		.setIcon(android.R.drawable.ic_dialog_info)
-		.setItems(items.toArray(new String[calendars.size()]), new OnClickListener() {
+		.setItems(Calendar.getNameOfCalendars(calendars).toArray(new String[calendars.size()]), new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				app.userSettings.setCalendarID(calendars.get(which).getId());

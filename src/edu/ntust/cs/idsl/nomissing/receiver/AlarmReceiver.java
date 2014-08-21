@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import edu.ntust.cs.idsl.nomissing.activity.ChimeActivity;
 import edu.ntust.cs.idsl.nomissing.activity.WeatherActivity;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.util.NotificationUtil;
@@ -27,7 +27,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		
 		if (intent.getAction().equals(ACTION_CHIME_ALARM)) {
 			int chimeID = intent.getIntExtra("id", 0);
-			Chime chime = SQLiteDAOFactory.getChimeDAO(context).find(chimeID);
+			Chime chime = SQLiteDaoFactory.getChimeDao(context).find(chimeID);
 			
 			NotificationUtil.sendNotification(context, chime);
 			
@@ -39,7 +39,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		
 		if (intent.getAction().equals(ACTION_WEATHER_ALARM)) {
 			int cityID = intent.getIntExtra("id", 0);
-			Weather weather = SQLiteDAOFactory.getWeatherDAO(context).find(cityID);
+			Weather weather = SQLiteDaoFactory.getWeatherDao(context).find(cityID);
 			NotificationUtil.sendNotification(context, weather);
 		}
 

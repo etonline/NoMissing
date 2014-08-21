@@ -2,16 +2,12 @@ package edu.ntust.cs.idsl.nomissing.fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
-import android.accounts.Account;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +18,9 @@ import android.widget.TextView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetEventActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.AgendaListAdapter;
-import edu.ntust.cs.idsl.nomissing.dao.EventDAO;
+import edu.ntust.cs.idsl.nomissing.calendar.CalendarProviderDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
-import edu.ntust.cs.idsl.nomissing.util.AccountUtil;
-import edu.ntust.cs.idsl.nomissing.util.CalendarUtil;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
@@ -44,7 +38,6 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
 	private NoMissingApp app;
 	private long calenderID;
 	
-	private EventDAO eventDAO;
 	private List<Event> events;
 	private TextView textViewAgenda;
 	private ListView listViewAgenda;
@@ -55,7 +48,6 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		eventDAO = EventDAO.getInstance(getActivity());
 		app = (NoMissingApp)getActivity().getApplicationContext();
 		calenderID = app.userSettings.getCalendarID();
 		
@@ -87,8 +79,8 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		long eventID = id;
-    	long startMillis = events.get(position).getStart();
-    	long endMillis = events.get(position).getEnd();		
+    	long startMillis = events.get(position).getStartTime();
+    	long endMillis = events.get(position).getEndTime();		
     	setEvent(calenderID, eventID, startMillis, endMillis);
 	}	
 	
@@ -126,8 +118,7 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
 		calendar.add(Calendar.DAY_OF_YEAR, 1);
 		long endMillis = calendar.getTimeInMillis();
 		
-		eventDAO = EventDAO.getInstance(getActivity());
-		events = eventDAO.find(calenderID, startMillis, endMillis);		
+		events = CalendarProviderDaoFactory.getEventDao(getActivity()).find(calenderID, startMillis, endMillis);
         AgendaListAdapter adapter = new AgendaListAdapter(getActivity(), events);
 		listViewAgenda.setAdapter(adapter);
 	}

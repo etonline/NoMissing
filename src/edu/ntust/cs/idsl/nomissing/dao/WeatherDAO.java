@@ -9,19 +9,10 @@ import android.database.Cursor;
 import edu.ntust.cs.idsl.nomissing.database.NoMissingDB;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 
-public class WeatherDAO extends SQLiteDAO<Weather> {
-
-	private static WeatherDAO instance;
+public class WeatherDao extends SQLiteDao implements Dao<Weather> {
 	
-	private WeatherDAO(Context context) {
+	public WeatherDao(Context context) {
 		super(context);
-	}
-	
-	public static synchronized WeatherDAO getInstance(Context context) {
-		if (instance == null) {
-			instance = new WeatherDAO(context);
-		}
-		return instance;
 	}
 
 	@Override

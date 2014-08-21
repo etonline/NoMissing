@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
@@ -31,7 +31,7 @@ public class WeatherActivity extends Activity {
 		app = (NoMissingApp) getApplicationContext();
 		
 		int cityID = getIntent().getIntExtra("id", -1);
-		weather = SQLiteDAOFactory.getWeatherDAO(this).find(cityID);
+		weather = SQLiteDaoFactory.getWeatherDao(this).find(cityID);
 		
 		openCityWeatherDialog(weather);
 	}

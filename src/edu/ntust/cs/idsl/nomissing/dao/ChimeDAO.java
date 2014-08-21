@@ -7,22 +7,14 @@ import android.R.integer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import edu.ntust.cs.idsl.nomissing.database.NoMissingDB;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 
-public class ChimeDAO extends SQLiteDAO<Chime> {
+public class ChimeDao extends SQLiteDao implements Dao<Chime> {
 
-	private static ChimeDAO instance;
-	
-	private ChimeDAO(Context context) {
+	public ChimeDao(Context context) {
 		super(context);
-	}
-	
-	public static synchronized ChimeDAO getInstance(Context context) {
-		if (instance == null) {
-			instance = new ChimeDAO(context);
-		}
-		return instance;
 	}
 
 	@Override

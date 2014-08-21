@@ -13,9 +13,9 @@ import android.util.Log;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAO;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
-import edu.ntust.cs.idsl.nomissing.dao.WeatherDAO;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDao;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
+import edu.ntust.cs.idsl.nomissing.dao.WeatherDao;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingRoute;
@@ -67,8 +67,7 @@ public class GetWeatherDataService extends IntentService {
 						Weather weather = new Weather(cityid, city,stno,time,
 								memo,audio,createdAt,updatedAt);
 						
-						SQLiteDAO<Weather> weatherDAO = SQLiteDAOFactory.getWeatherDAO(getApplicationContext());
-						weatherDAO.update(weather);	
+						SQLiteDaoFactory.getWeatherDao(getApplicationContext()).update(weather);	
 					}
 				} 
 				catch (JSONException e) {

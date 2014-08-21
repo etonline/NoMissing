@@ -18,7 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
@@ -59,7 +59,7 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
         getActionBar().setHomeButtonEnabled(true);	
 		
 		chimeID = getIntent().getIntExtra("chimeID", 0);
-		chime = (chimeID != 0 ) ? SQLiteDAOFactory.getChimeDAO(this).find(chimeID) : new Chime();
+		chime = (chimeID != 0 ) ? SQLiteDaoFactory.getChimeDao(this).find(chimeID) : new Chime();
 		
 		chimeHour = chime.getHour();
 		chimeMinute = chime.getMinute();
@@ -179,7 +179,7 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 	}
 	
 	private void createChime() {
-		chimeID = SQLiteDAOFactory.getChimeDAO(this).getNextID();
+		chimeID = SQLiteDaoFactory.getChimeDao(this).getNextID();
 		long currentTime = System.currentTimeMillis();
 		
 		chime.setId(chimeID);
@@ -191,7 +191,7 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 		chime.setCreatedAt(currentTime);
 		chime.setUpdatedAt(currentTime);
 		
-		SQLiteDAOFactory.getChimeDAO(this).insert(chime);
+		SQLiteDaoFactory.getChimeDao(this).insert(chime);
 		
 		if (isChimeEnabled)
 			AlarmUtil.setChimeAlarm(this, chime);		
@@ -205,7 +205,7 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 		chime.setRepeating(isChimeRepeating);
 		chime.setTriggered(isTrigged);
 		chime.setUpdatedAt(currentTime);
-		SQLiteDAOFactory.getChimeDAO(this).update(chime);
+		SQLiteDaoFactory.getChimeDao(this).update(chime);
 		
 		AlarmUtil.cancelChimeAlarm(this, chime);
 		if (isChimeEnabled)
@@ -214,7 +214,7 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 	
 	private void deleteChime() {
 		AlarmUtil.cancelChimeAlarm(this, chime);	
-		SQLiteDAOFactory.getChimeDAO(this).delete(chimeID);
+		SQLiteDaoFactory.getChimeDao(this).delete(chimeID);
 	}
 	
 	private void getTTSAudio() {

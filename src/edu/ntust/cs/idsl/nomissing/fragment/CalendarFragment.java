@@ -4,15 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,10 +30,9 @@ import com.roomorama.caldroid.CaldroidListener;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetEventActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.EventListAdapter;
-import edu.ntust.cs.idsl.nomissing.dao.EventDAO;
+import edu.ntust.cs.idsl.nomissing.calendar.CalendarProviderDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
-import edu.ntust.cs.idsl.nomissing.util.CalendarUtil;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
@@ -61,7 +57,6 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 	private ListView listViewEvents;
 	private EventListAdapter adapter;
 	
-	private EventDAO eventDAO;
 	private List<Event> monthEvents;
 	private List<Event> dayEvents;
 	
@@ -76,7 +71,6 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		
-		eventDAO = EventDAO.getInstance(getActivity());
 		app = (NoMissingApp)getActivity().getApplicationContext();
 		calenderID = app.userSettings.getCalendarID();
 	}
@@ -136,8 +130,8 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		long eventID = id;
-    	long startMillis = dayEvents.get(position).getStart();
-    	long endMillis = dayEvents.get(position).getEnd();		
+    	long startMillis = dayEvents.get(position).getStartTime();
+    	long endMillis = dayEvents.get(position).getEndTime();		
     	setEvent(calenderID, eventID, startMillis, endMillis);
 	}
 	
@@ -193,7 +187,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
             @Override
             public void onChangeMonth(int month, int year) {          
             	Calendar calendar = Calendar.getInstance();
-        		calendar.set(year, month - 1, 1, 0, 0);
+            	calendar.set(year, month - 2, 1);
             	setMonthEvents(calendar);
             }
 
@@ -213,42 +207,36 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 	}
 	
 	private void setMonthEvents(Calendar calendar) {
-		long startMillis = calendar.getTimeInMillis();	
+		long startMillis = getStartOfDate(calendar).getTimeInMillis();	
+		calendar.add(Calendar.MONTH, 2);
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-		calendar.add(Calendar.DAY_OF_YEAR, 1);
-		long endMillis = calendar.getTimeInMillis();
+		long endMillis = getEndOfDate(calendar).getTimeInMillis();
 
-		monthEvents = eventDAO.find(calenderID, startMillis, endMillis);
+		monthEvents = CalendarProviderDaoFactory.getEventDao(getActivity()).find(calenderID, startMillis, endMillis);
 		for(Event event : monthEvents) {
-			calendar.setTimeInMillis(event.getStart());
+			calendar.setTimeInMillis(event.getStartTime());
 			caldroidFragment.setBackgroundResourceForDate(R.color.indianred, calendar.getTime());
 			caldroidFragment.setTextColorForDate(R.color.white, calendar.getTime());
-			checkWithinNextDay(calendar, event.getEnd());
+			checkWithinNextDay(calendar, event.getEndTime());
 		}  
 	}
 	
 	private void setDayEvents(Calendar calendar) {
+		textViewDate.setText(formatter.format(calendar.getTime()));
+		
 		Calendar day = Calendar.getInstance();
 		day.setTime(calendar.getTime());
-		day.set(Calendar.HOUR_OF_DAY, 0);
-		day.set(Calendar.MINUTE, 0);
-		day.set(Calendar.SECOND, 0);
-		
-		textViewDate.setText(formatter.format(calendar.getTime()));
-    	long startMillis = day.getTimeInMillis();
-    	day.add(Calendar.DAY_OF_YEAR, 1);
-    	long endMillis = day.getTimeInMillis();
+    	long startMillis = getStartOfDate(day).getTimeInMillis();
+    	long endMillis = getEndOfDate(day).getTimeInMillis();
     	
-    	dayEvents = eventDAO.find(calenderID, startMillis, endMillis);
+    	dayEvents = CalendarProviderDaoFactory.getEventDao(getActivity()).find(calenderID, startMillis, endMillis);
     	adapter = new EventListAdapter(getActivity(), dayEvents);
     	listViewEvents.setAdapter(adapter);  		
 	}
 	
 	private void checkWithinNextDay(Calendar calendar, long endMillis) {
 		calendar.add(Calendar.DAY_OF_YEAR, 1);
-    	calendar.set(Calendar.HOUR_OF_DAY, 0);
-    	calendar.set(Calendar.MINUTE, 0);
-    	calendar.set(Calendar.SECOND, 0);
+		calendar = getStartOfDate(calendar);
     	
     	if (calendar.getTimeInMillis() <= endMillis) {
 			caldroidFragment.setBackgroundResourceForDate(R.color.indianred, calendar.getTime());
@@ -279,5 +267,21 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 		if (endMillis != 0) intent.putExtra("endMillis", endMillis);
 		startActivityForResult(intent, REQUEST_SET);			
 	}	
+	
+	private Calendar getStartOfDate(Calendar calendar) {
+    	calendar.set(Calendar.HOUR_OF_DAY, 0);
+    	calendar.set(Calendar.MINUTE, 0);
+    	calendar.set(Calendar.SECOND, 0);	
+    	calendar.set(Calendar.MILLISECOND, 0);	
+		return calendar;
+	}
+	
+	private Calendar getEndOfDate(Calendar calendar) {
+    	calendar.set(Calendar.HOUR_OF_DAY, 23);
+    	calendar.set(Calendar.MINUTE, 59);
+    	calendar.set(Calendar.SECOND, 59);	
+    	calendar.set(Calendar.MILLISECOND, 999);	
+		return calendar;		
+	}
 	
 }

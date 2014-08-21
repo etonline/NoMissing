@@ -54,7 +54,7 @@ public class EventListAdapter extends BaseAdapter {
 		
 		TextView textViewTime = (TextView) convertView.findViewById(R.id.textViewTime);
 		TextView textViewEvent = (TextView) convertView.findViewById(R.id.textViewEvent);
-		textViewTime.setText(simpleDateFormat.format(events.get(position).getStart()));
+		textViewTime.setText(simpleDateFormat.format(events.get(position).getStartTime()));
 		textViewEvent.setText(events.get(position).getTitle());
 
 		return convertView;

@@ -7,7 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import edu.ntust.cs.idsl.nomissing.dao.ChimeDAO;
+import edu.ntust.cs.idsl.nomissing.dao.ChimeDao;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingResultCode;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.service.TTSGetConvertStatusService;
@@ -68,10 +69,9 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 					context.startService(newIntent);			
 				} else {
 					String audio = jsonObject.getString("audio");
-					ChimeDAO chimeDAO = ChimeDAO.getInstance(context);
-					Chime chime = chimeDAO.find(chimeID);
+					Chime chime = SQLiteDaoFactory.getChimeDao(context).find(chimeID);
 					chime.setAudio(audio);
-					chimeDAO.update(chime);
+					SQLiteDaoFactory.getChimeDao(context).update(chime);
 					
 					ToastMaker.toast(context, audio);
 				}

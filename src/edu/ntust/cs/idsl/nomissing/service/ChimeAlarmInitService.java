@@ -4,13 +4,14 @@ import java.util.List;
 
 import android.app.IntentService;
 import android.content.Intent;
-import edu.ntust.cs.idsl.nomissing.dao.ChimeDAO;
+import edu.ntust.cs.idsl.nomissing.dao.ChimeDao;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.util.AlarmUtil;
 
 public class ChimeAlarmInitService extends IntentService {
 
-	private ChimeDAO chimeDAO;
+	private ChimeDao chimeDAO;
 	private List<Chime> chimes;
 	
 	public ChimeAlarmInitService(String name) {
@@ -19,8 +20,7 @@ public class ChimeAlarmInitService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		chimeDAO = ChimeDAO.getInstance(this);
-		chimes = chimeDAO.findAll();
+		chimes = SQLiteDaoFactory.getChimeDao(this).findAll();
 		
 		for(Chime chime : chimes) {
 			AlarmUtil.cancelChimeAlarm(this, chime);

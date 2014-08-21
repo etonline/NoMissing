@@ -15,7 +15,7 @@ public class NoMissingDB extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "NoMissing.db";
 
 	// Table names
-	public static final String TABLE_TASKS = "tasks";
+	public static final String TABLE_EVENTS = "tasks";
 	public static final String TABLE_CHIMES = "chimes";
 	public static final String TABLE_WEATHER = "weather";
 
@@ -56,17 +56,17 @@ public class NoMissingDB extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		createTasksTable(db);
+		createEventsTable(db);
 		createChimesTable(db);
 		createWeatherTable(db);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHIMES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_WEATHER);
-		createTasksTable(db);
+		createEventsTable(db);
 		createChimesTable(db);
 		createWeatherTable(db);		
 	}
@@ -74,7 +74,7 @@ public class NoMissingDB extends SQLiteOpenHelper {
 	/*
 	 * Create task table
 	 */
-	private void createTasksTable(SQLiteDatabase db) {
+	private void createEventsTable(SQLiteDatabase db) {
 		
 	}		
 	

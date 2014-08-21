@@ -56,8 +56,8 @@ public class AgendaListAdapter extends BaseAdapter {
 		TextView textViewLocation = (TextView) convertView.findViewById(R.id.textViewLocation);
 		TextView textViewTime = (TextView) convertView.findViewById(R.id.textViewTime);
 		
-		String startTime = simpleDateFormat.format(events.get(position).getStart());
-		String endTime = simpleDateFormat.format(events.get(position).getEnd());
+		String startTime = simpleDateFormat.format(events.get(position).getStartTime());
+		String endTime = simpleDateFormat.format(events.get(position).getEndTime());
 		
 		textViewTitle.setText(events.get(position).getTitle());
 		textViewLocation.setText(events.get(position).getLocation());

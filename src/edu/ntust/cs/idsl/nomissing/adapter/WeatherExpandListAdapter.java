@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDAOFactory;
-import edu.ntust.cs.idsl.nomissing.dao.WeatherDAO;
+import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
+import edu.ntust.cs.idsl.nomissing.dao.WeatherDao;
 import edu.ntust.cs.idsl.nomissing.model.City;
 import edu.ntust.cs.idsl.nomissing.model.Region;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
@@ -137,7 +137,7 @@ public class WeatherExpandListAdapter extends BaseExpandableListAdapter {
 		
 		TextView textViewWeather = (TextView)convertView.findViewById(android.R.id.text2);
 		
-		WeatherDAO weatherDAO = SQLiteDAOFactory.getWeatherDAO(context);
+		WeatherDao weatherDAO = SQLiteDaoFactory.getWeatherDao(context);
 		Weather weather = weatherDAO.find(childList.get(groupPosition).get(childPosition).getCityID());
 		textViewWeather.setSingleLine(true);
 		textViewWeather.setEllipsize(TruncateAt.END);

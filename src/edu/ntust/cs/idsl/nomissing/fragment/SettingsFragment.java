@@ -2,7 +2,7 @@ package edu.ntust.cs.idsl.nomissing.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -11,11 +11,13 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.provider.CalendarContract.Calendars;
 import android.support.v4.preference.PreferenceFragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import edu.ntust.cs.idsl.nomissing.R;
+import edu.ntust.cs.idsl.nomissing.calendar.CalendarProviderDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Calendar;
 import edu.ntust.cs.idsl.nomissing.util.CalendarUtil;
@@ -25,6 +27,7 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
+@SuppressLint("InlinedApi")
 public class SettingsFragment extends PreferenceFragment implements OnPreferenceClickListener, OnPreferenceChangeListener {
 
 	private NoMissingApp app;
@@ -59,7 +62,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	
 	private void setPrefCalendar() {
 		prefCalendar = (Preference) findPreference("calendar_id");
-		List<Calendar> calendars = CalendarUtil.getCalendars(getActivity());
+		List<Calendar> calendars = CalendarProviderDaoFactory.getCalendarDao(getActivity()).findAll();
 		for(Calendar calendar : calendars) {
 			if (calendar.getId() == mCalendarID) {
 				prefCalendar.setSummary(calendar.getName());
@@ -144,16 +147,13 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	}
 	
 	private void openSettingCalendarDialog() {
-		final List<Calendar> calendars = CalendarUtil.getCalendars(getActivity());
-		List<String> items = new ArrayList<String>();
-		for (Calendar calendar : calendars) {
-			items.add(calendar.getName());
-		}
+		final List<Calendar> calendars = 
+				CalendarProviderDaoFactory.getCalendarDao(getActivity()).findByAccessLevel(Calendars.CAL_ACCESS_OWNER);
 	
 		new AlertDialog.Builder(getActivity())
 		.setTitle(R.string.dialog_set_calendar)
 		.setIcon(android.R.drawable.ic_dialog_info)
-		.setItems(items.toArray(new String[calendars.size()]), new OnClickListener() {
+		.setItems(Calendar.getNameOfCalendars(calendars).toArray(new String[calendars.size()]), new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				mCalendarID = calendars.get(which).getId();

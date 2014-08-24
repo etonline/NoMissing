@@ -12,7 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.model.NavDrawerItem;
+import edu.ntust.cs.idsl.nomissing.constant.NavDrawerItem;
 
 public class NavDrawerListAdapter extends BaseAdapter {
 

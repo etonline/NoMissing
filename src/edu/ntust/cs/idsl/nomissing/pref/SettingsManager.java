@@ -3,7 +3,7 @@ package edu.ntust.cs.idsl.nomissing.pref;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import edu.ntust.cs.idsl.nomissing.model.City;
+import edu.ntust.cs.idsl.nomissing.constant.City;
 
 public class SettingsManager {
 	
@@ -86,7 +86,7 @@ public class SettingsManager {
 	}
 	
 	public long getCalendarID() {
-		return pref.getLong(KEY_CALENDAR_ID, 0);
+		return pref.getLong(KEY_CALENDAR_ID, -1);
 	}
 	
 	public String getTTSSpeaker() {

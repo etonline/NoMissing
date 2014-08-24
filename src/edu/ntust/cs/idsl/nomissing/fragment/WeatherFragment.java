@@ -17,10 +17,11 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetWeatherActivity;
 import edu.ntust.cs.idsl.nomissing.activity.WeatherActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.WeatherExpandListAdapter;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
-import edu.ntust.cs.idsl.nomissing.dao.WeatherDao;
+import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
+import edu.ntust.cs.idsl.nomissing.dao.sqlite.WeatherDao;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
+import edu.ntust.cs.idsl.nomissing.service.GetWeatherDataService;
 import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
 
 /**
@@ -62,7 +63,9 @@ public class WeatherFragment extends Fragment implements OnChildClickListener {
 		case R.id.action_set_weather:
 			startActivity(new Intent(getActivity(), SetWeatherActivity.class));
 			return true;
-			
+		case R.id.action_refresh_weather_data:
+			getActivity().startService(new Intent(getActivity(), GetWeatherDataService.class));
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

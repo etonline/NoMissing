@@ -1,5 +1,7 @@
 package edu.ntust.cs.idsl.nomissing.service;
 
+import java.io.File;
+
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -31,7 +34,6 @@ public class MediaPlayerService extends Service implements
     public static final String ACTION_STOP = "edu.ntust.cs.idsl.nomissing.action.STOP";
         
     private MediaPlayer mediaPlayer;
-    private String audioURL;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -55,10 +57,13 @@ public class MediaPlayerService extends Service implements
 		case ACTION_PLAY:
             try {
             	Log.i(TAG, "Audio Playing");
-        		audioURL = intent.getStringExtra("audioURL");
-
+            	
+        		String audio = intent.getStringExtra("audio");
+        		Uri uri = Uri.parse(audio);
+//        		Log.i(TAG, audio);
+        		
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);            	
-				mediaPlayer.setDataSource(audioURL);
+				mediaPlayer.setDataSource(this, uri);
 	            mediaPlayer.setOnPreparedListener(this);
 	            mediaPlayer.prepareAsync(); 
 			} catch (Exception e) {

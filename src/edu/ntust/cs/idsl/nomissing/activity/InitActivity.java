@@ -21,6 +21,7 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingResultCode;
+import edu.ntust.cs.idsl.nomissing.service.GetAudioFileService;
 import edu.ntust.cs.idsl.nomissing.service.GetWeatherDataService;
 import edu.ntust.cs.idsl.nomissing.util.Connectivity;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
@@ -51,7 +52,7 @@ public class InitActivity extends Activity {
 	private void startApp() {
 		if (!Connectivity.isConnected(getApplicationContext()))
 			openNetworkUnavailableDialog();
-
+		
 		final Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
 			@Override
@@ -108,7 +109,7 @@ public class InitActivity extends Activity {
 					
 	    			switch (code) {
 	    			case NoMissingResultCode.LOGIN_SUCCESS:
-	    				startService(new Intent(InitActivity.this, GetWeatherDataService.class));
+//	    				startService(new Intent(InitActivity.this, GetWeatherDataService.class));
 	        			startActivity(new Intent(InitActivity.this, MainActivity.class));
 	        			InitActivity.this.finish();	
 	    				break;

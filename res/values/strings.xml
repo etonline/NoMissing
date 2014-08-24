@@ -11,7 +11,6 @@
     <string name="title_activity_set_weather">語音天氣設定</string>
     <string name="title_activity_chime">語音報時</string>
     <string name="title_activity_set_event">活動設定</string>
-    
 
     <!-- Action Bar -->
     <string name="action_settings">設定</string>
@@ -26,19 +25,18 @@
     <string name="action_delete_event">刪除</string>
     <string name="action_add_event">新增活動</string>
     <string name="action_search_date">查詢日期</string>
+    <string name="action_refresh_weather_data">更新資料</string>
 
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-
-    
     <string name="nav_home">待辦事項</string>
     <string name="nav_calendar">我的日曆</string>
     <string name="nav_chime">語音報時</string>
     <string name="nav_weather">語音天氣</string>
     <string name="nav_settings">設定</string>
     <string name="nav_logout">登出</string>
-    
+
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
         <item>待辦事項</item>
@@ -89,6 +87,8 @@
     <!-- WeatherFragment -->
     <string name="alert_dialog_close">關閉</string>
     <string name="toast_save_settings">已儲存設定</string>
+    <string name="toast_refresh_weather_data">取得天氣資料中，請稍後...</string>
+    <string name="toast_refresh_weather_data_completed">天氣資料更新完成</string>
 
     <!-- ChimeFragment -->
 
@@ -205,12 +205,17 @@
     <string name="eastern_region_cities">花蓮縣, 台東縣</string>
     <string name="offshore_islands_region_cities">澎湖縣, 金門縣, 連江縣</string>
     <string name="progress_dialog_please_wait">Please wait...</string>
-    
+    <string name="default_calendar">NoMissing (預設)</string>
     <string name="hello_world">Hello world!</string>
-	<string name="title_activity_weather">語音天氣</string>
-	
-	<string name="click_back_again_to_exit">再按一次離開</string>
-	
-	<string name="dialog_set_calendar">設定日曆</string>
-	
+    <string name="title_activity_weather">語音天氣</string>
+    <string name="click_back_again_to_exit">再按一次離開</string>
+    <string name="dialog_set_calendar">設定日曆</string>
+    
+    <string name="title_activity_event">待辦事項</string>
+    
+    <string name="event_title">活動名稱： </string>
+    <string name="event_location">活動地點： </string>
+    <string name="event_start_time">開始時間： </string>
+    <string name="event_end_time">結束時間： </string>
+
 </resources>

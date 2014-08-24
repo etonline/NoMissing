@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import edu.ntust.cs.idsl.nomissing.model.City;
+import edu.ntust.cs.idsl.nomissing.constant.City;
 
 public class NoMissingDB extends SQLiteOpenHelper {
 		
@@ -15,7 +15,8 @@ public class NoMissingDB extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "NoMissing.db";
 
 	// Table names
-	public static final String TABLE_EVENTS = "tasks";
+	public static final String TABLE_EVENTS = "events";
+	public static final String TABLE_REMINDERS = "reminders";
 	public static final String TABLE_CHIMES = "chimes";
 	public static final String TABLE_WEATHER = "weather";
 
@@ -25,11 +26,19 @@ public class NoMissingDB extends SQLiteOpenHelper {
 	public static final String EVENTS_KEY_TITLE = "title";
 	public static final String EVENTS_KEY_LOCATION = "location";
 	public static final String EVENTS_KEY_DESCRIPTION = "description";
-	public static final String EVENTS_KEY_START = "start";
-	public static final String EVENTS_KEY_END = "end";
-	public static final String EVENTS_KEY_ALL_DAY = "all_day";
-	public static final String EVENTS_KEY_RRULE = "rrule";
-	public static final String EVENTS_KEY_REMINDER = "reminder";
+	public static final String EVENTS_KEY_START_TIME = "start_time";
+	public static final String EVENTS_KEY_END_TIME = "end_time";
+	public static final String EVENTS_KEY_HAS_REMINDER = "has_reminder";
+	public static final String EVENTS_KEY_CREATED_AT = "created_at";
+	public static final String EVENTS_KEY_UPDATED_AT = "updated_at";
+	
+	public static final String REMINDERS_KEY_ID = "_id";
+	public static final String REMINDERS_KEY_CALENDAR_ID = "calendar_id";
+	public static final String REMINDERS_KEY_EVENT_ID = "event_id";
+	public static final String REMINDERS_KEY_REMINDER_TIME = "reminder_time";
+	public static final String REMINDERS_KEY_AUDIO = "audio";
+	public static final String REMINDERS_KEY_CREATED_AT = "created_at";
+	public static final String REMINDERS_KEY_UPDATED_AT = "updated_at";
 	
 	public static final String CHIMES_KEY_ID = "_id";
 	public static final String CHIMES_KEY_HOUR = "hour";
@@ -57,6 +66,7 @@ public class NoMissingDB extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		createEventsTable(db);
+		createRemindersTable(db);
 		createChimesTable(db);
 		createWeatherTable(db);
 	}
@@ -64,19 +74,48 @@ public class NoMissingDB extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDERS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHIMES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_WEATHER);
+		
 		createEventsTable(db);
+		createRemindersTable(db);
 		createChimesTable(db);
 		createWeatherTable(db);		
 	}
 
 	/*
-	 * Create task table
+	 * Create events table
 	 */
 	private void createEventsTable(SQLiteDatabase db) {
-		
+		String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "(" + 
+				EVENTS_KEY_ID + " INTEGER PRIMARY KEY," + 
+				EVENTS_KEY_CALENDAR_ID + " INTEGER," + 
+				EVENTS_KEY_TITLE + " TEXT," + 
+				EVENTS_KEY_LOCATION + " TEXT," + 
+				EVENTS_KEY_DESCRIPTION + " TEXT," + 
+				EVENTS_KEY_START_TIME + " DATETIME," +
+				EVENTS_KEY_END_TIME + " DATETIME," +
+				EVENTS_KEY_HAS_REMINDER + " INTEGER," +
+				EVENTS_KEY_CREATED_AT + " DATETIME," + 
+				EVENTS_KEY_UPDATED_AT + " DATETIME" + ")";
+		db.execSQL(CREATE_EVENTS_TABLE);
 	}		
+	
+	/*
+	 * Create reminders table
+	 */
+	private void createRemindersTable(SQLiteDatabase db) {
+		String CREATE_REMINDERS_TABLE = "CREATE TABLE " + TABLE_REMINDERS + "(" + 
+				REMINDERS_KEY_ID + " INTEGER PRIMARY KEY," + 
+				REMINDERS_KEY_CALENDAR_ID + " INTEGER," + 
+				REMINDERS_KEY_EVENT_ID + " INTEGER," + 
+				REMINDERS_KEY_REMINDER_TIME + " DATETIME," + 
+				REMINDERS_KEY_AUDIO + " TEXT," +
+				REMINDERS_KEY_CREATED_AT + " DATETIME," + 
+				REMINDERS_KEY_UPDATED_AT + " DATETIME" + ")";
+		db.execSQL(CREATE_REMINDERS_TABLE);
+	}	
 	
 	/*
 	 * Create chimes table

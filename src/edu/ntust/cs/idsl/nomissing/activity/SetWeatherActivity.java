@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -20,9 +19,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
+import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
+import edu.ntust.cs.idsl.nomissing.constant.City;
+import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
-import edu.ntust.cs.idsl.nomissing.model.City;
-import edu.ntust.cs.idsl.nomissing.util.AlarmUtil;
+import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
@@ -44,6 +45,8 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	private int reminderMinute;
 	private int reminderCity;
 	
+	private Weather weather;
+	
 	private Calendar calendar;
 	private SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
 	
@@ -62,6 +65,8 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 		reminderHour = app.userSettings.getWeatherReminderHour();
 		reminderMinute = app.userSettings.getWeatherReminderMinute();
 		reminderCity = app.userSettings.getWeatherReminderCity();
+		
+		weather = SQLiteDaoFactory.createWeatherDao(this).find(reminderCity);
 		
 		setPrefTTSEnabled();
 		setPrefWeatherReminder();
@@ -178,7 +183,7 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	}
 	
 	private void saveSettings() {
-		AlarmUtil.cancelWeatherAlarm(this);
+		AlarmHandlerFactory.createWeatherAlarmHandler(this).cancelAlarm(weather);
 		
 		app.userSettings.setWeatherTTSEnabled(isTTSEnabled);
 		app.userSettings.setWeatherReminderEnabled(isReminderEnabled);
@@ -186,8 +191,10 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 		app.userSettings.setWeatherReminderMinute(reminderMinute);
 		app.userSettings.setWeatherReminderCity(reminderCity);
 		
+		weather = SQLiteDaoFactory.createWeatherDao(this).find(reminderCity);
+		
 		if (isReminderEnabled) 
-			AlarmUtil.setWeatherAlarm(this);	
+			AlarmHandlerFactory.createWeatherAlarmHandler(this).setAlarm(weather);
 		
 		ToastMaker.toast(this, getString(R.string.toast_save_settings));
 	}

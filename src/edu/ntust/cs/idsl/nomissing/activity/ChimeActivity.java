@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
+import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
 
@@ -20,12 +20,12 @@ public class ChimeActivity extends Activity {
 		setContentView(R.layout.activity_chime);
 		
 		int chimeID = getIntent().getIntExtra("id", -1);
-		chime = SQLiteDaoFactory.getChimeDao(this).find(chimeID);
+		chime = SQLiteDaoFactory.createChimeDao(this).find(chimeID);
 		openChimeDialog(chime);
 			
 		if (!chime.isRepeating()) {
 			chime.setTriggered(true);
-			SQLiteDaoFactory.getChimeDao(this).update(chime);
+			SQLiteDaoFactory.createChimeDao(this).update(chime);
 		}			
 	}
 
@@ -60,10 +60,10 @@ public class ChimeActivity extends Activity {
 		cityWeatherDialog.show();
 	}
 	
-	private void startTTSAudio(String audioURL) {
+	private void startTTSAudio(String audio) {
 		Intent startIntent = new Intent(this, MediaPlayerService.class);
 		startIntent.setAction(MediaPlayerService.ACTION_PLAY);
-		startIntent.putExtra("audioURL", audioURL);		
+		startIntent.putExtra("audio", audio);		
 		startService(startIntent);			
 	}
 	

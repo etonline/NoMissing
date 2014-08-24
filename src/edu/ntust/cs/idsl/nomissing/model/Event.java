@@ -1,42 +1,26 @@
 package edu.ntust.cs.idsl.nomissing.model;
 
 public class Event {
-	private long eventID;
+	private long id;
 	private long calendarID;
 	private String title;
 	private String location;
 	private String description;
 	private long startTime;
 	private long endTime;
-	private boolean allDay;
-	private String rrule;
-	private int reminder;
+	private boolean hasReminder;
+	private long createdAt;
+	private long updatedAt;
 
 	public Event() {
 	}
 
-	public Event(long eventID, long calendarID, String title, String location,
-			String description, long startTime, long endTime, boolean allDay,
-			String rrule, int reminder) {
-		super();
-		this.eventID = eventID;
-		this.calendarID = calendarID;
-		this.title = title;
-		this.location = location;
-		this.description = description;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.allDay = allDay;
-		this.rrule = rrule;
-		this.reminder = reminder;
+	public long getId() {
+		return id;
 	}
 
-	public long getEventID() {
-		return eventID;
-	}
-
-	public void setEventID(long eventID) {
-		this.eventID = eventID;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public long getCalendarID() {
@@ -87,28 +71,28 @@ public class Event {
 		this.endTime = endTime;
 	}
 
-	public boolean isAllDay() {
-		return allDay;
+	public boolean hasReminder() {
+		return hasReminder;
 	}
 
-	public void setAllDay(boolean allDay) {
-		this.allDay = allDay;
+	public void setReminder(boolean reminder) {
+		this.hasReminder = reminder;
 	}
 
-	public String getRrule() {
-		return rrule;
+	public long getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setRrule(String rrule) {
-		this.rrule = rrule;
+	public void setCreatedAt(long createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public int getReminder() {
-		return reminder;
+	public long getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setReminder(int reminder) {
-		this.reminder = reminder;
+	public void setUpdatedAt(long updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 }

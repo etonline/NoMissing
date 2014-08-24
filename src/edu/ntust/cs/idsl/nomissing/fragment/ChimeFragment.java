@@ -16,7 +16,7 @@ import android.widget.ListView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetChimeActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.ChimeListAdapter;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
+import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
@@ -35,7 +35,7 @@ public class ChimeFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		
-		chimeList = SQLiteDaoFactory.getChimeDao(getActivity()).findAll();
+		chimeList = SQLiteDaoFactory.createChimeDao(getActivity()).findAll();
 		adapter = new ChimeListAdapter(getActivity(), chimeList);
 		setListAdapter(adapter);
 	}
@@ -73,7 +73,7 @@ public class ChimeFragment extends ListFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode != Constant.REQUEST_CODE_SET) return;
 		
-		chimeList = SQLiteDaoFactory.getChimeDao(getActivity()).findAll();
+		chimeList = SQLiteDaoFactory.createChimeDao(getActivity()).findAll();
 		adapter = new ChimeListAdapter(getActivity(), chimeList);
 		setListAdapter(adapter);
 		

@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.provider.CalendarContract.Calendars;
-import edu.ntust.cs.idsl.nomissing.calendar.CalendarProviderDaoFactory;
+import edu.ntust.cs.idsl.nomissing.R;
+import edu.ntust.cs.idsl.nomissing.dao.calendar.CalendarProviderDaoFactory;
 
 public class Calendar {
 	private long id;
@@ -74,6 +75,10 @@ public class Calendar {
 			nameOfCalendars.add(calendar.getName());
 		}		
 		return nameOfCalendars;
+	}
+	
+	public static Calendar getDefaultCalendar() {
+		return new Calendar(0, "NoMissing (Default)");
 	}
 
 }

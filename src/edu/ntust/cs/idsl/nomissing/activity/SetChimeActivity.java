@@ -18,12 +18,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
+import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
+import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.service.TTSConvertTextService;
-import edu.ntust.cs.idsl.nomissing.util.AlarmUtil;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
@@ -59,7 +59,7 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
         getActionBar().setHomeButtonEnabled(true);	
 		
 		chimeID = getIntent().getIntExtra("chimeID", 0);
-		chime = (chimeID != 0 ) ? SQLiteDaoFactory.getChimeDao(this).find(chimeID) : new Chime();
+		chime = (chimeID != 0 ) ? SQLiteDaoFactory.createChimeDao(this).find(chimeID) : new Chime();
 		
 		chimeHour = chime.getHour();
 		chimeMinute = chime.getMinute();
@@ -179,7 +179,7 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 	}
 	
 	private void createChime() {
-		chimeID = SQLiteDaoFactory.getChimeDao(this).getNextID();
+		chimeID = SQLiteDaoFactory.createChimeDao(this).getNextID();
 		long currentTime = System.currentTimeMillis();
 		
 		chime.setId(chimeID);
@@ -191,10 +191,10 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 		chime.setCreatedAt(currentTime);
 		chime.setUpdatedAt(currentTime);
 		
-		SQLiteDaoFactory.getChimeDao(this).insert(chime);
+		SQLiteDaoFactory.createChimeDao(this).insert(chime);
 		
 		if (isChimeEnabled)
-			AlarmUtil.setChimeAlarm(this, chime);		
+			AlarmHandlerFactory.createChimeAlarmHandler(this).setAlarm(chime);	
 	}
 	
 	private void updateChime() {
@@ -205,16 +205,16 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 		chime.setRepeating(isChimeRepeating);
 		chime.setTriggered(isTrigged);
 		chime.setUpdatedAt(currentTime);
-		SQLiteDaoFactory.getChimeDao(this).update(chime);
+		SQLiteDaoFactory.createChimeDao(this).update(chime);
 		
-		AlarmUtil.cancelChimeAlarm(this, chime);
+		AlarmHandlerFactory.createChimeAlarmHandler(this).cancelAlarm(chime);
 		if (isChimeEnabled)
-			AlarmUtil.setChimeAlarm(this, chime);		
+			AlarmHandlerFactory.createChimeAlarmHandler(this).setAlarm(chime);
 	}
 	
 	private void deleteChime() {
-		AlarmUtil.cancelChimeAlarm(this, chime);	
-		SQLiteDaoFactory.getChimeDao(this).delete(chimeID);
+		AlarmHandlerFactory.createChimeAlarmHandler(this).cancelAlarm(chime);
+		SQLiteDaoFactory.createChimeDao(this).delete(chimeID);
 	}
 	
 	private void getTTSAudio() {

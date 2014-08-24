@@ -1,8 +1,6 @@
 package edu.ntust.cs.idsl.nomissing.activity;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -28,7 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.adapter.NavDrawerListAdapter;
-import edu.ntust.cs.idsl.nomissing.calendar.CalendarProviderDaoFactory;
+import edu.ntust.cs.idsl.nomissing.constant.NavDrawerItem;
+import edu.ntust.cs.idsl.nomissing.dao.calendar.CalendarProviderDaoFactory;
 import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.ChimeFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.HomeFragment;
@@ -36,8 +35,6 @@ import edu.ntust.cs.idsl.nomissing.fragment.SettingsFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.WeatherFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Calendar;
-import edu.ntust.cs.idsl.nomissing.model.NavDrawerItem;
-import edu.ntust.cs.idsl.nomissing.util.CalendarUtil;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
@@ -81,7 +78,7 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 	protected void onStart() {
 		super.onStart();
 		
-		if (app.userSettings.getCalendarID() == 0)
+		if (app.userSettings.getCalendarID() == -1)
 			openSettingCalendarDialog();
 	}
 
@@ -225,7 +222,7 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 	
 	private void openSettingCalendarDialog() {
 		final List<Calendar> calendars = 
-				CalendarProviderDaoFactory.getCalendarDao(this).findByAccessLevel(Calendars.CAL_ACCESS_OWNER);
+				CalendarProviderDaoFactory.createCalendarDao(this).findByAccessLevel(Calendars.CAL_ACCESS_OWNER);
 	
 		new AlertDialog.Builder(this)
 		.setTitle(R.string.dialog_set_calendar)

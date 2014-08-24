@@ -1,7 +1,7 @@
 package edu.ntust.cs.idsl.nomissing.fragment;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,10 +17,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.calendar.CalendarProviderDaoFactory;
+import edu.ntust.cs.idsl.nomissing.dao.calendar.CalendarProviderDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Calendar;
-import edu.ntust.cs.idsl.nomissing.util.CalendarUtil;
 import edu.ntust.cs.idsl.nomissing.util.SeekBarPreference;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
@@ -62,7 +61,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	
 	private void setPrefCalendar() {
 		prefCalendar = (Preference) findPreference("calendar_id");
-		List<Calendar> calendars = CalendarProviderDaoFactory.getCalendarDao(getActivity()).findAll();
+		List<Calendar> calendars = CalendarProviderDaoFactory.createCalendarDao(getActivity()).findAll();
 		for(Calendar calendar : calendars) {
 			if (calendar.getId() == mCalendarID) {
 				prefCalendar.setSummary(calendar.getName());
@@ -148,7 +147,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	
 	private void openSettingCalendarDialog() {
 		final List<Calendar> calendars = 
-				CalendarProviderDaoFactory.getCalendarDao(getActivity()).findByAccessLevel(Calendars.CAL_ACCESS_OWNER);
+				CalendarProviderDaoFactory.createCalendarDao(getActivity()).findByAccessLevel(Calendars.CAL_ACCESS_OWNER);
 	
 		new AlertDialog.Builder(getActivity())
 		.setTitle(R.string.dialog_set_calendar)

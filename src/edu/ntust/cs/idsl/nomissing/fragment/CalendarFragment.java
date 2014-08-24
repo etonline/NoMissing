@@ -10,6 +10,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +31,7 @@ import com.roomorama.caldroid.CaldroidListener;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetEventActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.EventListAdapter;
-import edu.ntust.cs.idsl.nomissing.calendar.CalendarProviderDaoFactory;
+import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
@@ -212,7 +213,8 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		long endMillis = getEndOfDate(calendar).getTimeInMillis();
 
-		monthEvents = CalendarProviderDaoFactory.getEventDao(getActivity()).find(calenderID, startMillis, endMillis);
+//		monthEvents = SQLiteDaoFactory.creatEventDaoEventDao(getActivity()).find(calenderID, startMillis, endMillis);
+		monthEvents = SQLiteDaoFactory.createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
 		for(Event event : monthEvents) {
 			calendar.setTimeInMillis(event.getStartTime());
 			caldroidFragment.setBackgroundResourceForDate(R.color.indianred, calendar.getTime());
@@ -229,7 +231,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
     	long startMillis = getStartOfDate(day).getTimeInMillis();
     	long endMillis = getEndOfDate(day).getTimeInMillis();
     	
-    	dayEvents = CalendarProviderDaoFactory.getEventDao(getActivity()).find(calenderID, startMillis, endMillis);
+    	dayEvents = SQLiteDaoFactory.createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
     	adapter = new EventListAdapter(getActivity(), dayEvents);
     	listViewEvents.setAdapter(adapter);  		
 	}
@@ -260,6 +262,10 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 	}
 
 	private void setEvent(long calenderID, long eventID, long startMillis, long endMillis) {
+		Log.i("TAG", String.valueOf(eventID));
+		Log.i("TAG", String.valueOf(calenderID));
+		Log.i("TAG", String.valueOf(startMillis));
+		Log.i("TAG", String.valueOf(endMillis));
 		Intent intent = new Intent(getActivity(), SetEventActivity.class);
 		intent.putExtra("calendarID", calenderID);
 		if (eventID != 0) intent.putExtra("eventID", eventID);

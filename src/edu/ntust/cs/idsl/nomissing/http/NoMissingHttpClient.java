@@ -57,5 +57,9 @@ public class NoMissingHttpClient {
 		  client.setBasicAuth(username, password);
 		  client.post(NoMissingRoute.GET_CONVERT_STATUS, params, responseHandler);
 	  }
+	  
+	  public static void download(String url, AsyncHttpResponseHandler responseHandler) {
+		  client.get(url, responseHandler);
+	  }
 	
 }

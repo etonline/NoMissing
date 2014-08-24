@@ -5,12 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.dao.SQLiteDaoFactory;
+import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
@@ -31,7 +27,7 @@ public class WeatherActivity extends Activity {
 		app = (NoMissingApp) getApplicationContext();
 		
 		int cityID = getIntent().getIntExtra("id", -1);
-		weather = SQLiteDaoFactory.getWeatherDao(this).find(cityID);
+		weather = SQLiteDaoFactory.createWeatherDao(this).find(cityID);
 		
 		openCityWeatherDialog(weather);
 	}
@@ -69,10 +65,10 @@ public class WeatherActivity extends Activity {
 		cityWeatherDialog.show();
 	}
 	
-	private void startTTSAudio(String audioURL) {
+	private void startTTSAudio(String audio) {
 		Intent startIntent = new Intent(this, MediaPlayerService.class);
 		startIntent.setAction(MediaPlayerService.ACTION_PLAY);
-		startIntent.putExtra("audioURL", audioURL);		
+		startIntent.putExtra("audio", audio);		
 		startService(startIntent);			
 	}
 	

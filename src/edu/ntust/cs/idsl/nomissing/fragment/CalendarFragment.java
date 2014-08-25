@@ -31,6 +31,7 @@ import com.roomorama.caldroid.CaldroidListener;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetEventActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.EventListAdapter;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
@@ -73,7 +74,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 		setHasOptionsMenu(true);
 		
 		app = (NoMissingApp)getActivity().getApplicationContext();
-		calenderID = app.userSettings.getCalendarID();
+		calenderID = app.getSettings().getCalendarID();
 	}
 
 	@Override
@@ -213,8 +214,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		long endMillis = getEndOfDate(calendar).getTimeInMillis();
 
-//		monthEvents = SQLiteDaoFactory.creatEventDaoEventDao(getActivity()).find(calenderID, startMillis, endMillis);
-		monthEvents = SQLiteDaoFactory.createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
+		monthEvents = DaoFactory.getDaoFactory((int)app.getSettings().getCalendarID()).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
 		for(Event event : monthEvents) {
 			calendar.setTimeInMillis(event.getStartTime());
 			caldroidFragment.setBackgroundResourceForDate(R.color.indianred, calendar.getTime());
@@ -231,7 +231,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
     	long startMillis = getStartOfDate(day).getTimeInMillis();
     	long endMillis = getEndOfDate(day).getTimeInMillis();
     	
-    	dayEvents = SQLiteDaoFactory.createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
+    	dayEvents = monthEvents = DaoFactory.getDaoFactory((int)app.getSettings().getCalendarID()).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
     	adapter = new EventListAdapter(getActivity(), dayEvents);
     	listViewEvents.setAdapter(adapter);  		
 	}

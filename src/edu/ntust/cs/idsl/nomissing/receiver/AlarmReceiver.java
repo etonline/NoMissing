@@ -28,7 +28,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 		Log.v(TAG, intent.getAction());		
 		
 		if (intent.getAction().equals(ACTION_REMINDER_ALARM)) {
-			long reminderID = intent.getIntExtra("id", 0);
+			long reminderID = intent.getLongExtra("id", 0);
+			Log.i("TAG", String.valueOf(reminderID));
 			Reminder reminder = SQLiteDaoFactory.createReminderDao(context).find(reminderID);
 			
 			NotificationHandlerFactory.createReminderNotificationHandler(context).sendNotification(reminder);

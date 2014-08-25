@@ -24,6 +24,7 @@ import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
+import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
 import edu.ntust.cs.idsl.nomissing.util.FileUtil;
@@ -37,7 +38,7 @@ public class GetAudioFileService extends IntentService {
 	
 	private NoMissingApp app;
 	
-	private int id;
+	private long id;
 	private String category;
 	private String url;
 	
@@ -58,7 +59,7 @@ public class GetAudioFileService extends IntentService {
 		if (intent.getAction().equals(ACTION_GET_AUDIO_FILE)) {
 			Log.v(TAG, "start");
 			
-			id = intent.getIntExtra("id", 0);
+			id = intent.getLongExtra("id", 0);
 			category = intent.getStringExtra("category");
 			url = intent.getStringExtra("url");
 			Log.i(TAG, url);
@@ -96,14 +97,18 @@ public class GetAudioFileService extends IntentService {
 		}
 	}
 	
-	private void setAudio(String category, int id, String audio) {
+	private void setAudio(String category, long id, String audio) {
+		if (category.equals("reminder")) {
+			Reminder reminder = SQLiteDaoFactory.createReminderDao(this).find(id);
+			reminder.setAudio(audio);
+			SQLiteDaoFactory.createReminderDao(this).update(reminder);
+		}
+		
 		if (category.equals("chime")) {
-			Chime chime = SQLiteDaoFactory.createChimeDao(this).find(id);
+			Chime chime = SQLiteDaoFactory.createChimeDao(this).find((int)id);
 			chime.setAudio(audio);
 			SQLiteDaoFactory.createChimeDao(this).update(chime);
 		}
-		
-		Log.i(TAG, "complete");
 	}
 
 }

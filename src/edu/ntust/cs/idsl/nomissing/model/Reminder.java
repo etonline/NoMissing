@@ -1,5 +1,10 @@
 package edu.ntust.cs.idsl.nomissing.model;
 
+import android.annotation.SuppressLint;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+@SuppressLint({ "SimpleDateFormat", "NewApi" })
 public class Reminder {
 	private long id;
 	private long calendarID;
@@ -79,5 +84,21 @@ public class Reminder {
 	public void setUpdatedAt(long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
+	
+	public String getStringForTTS(Event event) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(getReminderTime());
+		SimpleDateFormat formatter = new SimpleDateFormat("a h:mm");
+		
+		StringBuilder reminder = new StringBuilder();
+		reminder.append("現在時間：" + formatter.format(calendar.getTime()) + "。");
+		reminder.append(event.getTitle() + "將於" + formatter.format(event.getStartTime()) + "開始，");
+		reminder.append("於" + formatter.format(event.getEndTime()) + "結束。");
+		
+		if (!event.getLocation().isEmpty())
+			reminder.append("在" + event.getLocation());
+		
+		return reminder.toString();
+	}
+	
 }

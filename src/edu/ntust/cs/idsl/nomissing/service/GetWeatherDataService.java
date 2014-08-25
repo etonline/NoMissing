@@ -3,7 +3,6 @@ package edu.ntust.cs.idsl.nomissing.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -30,8 +29,6 @@ public class GetWeatherDataService extends IntentService {
 	
 	private static final String TAG = "GetWeatherDataService";
 	private NoMissingApp app;
-	private String username;
-	private String password;
 	
 	private static String audioUri;
 	
@@ -42,12 +39,7 @@ public class GetWeatherDataService extends IntentService {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		app = (NoMissingApp)getApplicationContext();
-		
-		HashMap<String, String> user = app.session.getUserData();
-		username = user.get("username");
-		password = user.get("password");
-		
+		app = (NoMissingApp)getApplicationContext();		
 		ToastMaker.toast(this, R.string.toast_refresh_weather_data);
 	}
 
@@ -60,10 +52,10 @@ public class GetWeatherDataService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		NoMissingHttpClient.getInstance(false);
-		NoMissingHttpClient.get(NoMissingRoute.WEATHER, username, password, new JsonHttpResponseHandler() {
+		NoMissingHttpClient.get(NoMissingRoute.WEATHER, app.getSettings().getUUID(), app.getSettings().getAccessToken(), new JsonHttpResponseHandler() {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-				Log.v(TAG, response.toString());	
+				Log.i(TAG, response.toString());	
 								
 				try {
 					for (int i = 0; i < response.length(); i++) {
@@ -87,6 +79,11 @@ public class GetWeatherDataService extends IntentService {
 				catch (JSONException e) {
 					e.printStackTrace();
 				}
+			}
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+				Log.i(TAG, throwable.toString());	
 			}
         });	
 	}

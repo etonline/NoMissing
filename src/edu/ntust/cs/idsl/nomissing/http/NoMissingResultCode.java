@@ -4,6 +4,11 @@ public class NoMissingResultCode {
 	
 	public static final String TAG = "NoMissingServer";
 	
+	// Register
+	public static final int REGISTER_SUCCESS = 0;
+	public static final int REGISTER_INVALID_REGISTRATION = -1;
+	public static final int REGISTER_UUID_ALREADY_IN_USE = -2;
+	
 	// Login
 	public static final int LOGIN_SUCCESS = 0;
 	public static final int LOGIN_FORM_VALIDATION_FAILED = -1;

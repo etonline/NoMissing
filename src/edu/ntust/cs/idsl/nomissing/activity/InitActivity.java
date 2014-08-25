@@ -1,14 +1,12 @@
 package edu.ntust.cs.idsl.nomissing.activity;
 
-import java.util.HashMap;
+import java.util.UUID;
 
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,10 +19,7 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingResultCode;
-import edu.ntust.cs.idsl.nomissing.service.GetAudioFileService;
-import edu.ntust.cs.idsl.nomissing.service.GetWeatherDataService;
 import edu.ntust.cs.idsl.nomissing.util.Connectivity;
-import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 
 /**
@@ -33,104 +28,79 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 public class InitActivity extends Activity {
 	
 	private static final String TAG = InitActivity.class.getSimpleName();
+	private static final String PARAM_UUID = "uuid";
 	private NoMissingApp app;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_init);
-		
 		app = (NoMissingApp)getApplicationContext();
+		
+		checkInitialized();
+		checkRegistered();
 		startApp();
 	}
 	
-	/**
-	 * Start the app.
-	 * If network is unavailable, open the alert dialog and then exit the app.
-	 * If the user isn't logged in, go to the LoginActivity.
-	 */		
-	private void startApp() {
-		if (!Connectivity.isConnected(getApplicationContext()))
-			openNetworkUnavailableDialog();
+	private void checkInitialized() {
+		if (app.getSettings().isInitialized()) return;
 		
+		String uuid = UUID.randomUUID().toString();
+		app.getSettings().setUUID(uuid);
+		app.getSettings().setInitialized(true);
+	}
+	
+	private void checkRegistered() {
+		if (app.getSettings().isRegistered()) return;
+		if (Connectivity.isConnected(getApplicationContext()))
+			registerTask();
+	}
+	
+	private void startApp() {
 		final Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				if (app.session.isLoggedIn()) {
-					loginTask();
-				}
-				
-				// Go to the LoginActivity if the user isn't logged in.
-				else {
-					startActivity(new Intent(InitActivity.this, LoginActivity.class));
-					InitActivity.this.finish();
-				}
+				startActivity(new Intent(InitActivity.this, MainActivity.class));
+				finish();
 			}
 		}, 1000);
-	}
+	}	
 	
-	/**
-	 * Open the alert dialog.
-	 */	
-	private void openNetworkUnavailableDialog() {
-		new AlertDialog.Builder(this)
-		.setTitle(R.string.init_alert_dialog_title_network_inavailable)
-		.setIcon(android.R.drawable.ic_dialog_alert)
-		.setMessage(R.string.init_alert_dialog_message_network_inavailable)
-		.setNegativeButton(R.string.init_alert_dialog_button_exit,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
-						android.os.Process.killProcess(android.os.Process.myPid());
-	                    System.exit(1);					
-					}
-				}).show();	
-	}
-	
-	/**
-	 * An asynchronous task for logging in the user.
-	 * If login sucessfully, it will start the GetWeatherDataService and go to the MainActivity.
-	 */
-	private void loginTask() {
-        HashMap<String, String> user = app.session.getUserData();
-        RequestParams params = new RequestParams(user);
-        
+	private void registerTask() {
+		RequestParams params = new RequestParams();
+        params.add(PARAM_UUID, app.getSettings().getUUID());
+		
         NoMissingHttpClient.getInstance(true);
-        NoMissingHttpClient.login(params, new JsonHttpResponseHandler() {
+        NoMissingHttpClient.register(params, new JsonHttpResponseHandler() {
 			@Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            	Log.v(NoMissingResultCode.TAG, response.toString());
+            	Log.i(NoMissingResultCode.TAG, response.toString());
             	
 				try {
 					int code = response.getInt("code");
 					String message = response.getString("message");
 					
 	    			switch (code) {
-	    			case NoMissingResultCode.LOGIN_SUCCESS:
-//	    				startService(new Intent(InitActivity.this, GetWeatherDataService.class));
-	        			startActivity(new Intent(InitActivity.this, MainActivity.class));
-	        			InitActivity.this.finish();	
+	    			case NoMissingResultCode.REGISTER_SUCCESS:
+	    				String accessToken = response.getString("access_token");
+	    				app.getSettings().setAccessToken(accessToken);
+	    				app.getSettings().setRegistered(true);
 	    				break;
 	    				
-	    			case NoMissingResultCode.LOGIN_FORM_VALIDATION_FAILED:
-	    				ToastMaker.toast(getApplicationContext(), message);
+	    			case NoMissingResultCode.REGISTER_INVALID_REGISTRATION:
+	    				Log.e(TAG, message);
 	    				break;
 	    				
-	    			case NoMissingResultCode.LOGIN_INVALID_LOGIN:
-	    				ToastMaker.toast(getApplicationContext(), message);
-	    				break;
-	    				
-	    			default:
-	    				ToastMaker.toast(getApplicationContext(), message);
+	    			case NoMissingResultCode.REGISTER_UUID_ALREADY_IN_USE:
+	    				Log.e(TAG, message);
 	    				break;
 	    			}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
             }
-        });		
+        });				
 	}
     
 }

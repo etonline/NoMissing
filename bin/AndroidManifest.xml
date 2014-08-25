@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="12"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -35,86 +35,55 @@
         </activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login" >
-        </activity>
+            android:label="@string/title_activity_login" />
         <activity
             android:name=".activity.SignupActivity"
-            android:label="@string/title_activity_signup" >
-        </activity>
+            android:label="@string/title_activity_signup" />
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/title_activity_main" >
-        </activity>
+            android:label="@string/title_activity_main" />
+        <activity
+            android:name=".activity.SetEventActivity"
+            android:label="@string/title_activity_set_event" />
         <activity
             android:name=".activity.SetChimeActivity"
-            android:label="@string/title_activity_set_chime" >
-        </activity>
+            android:label="@string/title_activity_set_chime" />
+        <activity
+            android:name=".activity.SetWeatherActivity"
+            android:label="@string/title_activity_set_weather" />
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".activity.EventActivity"
+            android:label="@string/title_activity_event"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
+        <activity
+            android:name=".activity.ChimeActivity"
+            android:label="@string/title_activity_chime"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
+        <activity
+            android:name=".activity.WeatherActivity"
+            android:label="@string/title_activity_weather"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
 
-        <service
-            android:name=".service.TTSConvertTextService"
-            android:enabled="true" >
-        </service>
-        <service
-            android:name=".service.TTSGetConvertStatusService"
-            android:enabled="true" >
-        </service>
-        <service
-            android:name=".service.MediaPlayerService"
-            android:enabled="true" >
-        </service>
-        <service
-            android:name=".service.ChimeAlarmInitService"
-            android:enabled="true" >
-        </service>
-        <service android:name=".service.GetWeatherDataService" >
-        </service>
-        <service android:name=".service.GetAudioFileService" >
-        </service>
+        <service android:name=".service.TTSConvertTextService" />
+        <service android:name=".service.TTSGetConvertStatusService" />
+        <service android:name=".service.MediaPlayerService" />
+        <service android:name=".service.ChimeAlarmInitService" />
+        <service android:name=".service.GetWeatherDataService" />
+        <service android:name=".service.GetAudioFileService" />
 
-        <receiver
-            android:name=".receiver.ServerResponseReceiver"
-            android:enabled="true" >
-        </receiver>
-        <receiver
-            android:name=".receiver.AlarmReceiver"
-            android:enabled="true" >
-        </receiver>
+        <receiver android:name=".receiver.ServerResponseReceiver" />
+        <receiver android:name=".receiver.AlarmReceiver" />
         <receiver android:name=".receiver.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
-        <activity
-            android:name=".activity.SetWeatherActivity"
-            android:label="@string/title_activity_set_weather" >
-        </activity>
-        <activity
-            android:name=".activity.ChimeActivity"
-            android:label="@string/title_activity_chime"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Wallpaper.NoTitleBar" >
-        </activity>
-        <activity
-            android:name=".activity.SetEventActivity"
-            android:label="@string/title_activity_set_event" >
-        </activity>
-        <activity
-            android:name=".activity.WeatherActivity"
-            android:label="@string/title_activity_weather"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Wallpaper.NoTitleBar" >
-        </activity>
-        <activity
-            android:name=".activity.EventActivity"
-            android:label="@string/title_activity_event" 
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Wallpaper.NoTitleBar" >
-        </activity>
     </application>
 
 </manifest>

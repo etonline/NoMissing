@@ -5,7 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
-import edu.ntust.cs.idsl.nomissing.pref.SettingsManager;
+import edu.ntust.cs.idsl.nomissing.preference.SettingsManager;
 import edu.ntust.cs.idsl.nomissing.receiver.AlarmReceiver;
 
 public class WeatherAlarmHandler extends AlarmHandler<Weather> {

@@ -1,6 +1,7 @@
 package edu.ntust.cs.idsl.nomissing.dao.calendar;
 
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
+import edu.ntust.cs.idsl.nomissing.dao.IEventDao;
 import android.content.Context;
 
 public class CalendarProviderDaoFactory extends DaoFactory {
@@ -10,6 +11,11 @@ public class CalendarProviderDaoFactory extends DaoFactory {
 	}
 
 	public static EventDao creatEventDao(Context context) {
+		return new EventDao(context);
+	}
+
+	@Override
+	public IEventDao createEventDao(Context context) {
 		return new EventDao(context);
 	}
 	

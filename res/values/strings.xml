@@ -34,8 +34,8 @@
     <string name="nav_calendar">我的日曆</string>
     <string name="nav_chime">語音報時</string>
     <string name="nav_weather">語音天氣</string>
-    <string name="nav_settings">設定</string>
-    <string name="nav_logout">登出</string>
+    <string name="nav_settings">偏好設定</string>
+    <string name="nav_exit">離開程式</string>
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
@@ -43,8 +43,8 @@
         <item>我的日曆</item>
         <item>語音報時</item>
         <item>語音天氣</item>
-        <item>設定</item>
-        <item>登出</item>
+        <item>偏好設定</item>
+        <item>離開程式</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->

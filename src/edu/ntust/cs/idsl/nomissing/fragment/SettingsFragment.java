@@ -48,10 +48,10 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		setHasOptionsMenu(true);
 		app = (NoMissingApp)getActivity().getApplicationContext();	
 		
-		mCalendarID = app.userSettings.getCalendarID();
-		mTTSSpeaker = app.userSettings.getTTSSpeaker();
-		mTTSVolume = app.userSettings.getTTSVolume();
-		mTTSSpeed = app.userSettings.getTTSSpeed();
+		mCalendarID = app.getSettings().getCalendarID();
+		mTTSSpeaker = app.getSettings().getTTSSpeaker();
+		mTTSVolume = app.getSettings().getTTSVolume();
+		mTTSSpeed = app.getSettings().getTTSSpeed();
 		
 		setPrefCalendar();
 		setPrefTTSSpeaker();
@@ -129,10 +129,10 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	}
 	
 	private void saveSettings() {
-		app.userSettings.setCalendarID(mCalendarID);
-		app.userSettings.setTTSSpeaker(mTTSSpeaker);
-		app.userSettings.setTTSVolume(mTTSVolume);
-		app.userSettings.setTTSSpeed(mTTSSpeed);
+		app.getSettings().setCalendarID(mCalendarID);
+		app.getSettings().setTTSSpeaker(mTTSSpeaker);
+		app.getSettings().setTTSVolume(mTTSVolume);
+		app.getSettings().setTTSSpeed(mTTSSpeed);
 		
 		ToastMaker.toast(getActivity(), getString(R.string.toast_save_settings));
 	}

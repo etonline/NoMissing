@@ -48,7 +48,7 @@ public class WeatherActivity extends Activity {
 		cityWeatherDialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-				if (app.userSettings.isWeatherTTSEnabled()) 
+				if (app.getSettings().isWeatherTTSEnabled()) 
 					startTTSAudio(weather.getAudio());
 			}
 		});
@@ -56,7 +56,7 @@ public class WeatherActivity extends Activity {
 		cityWeatherDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			@Override
 			public void onDismiss(DialogInterface dialog) {
-				if (app.userSettings.isWeatherTTSEnabled()) 
+				if (app.getSettings().isWeatherTTSEnabled()) 
 					stopTTSAudio();
 				finish();
 			}

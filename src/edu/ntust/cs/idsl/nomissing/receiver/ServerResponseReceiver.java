@@ -10,6 +10,7 @@ import android.util.Log;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingResultCode;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
+import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.service.GetAudioFileService;
 import edu.ntust.cs.idsl.nomissing.service.TTSGetConvertStatusService;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
@@ -29,7 +30,8 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		
 		if (intent.getAction().equals(ACTION_TTS_CONVERT_TEXT_RESPONSE)) {
-			int chimeID = intent.getIntExtra("chimeID", -1);
+			String category = intent.getStringExtra("category");
+			long id = intent.getLongExtra("id", 0);
 			String response = intent.getStringExtra("response");
 			Log.v(TAG, response);
 			
@@ -41,7 +43,8 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 				if (resultCode == NoMissingResultCode.CONVERT_TEXT_SUCCESS) {
 					Intent newIntent = new Intent(context, TTSGetConvertStatusService.class);
 					newIntent.setAction(TTSGetConvertStatusService.ACTION_GET_CONVERT_STATUS);
-					newIntent.putExtra("chimeID", chimeID);
+					newIntent.putExtra("category", category);
+					newIntent.putExtra("id", id);
 					newIntent.putExtra("convertID", convertID);
 					context.startService(newIntent);				
 				} else {
@@ -53,7 +56,8 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 		}
 		
 		if (intent.getAction().equals(ACTION_TTS_GET_CONVERT_STATUS_RESPONSE)) {
-			int chimeID = intent.getIntExtra("chimeID", -1);
+			String category = intent.getStringExtra("category");
+			long id = intent.getLongExtra("id", 0);
 			String convertID = intent.getStringExtra("convertID");
 			String response = intent.getStringExtra("response");
 			Log.v(TAG, response);			
@@ -65,21 +69,18 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 				if (statusCode != NoMissingResultCode.CONVERT_STATUS_COMPLETED) {
 					Intent newIntent = new Intent(context, TTSGetConvertStatusService.class);
 					newIntent.setAction(TTSGetConvertStatusService.ACTION_GET_CONVERT_STATUS);
-					newIntent.putExtra("chimeID", chimeID);
+					newIntent.putExtra("category", category);
+					newIntent.putExtra("id", id);
 					newIntent.putExtra("convertID", convertID);
 					context.startService(newIntent);			
 				} else {
 					String audio = jsonObject.getString("audio");
-					Chime chime = SQLiteDaoFactory.createChimeDao(context).find(chimeID);
-					chime.setAudio(audio);
-					SQLiteDaoFactory.createChimeDao(context).update(chime);
-					
-					ToastMaker.toast(context, audio);
+					setAudio(context, category, id, audio);
 					
 					Intent newIntent = new Intent(context, GetAudioFileService.class);
 					newIntent.setAction(GetAudioFileService.ACTION_GET_AUDIO_FILE);
-					newIntent.putExtra("id", chimeID);
-					newIntent.putExtra("category", "chime");
+					newIntent.putExtra("id", id);
+					newIntent.putExtra("category", category);
 					newIntent.putExtra("url", audio);
 					context.startService(newIntent);	
 				}
@@ -93,6 +94,22 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 			ToastMaker.toast(context, audio);
 		}
 	
+	}
+	
+	private void setAudio(Context context, String category, long id, String audio) {
+		if (category.equals("reminder")) {
+			Reminder reminder = SQLiteDaoFactory.createReminderDao(context).find(id);
+			reminder.setAudio(audio);
+			SQLiteDaoFactory.createReminderDao(context).update(reminder);
+		}
+		
+		if (category.equals("chime")) {
+			Chime chime = SQLiteDaoFactory.createChimeDao(context).find((int)id);
+			chime.setAudio(audio);
+			SQLiteDaoFactory.createChimeDao(context).update(chime);
+		}
+		
+		ToastMaker.toast(context, audio);
 	}
 	
 }

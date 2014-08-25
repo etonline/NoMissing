@@ -27,7 +27,8 @@ public class TTSGetConvertStatusService extends IntentService {
 	private String username;
 	private String password;
 	
-	private int chimeID;
+	private String category;
+	private long id;
 	private String convertID;
 	
 	public TTSGetConvertStatusService() {
@@ -38,30 +39,28 @@ public class TTSGetConvertStatusService extends IntentService {
 	public void onCreate() {
 		super.onCreate();
 		app = (NoMissingApp)getApplicationContext();
-		
-		HashMap<String, String> user = app.session.getUserData();
-		username = user.get("username");
-		password = user.get("password");
 	}
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		if (intent.getAction().equals(ACTION_GET_CONVERT_STATUS)) {
-			chimeID = intent.getIntExtra("chimeID", -1);
+			category = intent.getStringExtra("category");
+			id = intent.getLongExtra("id", -1);
 			convertID = intent.getStringExtra(PARAM_CONVERT_ID);
 			
 			RequestParams params = new RequestParams();
 	        params.add(PARAM_CONVERT_ID, convertID);
 			
 	        NoMissingHttpClient.getInstance(false);
-			NoMissingHttpClient.ttsGetConvertStatus(username, password, params, new JsonHttpResponseHandler() {
+			NoMissingHttpClient.ttsGetConvertStatus(app.getSettings().getUUID(), app.getSettings().getAccessToken(), params, new JsonHttpResponseHandler() {
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 					Log.v(TAG, response.toString());	
 					
 					Intent intent = new Intent(TTSGetConvertStatusService.this, ServerResponseReceiver.class);
 					intent.putExtra("response", response.toString());
-					intent.putExtra("chimeID", chimeID);
+					intent.putExtra("category", category);
+					intent.putExtra("id", id);
 					intent.putExtra("convertID", convertID);
 					intent.setAction(ServerResponseReceiver.ACTION_TTS_GET_CONVERT_STATUS_RESPONSE);
 	                sendBroadcast(intent);

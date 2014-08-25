@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
 		super.onCreate(savedInstanceState);
 		
 		app = (NoMissingApp)getActivity().getApplicationContext();
-		calenderID = app.userSettings.getCalendarID();
+		calenderID = app.getSettings().getCalendarID();
 		
 	}
 	

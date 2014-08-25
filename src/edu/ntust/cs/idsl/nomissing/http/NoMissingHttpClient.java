@@ -16,6 +16,10 @@ public class NoMissingHttpClient {
 		  return client;
 	  }
 	  
+	  public static void register(RequestParams params, AsyncHttpResponseHandler responseHandler) {
+		  client.post(NoMissingRoute.REGISTER, params, responseHandler);
+	  }	  
+	  
 	  public static void login(RequestParams params, AsyncHttpResponseHandler responseHandler) {
 		  client.post(NoMissingRoute.LOGIN, params, responseHandler);
 	  }

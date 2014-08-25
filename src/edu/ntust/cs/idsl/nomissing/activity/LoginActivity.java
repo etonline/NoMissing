@@ -105,7 +105,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 					
 	    			switch (code) {
 	    			case NoMissingResultCode.LOGIN_SUCCESS:
-	    				app.session.createLoginSession(username, password);
+//	    				app.session.createLoginSession(username, password);
 //	    				startService(new Intent(LoginActivity.this, GetWeatherDataService.class));
 	        			startActivity(new Intent(LoginActivity.this, MainActivity.class));
 	        			LoginActivity.this.finish();	

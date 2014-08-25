@@ -20,8 +20,8 @@ public class ReminderNotificationHandler extends NotificationHandler<Reminder> {
 
 	@Override
 	public void sendNotification(Reminder reminder) {
-		Event event = SQLiteDaoFactory.createEventDao(context).find(reminder.getEventID());
-		
+//		Event event = SQLiteDaoFactory.createEventDao(context).find(reminder.getEventID());
+		Event event = null;
 		boolean vibrate = true;
 			
 		NotificationCompat.Builder notification = new NotificationCompat.Builder(context)

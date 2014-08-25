@@ -69,7 +69,6 @@ public class ReminderDao extends SQLiteDao implements IReminderDao {
 		open();
 
 		ContentValues values = new ContentValues();
-		values.put(NoMissingDB.REMINDERS_KEY_ID, reminder.getId()); 
 		values.put(NoMissingDB.REMINDERS_KEY_CALENDAR_ID, reminder.getCalendarID()); 
 		values.put(NoMissingDB.REMINDERS_KEY_EVENT_ID, reminder.getEventID()); 
 		values.put(NoMissingDB.REMINDERS_KEY_REMINDER_TIME, reminder.getReminderTime()); 
@@ -77,7 +76,7 @@ public class ReminderDao extends SQLiteDao implements IReminderDao {
 		values.put(NoMissingDB.REMINDERS_KEY_CREATED_AT, reminder.getCreatedAt()); 
 		values.put(NoMissingDB.REMINDERS_KEY_UPDATED_AT, reminder.getUpdatedAt()); 
 
-		int row = (int)db.insert(NoMissingDB.TABLE_REMINDERS, null, values);
+		long row = db.insert(NoMissingDB.TABLE_REMINDERS, null, values);
 		close();
 		
 		return row;

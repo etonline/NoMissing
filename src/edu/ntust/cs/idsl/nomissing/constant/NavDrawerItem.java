@@ -12,7 +12,7 @@ public enum NavDrawerItem {
 	CHIME(R.drawable.ic_action_alarms, R.string.nav_chime),
 	WEATHER(R.drawable.ic_action_cloud, R.string.nav_weather),
 	SETTING(R.drawable.ic_action_settings, R.string.nav_settings),
-	LOGOUT(android.R.drawable.ic_lock_power_off, R.string.nav_logout);
+	LOGOUT(android.R.drawable.ic_lock_power_off, R.string.nav_exit);
 	
 	private int icon;
 	private int title;

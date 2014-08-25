@@ -60,11 +60,11 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);	
 		
-		isTTSEnabled = app.userSettings.isWeatherTTSEnabled();
-		isReminderEnabled = app.userSettings.isWeatherReminderEnabled();
-		reminderHour = app.userSettings.getWeatherReminderHour();
-		reminderMinute = app.userSettings.getWeatherReminderMinute();
-		reminderCity = app.userSettings.getWeatherReminderCity();
+		isTTSEnabled = app.getSettings().isWeatherTTSEnabled();
+		isReminderEnabled = app.getSettings().isWeatherReminderEnabled();
+		reminderHour = app.getSettings().getWeatherReminderHour();
+		reminderMinute = app.getSettings().getWeatherReminderMinute();
+		reminderCity = app.getSettings().getWeatherReminderCity();
 		
 		weather = SQLiteDaoFactory.createWeatherDao(this).find(reminderCity);
 		
@@ -185,11 +185,11 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	private void saveSettings() {
 		AlarmHandlerFactory.createWeatherAlarmHandler(this).cancelAlarm(weather);
 		
-		app.userSettings.setWeatherTTSEnabled(isTTSEnabled);
-		app.userSettings.setWeatherReminderEnabled(isReminderEnabled);
-		app.userSettings.setWeatherReminderHour(reminderHour);
-		app.userSettings.setWeatherReminderMinute(reminderMinute);
-		app.userSettings.setWeatherReminderCity(reminderCity);
+		app.getSettings().setWeatherTTSEnabled(isTTSEnabled);
+		app.getSettings().setWeatherReminderEnabled(isReminderEnabled);
+		app.getSettings().setWeatherReminderHour(reminderHour);
+		app.getSettings().setWeatherReminderMinute(reminderMinute);
+		app.getSettings().setWeatherReminderCity(reminderCity);
 		
 		weather = SQLiteDaoFactory.createWeatherDao(this).find(reminderCity);
 		

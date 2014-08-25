@@ -62,9 +62,7 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		appTitle = drawerTitle = getTitle();
-
 		app = (NoMissingApp)getApplicationContext();
-		app.startSession();
 		
 		setActionBar();
 		setNavigationDrawer();
@@ -78,7 +76,7 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 	protected void onStart() {
 		super.onStart();
 		
-		if (app.userSettings.getCalendarID() == -1)
+		if (app.getSettings().getCalendarID() == -1)
 			openSettingCalendarDialog();
 	}
 
@@ -183,7 +181,8 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 			fragment = new SettingsFragment();	
 			break;			
 		case 5:
-			app.session.logoutUser();
+			finish();
+			
 			break;				
 		default:
 			break;
@@ -230,7 +229,7 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 		.setItems(Calendar.getNameOfCalendars(calendars).toArray(new String[calendars.size()]), new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				app.userSettings.setCalendarID(calendars.get(which).getId());
+				app.getSettings().setCalendarID(calendars.get(which).getId());
 			}
 		}).show();
 	}

@@ -9,7 +9,7 @@ import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
-import edu.ntust.cs.idsl.nomissing.pref.SettingsManager;
+import edu.ntust.cs.idsl.nomissing.preference.SettingsManager;
 
 public class BootReceiver extends BroadcastReceiver {
 	

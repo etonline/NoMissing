@@ -220,11 +220,12 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 	private void getTTSAudio() {
 		Intent intent = new Intent(this, TTSConvertTextService.class);
 		intent.setAction(TTSConvertTextService.ACTION_CONVERT_TEXT);
-		intent.putExtra("chimeID", chime.getId());
+		intent.putExtra("category", "chime");
+		intent.putExtra("id", (long)chime.getId());
 		intent.putExtra(TTSConvertTextService.PARAM_TTS_TEXT, chime.getStringForTTS());
-		intent.putExtra(TTSConvertTextService.PARAM_TTS_SPEAKER, app.userSettings.getTTSSpeaker());
-		intent.putExtra(TTSConvertTextService.PARAM_VOLUME, app.userSettings.getTTSVolume());
-		intent.putExtra(TTSConvertTextService.PARAM_SPEED, app.userSettings.getTTSSpeed());
+		intent.putExtra(TTSConvertTextService.PARAM_TTS_SPEAKER, app.getSettings().getTTSSpeaker());
+		intent.putExtra(TTSConvertTextService.PARAM_VOLUME, app.getSettings().getTTSVolume());
+		intent.putExtra(TTSConvertTextService.PARAM_SPEED, app.getSettings().getTTSSpeed());
 		intent.putExtra(TTSConvertTextService.PARAM_OUTPUT_TYPE, "wav");
 		SetChimeActivity.this.startService(intent);				
 	}

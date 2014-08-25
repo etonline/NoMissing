@@ -1,4 +1,4 @@
-package edu.ntust.cs.idsl.nomissing.pref;
+package edu.ntust.cs.idsl.nomissing.preference;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,10 +13,11 @@ public class SettingsManager {
 	private SharedPreferences pref;
 	private Editor editor;
 
-	private int PRIVATE_MODE = 0;
-
 	private static final String PREF_NAME = "SettingsPref";
-
+	private static final String KEY_INITIALIZED = "initialized";
+	private static final String KEY_REGISTERED = "registered";
+	private static final String KEY_UUID = "uuid";
+	private static final String KEY_ACCESS_TOKEN = "access_token";
 	private static final String KEY_CALENDAR_ID = "calendar_id";
 	private static final String KEY_TTS_SPEAKER = "tts_speaker";
 	private static final String KEY_TTS_VOLUME = "tts_volume";
@@ -29,7 +30,7 @@ public class SettingsManager {
 	
 	private SettingsManager(Context context) {
 		this.context = context;
-		pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+		pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 		editor = pref.edit();
 	}
 
@@ -38,6 +39,26 @@ public class SettingsManager {
 			instance = new SettingsManager(context);
 		}
 		return instance;
+	}
+	
+	public void setInitialized(boolean value) {
+		editor.putBoolean(KEY_INITIALIZED, value);
+		editor.commit();		
+	}
+	
+	public void setRegistered(boolean value) {
+		editor.putBoolean(KEY_REGISTERED, value);
+		editor.commit();		
+	}
+	
+	public void setUUID(String value) {
+		editor.putString(KEY_UUID, value);
+		editor.commit();		
+	}
+	
+	public void setAccessToken(String value) {
+		editor.putString(KEY_ACCESS_TOKEN, value);
+		editor.commit();		
 	}
 	
 	public void setCalendarID(long value) {
@@ -84,6 +105,22 @@ public class SettingsManager {
 		editor.putInt(KEY_WEATHER_REMINDER_CITY, value);
 		editor.commit();
 	}
+	
+	public boolean isInitialized() {
+		return pref.getBoolean(KEY_INITIALIZED, false);
+	}
+	
+	public boolean isRegistered() {
+		return pref.getBoolean(KEY_REGISTERED, false);
+	}
+	
+	public String getUUID() {
+		return pref.getString(KEY_UUID, "");
+	}	
+	
+	public String getAccessToken() {
+		return pref.getString(KEY_ACCESS_TOKEN, "");
+	}	
 	
 	public long getCalendarID() {
 		return pref.getLong(KEY_CALENDAR_ID, -1);

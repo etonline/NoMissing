@@ -1,5 +1,7 @@
 package edu.ntust.cs.idsl.nomissing.activity;
 
+import java.text.SimpleDateFormat;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,19 +34,20 @@ public class EventActivity extends Activity {
 		
 		long reminderID = getIntent().getLongExtra("id", 0);
 		reminder = SQLiteDaoFactory.createReminderDao(this).find(reminderID);
-		event = SQLiteDaoFactory.createEventDao(this).find(reminder.getEventID());
+//		event = SQLiteDaoFactory.createEventDao(this).find(reminder.getEventID());
 		
 		openEventDialog(event);
 	}
 	
 	
 	private void openEventDialog(final Event event) {
+		SimpleDateFormat formatter = new SimpleDateFormat("a h:mm");
 		StringBuilder message = new StringBuilder();
 		message.append(getString(R.string.event_title) + event.getTitle() + "\n");
 		if (!event.getLocation().isEmpty()) 
 			message.append(getString(R.string.event_location) + event.getLocation() + "\n");
-		message.append(getString(R.string.event_start_time) + event.getStartTime() + "\n");
-		message.append(getString(R.string.event_end_time) + event.getEndTime());
+		message.append(getString(R.string.event_start_time) + formatter.format(event.getStartTime()) + "\n");
+		message.append(getString(R.string.event_end_time) + formatter.format(event.getEndTime()));
 		
 		AlertDialog cityWeatherDialog = new AlertDialog.Builder(this)
 		.setTitle(getTitle())
@@ -61,14 +64,14 @@ public class EventActivity extends Activity {
 		cityWeatherDialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-//				startTTSAudio(reminder.getAudio());
+				startTTSAudio(reminder.getAudio());
 			}
 		});
 		
 		cityWeatherDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			@Override
 			public void onDismiss(DialogInterface dialog) {
-//				stopTTSAudio();
+				stopTTSAudio();
 				finish();
 			}
 		});

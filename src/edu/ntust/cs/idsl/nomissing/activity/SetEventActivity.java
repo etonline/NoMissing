@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.Menu;
@@ -21,11 +22,13 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
+import edu.ntust.cs.idsl.nomissing.service.TTSConvertTextService;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
@@ -47,6 +50,7 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 	
 	private long calendarID;
 	private long eventID;
+	private long reminderID;
 	private long startMillis;
 	private long endMillis;
 	
@@ -82,7 +86,7 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 	
 	private void getEvent() {
 		event = (eventID != 0) 
-				? SQLiteDaoFactory.createEventDao(this).find(eventID, calendarID, startMillis, endMillis)
+				? DaoFactory.getDaoFactory(calendarID).createEventDao(this).find(eventID, calendarID, startMillis, endMillis)
 				: new Event();
 	}
 	
@@ -90,6 +94,7 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 		reminder = (eventID != 0) 
 			? SQLiteDaoFactory.createReminderDao(this).find(calendarID, eventID)
 			: new Reminder();
+		reminderID = reminder.getId();
 	}
 	
 	private void setStartCalendar() {
@@ -186,7 +191,7 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 			if (eventID == 0) {
 				SetEventActivity.this.setResult(CalendarFragment.RESULT_CANCEL);
 			} else {
-				SQLiteDaoFactory.createEventDao(this).delete((int)eventID);
+				DaoFactory.getDaoFactory(calendarID).createEventDao(this).delete((int)eventID);
 				SetEventActivity.this.setResult(CalendarFragment.RESULT_DELETE);
 				
 			}
@@ -311,17 +316,21 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 		event.setCreatedAt(currentTime);
 		event.setUpdatedAt(currentTime);
 		
-		eventID = SQLiteDaoFactory.createEventDao(this).insert(event);
-		ToastMaker.toast(this, String.valueOf(eventID));
+		eventID = DaoFactory.getDaoFactory(calendarID).createEventDao(this).insert(event);
+//		ToastMaker.toast(this, String.valueOf(eventID));
 		
 		reminder.setCalendarID(calendarID);
 		reminder.setEventID(eventID);
 		reminder.setReminderTime(reminderCalendar.getTimeInMillis());
 		reminder.setCreatedAt(currentTime);
 		reminder.setUpdatedAt(currentTime);
-		SQLiteDaoFactory.createReminderDao(this).insert(reminder);
+		reminderID = SQLiteDaoFactory.createReminderDao(this).insert(reminder);
 		
+		reminder.setId(reminderID);
+		ToastMaker.toast(this, "ReminderID:" + reminderID);
 		AlarmHandlerFactory.createReminderAlarmHandler(this).setAlarm(reminder);
+		
+		getTTSAudio();
 	}	
 	
 	private void updateEvent() {
@@ -333,7 +342,7 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 		event.setEndTime(endCalendar.getTimeInMillis());
 		event.setReminder(checkBoxRemider.isChecked());
 		event.setDescription(editTextDescription.getText().toString());
-		SQLiteDaoFactory.createEventDao(this).update(event);	
+		DaoFactory.getDaoFactory(calendarID).createEventDao(this).update(event);	
 		
 		reminder.setReminderTime(reminderCalendar.getTimeInMillis());
 		reminder.setUpdatedAt(currentTime);
@@ -341,6 +350,8 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 		
 		AlarmHandlerFactory.createReminderAlarmHandler(this).cancelAlarm(reminder);
 		AlarmHandlerFactory.createReminderAlarmHandler(this).setAlarm(reminder);
+		
+		getTTSAudio();
 	}
 	
 	private boolean isValidDateRange(Calendar startCalendar, Calendar endCalendar) {
@@ -360,6 +371,19 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 			editTextReminderDate.setEnabled(false);
 			editTextReminderTime.setEnabled(false);
 		}
+	}
+	
+	private void getTTSAudio() {
+		Intent intent = new Intent(this, TTSConvertTextService.class);
+		intent.setAction(TTSConvertTextService.ACTION_CONVERT_TEXT);
+		intent.putExtra("category", "reminder");
+		intent.putExtra("id", reminderID);
+		intent.putExtra(TTSConvertTextService.PARAM_TTS_TEXT, reminder.getStringForTTS(event));
+		intent.putExtra(TTSConvertTextService.PARAM_TTS_SPEAKER, app.getSettings().getTTSSpeaker());
+		intent.putExtra(TTSConvertTextService.PARAM_VOLUME, app.getSettings().getTTSVolume());
+		intent.putExtra(TTSConvertTextService.PARAM_SPEED, app.getSettings().getTTSSpeed());
+		intent.putExtra(TTSConvertTextService.PARAM_OUTPUT_TYPE, "wav");
+		startService(intent);				
 	}
 
 }

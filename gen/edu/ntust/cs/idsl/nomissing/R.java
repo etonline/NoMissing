@@ -1648,8 +1648,8 @@ containing a value of this type.
         public static final int nantou_county=0x7f080086;
         public static final int nav_calendar=0x7f08002a;
         public static final int nav_chime=0x7f08002b;
+        public static final int nav_exit=0x7f08002e;
         public static final int nav_home=0x7f080029;
-        public static final int nav_logout=0x7f08002e;
         public static final int nav_settings=0x7f08002d;
         public static final int nav_weather=0x7f08002c;
         public static final int new_taipei_city=0x7f080076;

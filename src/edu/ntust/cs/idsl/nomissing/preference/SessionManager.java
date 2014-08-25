@@ -1,4 +1,4 @@
-package edu.ntust.cs.idsl.nomissing.pref;
+package edu.ntust.cs.idsl.nomissing.preference;
 
 import java.util.HashMap;
 

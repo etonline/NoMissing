@@ -6,6 +6,7 @@ public class NoMissingRoute {
 	public static final String BASE_URL = "http://140.118.110.128/nomissing";
 	
 	// Authentication
+	public static final String REGISTER = BASE_URL + "/register";
 	public static final String SIGNUP = BASE_URL + "/signup";
 	public static final String LOGIN = BASE_URL + "/login";
 	public static final String LOGOUT = BASE_URL + "/logout";

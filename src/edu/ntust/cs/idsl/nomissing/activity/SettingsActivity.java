@@ -39,9 +39,9 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);	
         
-		mTTSSpeaker = app.userSettings.getTTSSpeaker();
-		mTTSVolume = app.userSettings.getTTSVolume();
-		mTTSSpeed = app.userSettings.getTTSSpeed();
+		mTTSSpeaker = app.getSettings().getTTSSpeaker();
+		mTTSVolume = app.getSettings().getTTSVolume();
+		mTTSSpeed = app.getSettings().getTTSSpeed();
 		
 		setPrefTTSSpeaker();
 		setPrefTTSVolume();
@@ -112,9 +112,9 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	}
 
 	private void saveSettings() {
-		app.userSettings.setTTSSpeaker(mTTSSpeaker);
-		app.userSettings.setTTSVolume(mTTSVolume);
-		app.userSettings.setTTSSpeed(mTTSSpeed);
+		app.getSettings().setTTSSpeaker(mTTSSpeaker);
+		app.getSettings().setTTSVolume(mTTSVolume);
+		app.getSettings().setTTSSpeed(mTTSSpeed);
 		
 		ToastMaker.toast(this, getString(R.string.toast_save_settings));
 	}

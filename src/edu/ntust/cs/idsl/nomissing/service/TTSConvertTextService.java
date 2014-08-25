@@ -28,9 +28,8 @@ public class TTSConvertTextService extends IntentService {
 	public static final String PARAM_OUTPUT_TYPE = "outtype";
 	
 	private NoMissingApp app;
-	private int chimeID;
-	private String username;
-	private String password;
+	private String category;
+	private long id;
 	
 	public TTSConvertTextService() {
 		super("GetWeatherDataService");
@@ -41,15 +40,13 @@ public class TTSConvertTextService extends IntentService {
 		super.onCreate();
 		app = (NoMissingApp)getApplicationContext();
 		
-		HashMap<String, String> user = app.session.getUserData();
-		username = user.get("username");
-		password = user.get("password");
 	}
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		if (intent.getAction().equals(ACTION_CONVERT_TEXT)) {
-			chimeID = intent.getIntExtra("chimeID", -1);
+			category = intent.getStringExtra("category");
+			id = intent.getLongExtra("id", -1);
 			
 			String TTStext = intent.getStringExtra(PARAM_TTS_TEXT);
 			String TTSSpeaker = intent.getStringExtra(PARAM_TTS_SPEAKER);
@@ -65,13 +62,14 @@ public class TTSConvertTextService extends IntentService {
 	        params.add(PARAM_OUTPUT_TYPE, outtype);
 			
 	        NoMissingHttpClient.getInstance(false);
-			NoMissingHttpClient.ttsConvertText(username, password, params, new JsonHttpResponseHandler() {
+			NoMissingHttpClient.ttsConvertText(app.getSettings().getUUID(), app.getSettings().getAccessToken(), params, new JsonHttpResponseHandler() {
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 					Log.v(TAG, response.toString());	
 					
 					Intent intent = new Intent(TTSConvertTextService.this, ServerResponseReceiver.class);
-					intent.putExtra("chimeID", chimeID);
+					intent.putExtra("category", category);
+					intent.putExtra("id", id);
 					intent.putExtra("response", response.toString());
 					intent.setAction(ServerResponseReceiver.ACTION_TTS_CONVERT_TEXT_RESPONSE);
 	                sendBroadcast(intent);

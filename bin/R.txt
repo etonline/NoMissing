@@ -702,8 +702,8 @@ int string miaoli_county 0x7f080080
 int string nantou_county 0x7f080086
 int string nav_calendar 0x7f08002a
 int string nav_chime 0x7f08002b
+int string nav_exit 0x7f08002e
 int string nav_home 0x7f080029
-int string nav_logout 0x7f08002e
 int string nav_settings 0x7f08002d
 int string nav_weather 0x7f08002c
 int string new_taipei_city 0x7f080076

@@ -86,13 +86,13 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 	
 	private void getEvent() {
 		event = (eventID != 0) 
-				? DaoFactory.getDaoFactory(calendarID).createEventDao(this).find(eventID, calendarID, startMillis, endMillis)
+				? DaoFactory.getEventDaoFactory(calendarID).createEventDao(this).find(eventID, calendarID, startMillis, endMillis)
 				: new Event();
 	}
 	
 	private void getReminder() {
 		reminder = (eventID != 0) 
-			? SQLiteDaoFactory.createReminderDao(this).find(calendarID, eventID)
+			? DaoFactory.getSQLiteDaoFactory().createReminderDao(this).find(calendarID, eventID)
 			: new Reminder();
 		reminderID = reminder.getId();
 	}
@@ -191,7 +191,7 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 			if (eventID == 0) {
 				SetEventActivity.this.setResult(CalendarFragment.RESULT_CANCEL);
 			} else {
-				DaoFactory.getDaoFactory(calendarID).createEventDao(this).delete((int)eventID);
+				DaoFactory.getEventDaoFactory(calendarID).createEventDao(this).delete((int)eventID);
 				SetEventActivity.this.setResult(CalendarFragment.RESULT_DELETE);
 				
 			}
@@ -316,7 +316,7 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 		event.setCreatedAt(currentTime);
 		event.setUpdatedAt(currentTime);
 		
-		eventID = DaoFactory.getDaoFactory(calendarID).createEventDao(this).insert(event);
+		eventID = DaoFactory.getEventDaoFactory(calendarID).createEventDao(this).insert(event);
 //		ToastMaker.toast(this, String.valueOf(eventID));
 		
 		reminder.setCalendarID(calendarID);
@@ -324,7 +324,7 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 		reminder.setReminderTime(reminderCalendar.getTimeInMillis());
 		reminder.setCreatedAt(currentTime);
 		reminder.setUpdatedAt(currentTime);
-		reminderID = SQLiteDaoFactory.createReminderDao(this).insert(reminder);
+		reminderID = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).insert(reminder);
 		
 		reminder.setId(reminderID);
 		ToastMaker.toast(this, "ReminderID:" + reminderID);
@@ -342,11 +342,11 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 		event.setEndTime(endCalendar.getTimeInMillis());
 		event.setReminder(checkBoxRemider.isChecked());
 		event.setDescription(editTextDescription.getText().toString());
-		DaoFactory.getDaoFactory(calendarID).createEventDao(this).update(event);	
+		DaoFactory.getEventDaoFactory(calendarID).createEventDao(this).update(event);	
 		
 		reminder.setReminderTime(reminderCalendar.getTimeInMillis());
 		reminder.setUpdatedAt(currentTime);
-		SQLiteDaoFactory.createReminderDao(this).update(reminder);
+		DaoFactory.getSQLiteDaoFactory().createReminderDao(this).update(reminder);
 		
 		AlarmHandlerFactory.createReminderAlarmHandler(this).cancelAlarm(reminder);
 		AlarmHandlerFactory.createReminderAlarmHandler(this).setAlarm(reminder);

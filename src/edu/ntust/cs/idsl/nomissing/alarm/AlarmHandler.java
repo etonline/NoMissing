@@ -18,6 +18,18 @@ public abstract class AlarmHandler<T> {
 	
 	protected abstract PendingIntent getPendingIntent(String action, T entity);
 	
+	protected static String calculateDiffTime(long time) {
+		long diff = time - System.currentTimeMillis();
+		
+		long day = diff / (24 * 60 * 60 * 1000);
+		long hour = (diff / (60 * 60 * 1000) - day * 24);
+		long minute = ((diff / (60 * 1000)) - day * 24 * 60 - hour * 60);
+		long second = (diff / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - minute * 60);
+		
+		String diffTime = "已將語音報時設定在" + hour + "小時又" + minute + "分鐘後啟動";
+		return diffTime;
+	}
+	
 	protected static Calendar calculateAlarm(int hour, int minute) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());

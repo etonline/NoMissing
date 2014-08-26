@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
@@ -23,7 +24,7 @@ public class BootReceiver extends BroadcastReceiver {
 	}
 	
 	private void setChimeAlarms(Context context) {
-	    List<Chime> chimes = SQLiteDaoFactory.createChimeDao(context).findAll();
+	    List<Chime> chimes = DaoFactory.getSQLiteDaoFactory().createChimeDao(context).findAll();
 		for(Chime chime : chimes) {
 			AlarmHandlerFactory.createChimeAlarmHandler(context).cancelAlarm(chime);
 			if (chime.isEnabled() && !chime.isTriggered())
@@ -34,7 +35,7 @@ public class BootReceiver extends BroadcastReceiver {
 	private void setWeatherAlarm(Context context) {
 		SettingsManager settingsManager = SettingsManager.getInstance(context);
 		int cityID = settingsManager.getWeatherReminderCity();
-		Weather weather = SQLiteDaoFactory.createWeatherDao(context).find(cityID);
+		Weather weather = DaoFactory.getSQLiteDaoFactory().createWeatherDao(context).find(cityID);
 		
 		AlarmHandlerFactory.createWeatherAlarmHandler(context).cancelAlarm(weather);
 		AlarmHandlerFactory.createWeatherAlarmHandler(context).setAlarm(weather);

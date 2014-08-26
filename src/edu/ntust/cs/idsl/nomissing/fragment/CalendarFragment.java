@@ -214,7 +214,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		long endMillis = getEndOfDate(calendar).getTimeInMillis();
 
-		monthEvents = DaoFactory.getDaoFactory((int)app.getSettings().getCalendarID()).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
+		monthEvents = DaoFactory.getEventDaoFactory((int)app.getSettings().getCalendarID()).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
 		for(Event event : monthEvents) {
 			calendar.setTimeInMillis(event.getStartTime());
 			caldroidFragment.setBackgroundResourceForDate(R.color.indianred, calendar.getTime());
@@ -231,7 +231,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
     	long startMillis = getStartOfDate(day).getTimeInMillis();
     	long endMillis = getEndOfDate(day).getTimeInMillis();
     	
-    	dayEvents = monthEvents = DaoFactory.getDaoFactory((int)app.getSettings().getCalendarID()).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
+    	dayEvents = monthEvents = DaoFactory.getEventDaoFactory((int)app.getSettings().getCalendarID()).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
     	adapter = new EventListAdapter(getActivity(), dayEvents);
     	listViewEvents.setAdapter(adapter);  		
 	}

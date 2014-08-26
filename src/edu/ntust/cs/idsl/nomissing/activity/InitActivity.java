@@ -18,9 +18,10 @@ import com.loopj.android.http.RequestParams;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
-import edu.ntust.cs.idsl.nomissing.http.NoMissingResultCode;
+import edu.ntust.cs.idsl.nomissing.http.parameter.RegisterParameter;
+import edu.ntust.cs.idsl.nomissing.http.response.RegisterProperty;
+import edu.ntust.cs.idsl.nomissing.http.resultcode.RegisterResultCode;
 import edu.ntust.cs.idsl.nomissing.util.Connectivity;
-
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
@@ -28,34 +29,35 @@ import edu.ntust.cs.idsl.nomissing.util.Connectivity;
 public class InitActivity extends Activity {
 	
 	private static final String TAG = InitActivity.class.getSimpleName();
-	private static final String PARAM_UUID = "uuid";
 	private NoMissingApp app;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_init);
-		app = (NoMissingApp)getApplicationContext();
-		
+		app = (NoMissingApp) getApplicationContext();
+
 		checkInitialized();
 		checkRegistered();
 		startApp();
 	}
-	
+
 	private void checkInitialized() {
-		if (app.getSettings().isInitialized()) return;
-		
+		if (app.getSettings().isInitialized())
+			return;
+
 		String uuid = UUID.randomUUID().toString();
 		app.getSettings().setUUID(uuid);
 		app.getSettings().setInitialized(true);
 	}
-	
+
 	private void checkRegistered() {
-		if (app.getSettings().isRegistered()) return;
+		if (app.getSettings().isRegistered())
+			return;
 		if (Connectivity.isConnected(getApplicationContext()))
 			registerTask();
 	}
-	
+
 	private void startApp() {
 		final Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
@@ -65,42 +67,42 @@ public class InitActivity extends Activity {
 				finish();
 			}
 		}, 1000);
-	}	
-	
-	private void registerTask() {
-		RequestParams params = new RequestParams();
-        params.add(PARAM_UUID, app.getSettings().getUUID());
-		
-        NoMissingHttpClient.getInstance(true);
-        NoMissingHttpClient.register(params, new JsonHttpResponseHandler() {
-			@Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            	Log.i(NoMissingResultCode.TAG, response.toString());
-            	
-				try {
-					int code = response.getInt("code");
-					String message = response.getString("message");
-					
-	    			switch (code) {
-	    			case NoMissingResultCode.REGISTER_SUCCESS:
-	    				String accessToken = response.getString("access_token");
-	    				app.getSettings().setAccessToken(accessToken);
-	    				app.getSettings().setRegistered(true);
-	    				break;
-	    				
-	    			case NoMissingResultCode.REGISTER_INVALID_REGISTRATION:
-	    				Log.e(TAG, message);
-	    				break;
-	    				
-	    			case NoMissingResultCode.REGISTER_UUID_ALREADY_IN_USE:
-	    				Log.e(TAG, message);
-	    				break;
-	    			}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-            }
-        });				
 	}
-    
+
+	public void registerTask() {
+		RequestParams params = new RequestParams();
+		params.add(RegisterParameter.REGISTER_UUID, app.getSettings().getUUID());
+
+		NoMissingHttpClient.setAsync(true);
+		NoMissingHttpClient.register(params, new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+				Log.i(NoMissingHttpClient.TAG, response.toString());
+
+				try {
+					int code = response.getInt(RegisterProperty.CODE);
+					String message = response.getString(RegisterProperty.MESSAGE);
+
+					switch (code) {
+					case RegisterResultCode.SUCCESS:
+						String accessToken = response.getString(RegisterProperty.ACCESS_TOKEN);
+						app.getSettings().setAccessToken(accessToken);
+						app.getSettings().setRegistered(true);
+						break;
+
+					case RegisterResultCode.INVALID_REGISTRATION:
+						Log.e(TAG, message);
+						break;
+
+					case RegisterResultCode.UUID_ALREADY_IN_USE:
+						Log.e(TAG, message);
+						break;
+					}
+				} catch (JSONException e) {
+					Log.i(NoMissingHttpClient.TAG, e.toString());
+				}
+			}
+		});
+	}
+
 }

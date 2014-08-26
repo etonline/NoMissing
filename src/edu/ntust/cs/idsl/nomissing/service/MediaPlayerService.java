@@ -122,7 +122,7 @@ public class MediaPlayerService extends Service implements
 	public boolean onError(MediaPlayer mp, int what, int extra) {
 		mp.release();
 		mediaPlayer = null;
-		Toast.makeText(MediaPlayerService.this, "發生錯誤，停止播放", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(MediaPlayerService.this, "發生錯誤，停止播放", Toast.LENGTH_SHORT).show();
 		return false;
 	}	
 

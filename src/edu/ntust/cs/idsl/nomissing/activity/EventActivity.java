@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import edu.ntust.cs.idsl.nomissing.R;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
@@ -33,7 +34,7 @@ public class EventActivity extends Activity {
 		app = (NoMissingApp) getApplicationContext();
 		
 		long reminderID = getIntent().getLongExtra("id", 0);
-		reminder = SQLiteDaoFactory.createReminderDao(this).find(reminderID);
+		reminder = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).find(reminderID);
 //		event = SQLiteDaoFactory.createEventDao(this).find(reminder.getEventID());
 		
 		openEventDialog(event);

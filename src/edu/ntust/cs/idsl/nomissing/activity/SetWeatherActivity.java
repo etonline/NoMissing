@@ -21,7 +21,7 @@ import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.constant.City;
-import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
@@ -47,7 +47,7 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	
 	private Weather weather;
 	
-	private Calendar calendar;
+	private Calendar reminderCalendar;
 	private SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
 	
 	@SuppressWarnings("deprecation")
@@ -55,10 +55,9 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.pref_weather);
-		
-		app = (NoMissingApp)getApplicationContext();
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);	
+        app = (NoMissingApp)getApplicationContext();
 		
 		isTTSEnabled = app.getSettings().isWeatherTTSEnabled();
 		isReminderEnabled = app.getSettings().isWeatherReminderEnabled();
@@ -66,7 +65,7 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 		reminderMinute = app.getSettings().getWeatherReminderMinute();
 		reminderCity = app.getSettings().getWeatherReminderCity();
 		
-		weather = SQLiteDaoFactory.createWeatherDao(this).find(reminderCity);
+		weather = DaoFactory.getSQLiteDaoFactory().createWeatherDao(this).find(reminderCity);
 		
 		setPrefTTSEnabled();
 		setPrefWeatherReminder();
@@ -89,14 +88,19 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	private void setPrefReminderTime() {
 		prefReminderTime = (Preference) findPreference("reminder_time");
 
-		calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, reminderHour);	
-		calendar.set(Calendar.MINUTE, reminderMinute);			
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		prefReminderTime.setSummary(formatter.format(calendar.getTime()));
+		reminderCalendar = Calendar.getInstance();
+		reminderCalendar.set(Calendar.HOUR_OF_DAY, reminderHour);	
+		reminderCalendar.set(Calendar.MINUTE, reminderMinute);			
+		reminderCalendar.set(Calendar.SECOND, 0);
+		reminderCalendar.set(Calendar.MILLISECOND, 0);
+		prefReminderTime.setSummary(formatter.format(reminderCalendar.getTime()));
 
 		prefReminderTime.setOnPreferenceClickListener(this);
+		
+		if (isReminderEnabled) 
+			prefReminderTime.setEnabled(true);
+		else
+			prefReminderTime.setEnabled(false);
 	}
 	
 	private void setPrefReminderCity() {
@@ -116,6 +120,11 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 		prefReminderCity.setEntryValues((CharSequence[]) cityKeys.toArray(new CharSequence[cityKeys.size()]));
 		prefReminderCity.setSummary(getString(City.getCity(reminderCity).getCityName()));
 		prefReminderCity.setOnPreferenceChangeListener(this);
+		
+		if (isReminderEnabled)
+			prefReminderCity.setEnabled(true);
+		else
+			prefReminderCity.setEnabled(false);
 	}
 	
 	@Override
@@ -126,17 +135,14 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			finish();
 			return true;
-			
 		case R.id.action_save:	
 			saveSettings();
 			finish();
 			return true;
-			
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -150,13 +156,13 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 				public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 					reminderHour = hourOfDay;
 					reminderMinute = minute;
-					calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-					calendar.set(Calendar.MINUTE, minute);		
-					prefReminderTime.setSummary(formatter.format(calendar.getTime()));		
+					reminderCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+					reminderCalendar.set(Calendar.MINUTE, minute);		
+					prefReminderTime.setSummary(formatter.format(reminderCalendar.getTime()));		
 				}
 			}, 
-			calendar.get(Calendar.HOUR_OF_DAY),
-			calendar.get(Calendar.MINUTE),
+			reminderCalendar.get(Calendar.HOUR_OF_DAY),
+			reminderCalendar.get(Calendar.MINUTE),
 			DateFormat.is24HourFormat(this)).show();			
 		} 
 		
@@ -165,16 +171,25 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		
 		if (preference == prefTTSEnabled) {
 			isTTSEnabled = (boolean)newValue;
 		}	
 		
-		else if (preference == prefReminderEnabled) {
+		if (preference == prefReminderEnabled) {
 			isReminderEnabled = (boolean)newValue;
+			
+			if (isReminderEnabled) {
+				prefReminderTime.setEnabled(true);
+				prefReminderCity.setEnabled(true);
+			}
+			else {
+				prefReminderTime.setEnabled(false);
+				prefReminderCity.setEnabled(false);
+			}
+				
 		}
 		
-		else if (preference == prefReminderCity) {
+		if (preference == prefReminderCity) {
 			reminderCity = Integer.valueOf((String)newValue);
 			prefReminderCity.setSummary(getString(City.getCity(reminderCity).getCityName()));
 		}
@@ -191,7 +206,7 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 		app.getSettings().setWeatherReminderMinute(reminderMinute);
 		app.getSettings().setWeatherReminderCity(reminderCity);
 		
-		weather = SQLiteDaoFactory.createWeatherDao(this).find(reminderCity);
+		weather = DaoFactory.getSQLiteDaoFactory().createWeatherDao(this).find(reminderCity);
 		
 		if (isReminderEnabled) 
 			AlarmHandlerFactory.createWeatherAlarmHandler(this).setAlarm(weather);

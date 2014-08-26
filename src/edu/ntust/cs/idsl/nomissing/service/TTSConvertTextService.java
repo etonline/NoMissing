@@ -61,7 +61,7 @@ public class TTSConvertTextService extends IntentService {
 	        params.add(PARAM_SPEED, Integer.toString(speed));
 	        params.add(PARAM_OUTPUT_TYPE, outtype);
 			
-	        NoMissingHttpClient.getInstance(false);
+	        NoMissingHttpClient.setAsync(false);
 			NoMissingHttpClient.ttsConvertText(app.getSettings().getUUID(), app.getSettings().getAccessToken(), params, new JsonHttpResponseHandler() {
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

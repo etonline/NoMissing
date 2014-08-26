@@ -18,6 +18,7 @@ import android.widget.TextView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetEventActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.AgendaListAdapter;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.calendar.CalendarProviderDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
@@ -118,7 +119,7 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
 		calendar.add(Calendar.DAY_OF_YEAR, 1);
 		long endMillis = calendar.getTimeInMillis();
 		
-		events = CalendarProviderDaoFactory.creatEventDao(getActivity()).find(calenderID, startMillis, endMillis);
+		events = DaoFactory.getEventDaoFactory(calenderID).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
         AgendaListAdapter adapter = new AgendaListAdapter(getActivity(), events);
 		listViewAgenda.setAdapter(adapter);
 	}

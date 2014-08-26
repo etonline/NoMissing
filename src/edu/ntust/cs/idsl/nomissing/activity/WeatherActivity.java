@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import edu.ntust.cs.idsl.nomissing.R;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
@@ -18,16 +19,16 @@ public class WeatherActivity extends Activity {
 	
 	private NoMissingApp app;
 	private Weather weather;
+	public static final String EXTRA_ID = "id"; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_weather);
-		
 		app = (NoMissingApp) getApplicationContext();
 		
-		int cityID = getIntent().getIntExtra("id", -1);
-		weather = SQLiteDaoFactory.createWeatherDao(this).find(cityID);
+		int cityID = getIntent().getIntExtra("id", 0);
+		weather = DaoFactory.getSQLiteDaoFactory().createWeatherDao(this).find(cityID);
 		
 		openCityWeatherDialog(weather);
 	}

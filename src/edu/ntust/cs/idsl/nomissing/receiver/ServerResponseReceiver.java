@@ -7,8 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
-import edu.ntust.cs.idsl.nomissing.http.NoMissingResultCode;
+import edu.ntust.cs.idsl.nomissing.R;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
+import edu.ntust.cs.idsl.nomissing.http.resultcode.TTSConvertTextResultCode;
+import edu.ntust.cs.idsl.nomissing.http.resultcode.TTSGetConvertStatusResultCode;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.service.GetAudioFileService;
@@ -22,6 +24,11 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 	public static final String ACTION_TTS_CONVERT_TEXT_RESPONSE = "edu.ntust.cs.idsl.nomissing.action.TTS_CONVERT_CONVERT_RESPONSE";
 	public static final String ACTION_TTS_GET_CONVERT_STATUS_RESPONSE = "edu.ntust.cs.idsl.nomissing.action.TTS_CONVERT_CONVERT_RESPONSE";
 	public static final String ACTION_GET_AUDIO_FILE_RESPONSE = "edu.ntust.cs.idsl.nomissing.action.GET_AUDIO_FILE_RESPONSE";	
+	
+	public static String ACTION_GET_WEATHER_DATE_START = "edu.ntust.cs.idsl.nomissing.action.START";
+	public static String ACTION_GET_WEATHER_DATE_PROGRASS_UPDATE = "edu.ntust.cs.idsl.nomissing.action.WEATHER_PROGRASS_UPDATE";
+	public static String ACTION_GET_WEATHER_DATE_FINISH = "edu.ntust.cs.idsl.nomissing.action.GET_WEATHER_DATE_SUCESS";
+	public static String ACTION_GET_WEATHER_DATE_FAILURE = "edu.ntust.cs.idsl.nomissing.action.GET_WEATHER_DATE_FAILURE";
 	
 	public ServerResponseReceiver() {
 	}
@@ -40,7 +47,7 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 				String convertID = jsonObject.getString("resultConvertID");
 				int resultCode = Integer.valueOf(jsonObject.getString("resultCode"));
 				
-				if (resultCode == NoMissingResultCode.CONVERT_TEXT_SUCCESS) {
+				if (resultCode == TTSConvertTextResultCode.SUCCESS) {
 					Intent newIntent = new Intent(context, TTSGetConvertStatusService.class);
 					newIntent.setAction(TTSGetConvertStatusService.ACTION_GET_CONVERT_STATUS);
 					newIntent.putExtra("category", category);
@@ -66,7 +73,7 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 				JSONObject jsonObject = new JSONObject(response);
 				int statusCode = Integer.valueOf(jsonObject.getString("statusCode"));
 				
-				if (statusCode != NoMissingResultCode.CONVERT_STATUS_COMPLETED) {
+				if (statusCode != TTSGetConvertStatusResultCode.CONVERT_STATUS_COMPLETED) {
 					Intent newIntent = new Intent(context, TTSGetConvertStatusService.class);
 					newIntent.setAction(TTSGetConvertStatusService.ACTION_GET_CONVERT_STATUS);
 					newIntent.putExtra("category", category);
@@ -93,20 +100,36 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 			String audio = intent.getStringExtra("audio");
 			ToastMaker.toast(context, audio);
 		}
+		
+		if (intent.getAction().equals(ACTION_GET_WEATHER_DATE_START)) {
+			ToastMaker.toast(context, R.string.toast_refresh_weather_data_start);	
+		}
+		
+		if(intent.getAction().equals(ACTION_GET_WEATHER_DATE_PROGRASS_UPDATE)) {
+//			double progress = intent.getDoubleExtra("progress", 0);
+		}
+		
+		if(intent.getAction().equals(ACTION_GET_WEATHER_DATE_FINISH)) {
+			ToastMaker.toast(context, R.string.toast_refresh_weather_data_finish);
+		}
+		
+		if(intent.getAction().equals(ACTION_GET_WEATHER_DATE_FAILURE)) {
+			ToastMaker.toast(context, R.string.toast_refresh_weather_data_failure);
+		}		
 	
 	}
 	
 	private void setAudio(Context context, String category, long id, String audio) {
 		if (category.equals("reminder")) {
-			Reminder reminder = SQLiteDaoFactory.createReminderDao(context).find(id);
+			Reminder reminder = DaoFactory.getSQLiteDaoFactory().createReminderDao(context).find(id);
 			reminder.setAudio(audio);
-			SQLiteDaoFactory.createReminderDao(context).update(reminder);
+			DaoFactory.getSQLiteDaoFactory().createReminderDao(context).update(reminder);
 		}
 		
 		if (category.equals("chime")) {
-			Chime chime = SQLiteDaoFactory.createChimeDao(context).find((int)id);
+			Chime chime = DaoFactory.getSQLiteDaoFactory().createChimeDao(context).find((int)id);
 			chime.setAudio(audio);
-			SQLiteDaoFactory.createChimeDao(context).update(chime);
+			DaoFactory.getSQLiteDaoFactory().createChimeDao(context).update(chime);
 		}
 		
 		ToastMaker.toast(context, audio);

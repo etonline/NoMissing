@@ -23,7 +23,7 @@ public class ChimeDao extends SQLiteDao implements ISimpleDao<Chime> {
 		open();
 
 		ContentValues values = new ContentValues();
-		values.put(NoMissingDB.CHIMES_KEY_ID, chime.getId()); 
+//		values.put(NoMissingDB.CHIMES_KEY_ID, chime.getId()); 
 		values.put(NoMissingDB.CHIMES_KEY_HOUR, chime.getHour());
 		values.put(NoMissingDB.CHIMES_KEY_MINUTE, chime.getMinute());
 		values.put(NoMissingDB.CHIMES_KEY_IS_ENABLED, chime.isEnabled());
@@ -44,7 +44,7 @@ public class ChimeDao extends SQLiteDao implements ISimpleDao<Chime> {
 		open();
 
 		ContentValues values = new ContentValues();
-		values.put(NoMissingDB.CHIMES_KEY_ID, chime.getId()); 
+//		values.put(NoMissingDB.CHIMES_KEY_ID, chime.getId()); 
 		values.put(NoMissingDB.CHIMES_KEY_HOUR, chime.getHour());
 		values.put(NoMissingDB.CHIMES_KEY_MINUTE, chime.getMinute());
 		values.put(NoMissingDB.CHIMES_KEY_IS_ENABLED, chime.isEnabled());
@@ -147,24 +147,24 @@ public class ChimeDao extends SQLiteDao implements ISimpleDao<Chime> {
 	 * 
 	 * @return the next available task ID to be assigned to a new task
 	 */
-	public int getNextID() {
-
-		String selectQuery = "SELECT MAX(" + NoMissingDB.CHIMES_KEY_ID +
-				") FROM " + NoMissingDB.TABLE_CHIMES;
-		open();
-		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		if (cursor.moveToFirst()){
-			int i = cursor.getInt(0) + 1;
-			cursor.close();
-			close();
-			return i;
-		}
-		else{
-			cursor.close();
-			close();
-			return 1;
-		}
-	}
+//	public int getNextID() {
+//
+//		String selectQuery = "SELECT MAX(" + NoMissingDB.CHIMES_KEY_ID +
+//				") FROM " + NoMissingDB.TABLE_CHIMES;
+//		open();
+//		Cursor cursor = db.rawQuery(selectQuery, null);
+//
+//		if (cursor.moveToFirst()){
+//			int i = cursor.getInt(0) + 1;
+//			cursor.close();
+//			close();
+//			return i;
+//		}
+//		else{
+//			cursor.close();
+//			close();
+//			return 1;
+//		}
+//	}
 
 }

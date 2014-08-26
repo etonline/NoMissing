@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.receiver.AlarmReceiver;
+import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 public class ChimeAlarmHandler extends AlarmHandler<Chime> {
 
@@ -26,6 +27,8 @@ public class ChimeAlarmHandler extends AlarmHandler<Chime> {
 		} else {
 			alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
 		}	
+		
+		ToastMaker.toast(context, calculateDiffTime(triggerAtMillis));
 	}
 
 	@Override

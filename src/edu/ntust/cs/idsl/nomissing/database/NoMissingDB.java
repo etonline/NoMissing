@@ -89,7 +89,7 @@ public class NoMissingDB extends SQLiteOpenHelper {
 	 */
 	private void createEventsTable(SQLiteDatabase db) {
 		String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "(" + 
-				EVENTS_KEY_ID + " INTEGER PRIMARY KEY," + 
+				EVENTS_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + 
 				EVENTS_KEY_CALENDAR_ID + " INTEGER," + 
 				EVENTS_KEY_TITLE + " TEXT," + 
 				EVENTS_KEY_LOCATION + " TEXT," + 
@@ -107,7 +107,7 @@ public class NoMissingDB extends SQLiteOpenHelper {
 	 */
 	private void createRemindersTable(SQLiteDatabase db) {
 		String CREATE_REMINDERS_TABLE = "CREATE TABLE " + TABLE_REMINDERS + "(" + 
-				REMINDERS_KEY_ID + " INTEGER PRIMARY KEY," + 
+				REMINDERS_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + 
 				REMINDERS_KEY_CALENDAR_ID + " INTEGER," + 
 				REMINDERS_KEY_EVENT_ID + " INTEGER," + 
 				REMINDERS_KEY_REMINDER_TIME + " DATETIME," + 
@@ -122,7 +122,7 @@ public class NoMissingDB extends SQLiteOpenHelper {
 	 */	
 	private void createChimesTable(SQLiteDatabase db) {
 		String CREATE_CHIMES_TABLE = "CREATE TABLE " + TABLE_CHIMES + "(" + 
-				CHIMES_KEY_ID + " INTEGER PRIMARY KEY," + 
+				CHIMES_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + 
 				CHIMES_KEY_HOUR + " INTEGER," + 
 				CHIMES_KEY_MINUTE + " INTEGER," + 
 				CHIMES_KEY_IS_ENABLED + " INTEGER," + 

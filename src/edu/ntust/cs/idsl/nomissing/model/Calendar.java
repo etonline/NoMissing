@@ -80,5 +80,16 @@ public class Calendar {
 	public static Calendar getDefaultCalendar() {
 		return new Calendar(0, "NoMissing (Default)");
 	}
+	
+	public static String getCalendarNameById(List<Calendar> calendars, long calendarID) {
+		String calendarName = new String();
+		for(Calendar calendar : calendars) {
+			if (calendar.getId() == calendarID) {
+				calendarName = calendar.getName();
+				break;
+			}
+		}
+		return calendarName;
+	}
 
 }

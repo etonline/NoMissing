@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ntust.cs.idsl.nomissing.R;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.ICalendarDao;
 import edu.ntust.cs.idsl.nomissing.model.Calendar;
 import edu.ntust.cs.idsl.nomissing.util.AccountUtil;
@@ -65,5 +66,5 @@ public class CalendarDao extends CalendarProviderDao implements ICalendarDao {
 
 		return calendars;
 	}
-
+	
 }

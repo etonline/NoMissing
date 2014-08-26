@@ -18,14 +18,15 @@
     <string name="action_add_chime">新增</string>
     <string name="action_set_chime_ok">完成</string>
     <string name="action_delete_chime">刪除</string>
-    <string name="action_settings_ok">設定完成</string>
+    <string name="action_settings_save">儲存設定</string>
+    <string name="action_settings_default">返回預設值</string>
     <string name="action_set_weather">提醒設定</string>
     <string name="action_save">儲存</string>
     <string name="action_set_event_ok">完成</string>
     <string name="action_delete_event">刪除</string>
     <string name="action_add_event">新增活動</string>
     <string name="action_search_date">查詢日期</string>
-    <string name="action_refresh_weather_data">更新資料</string>
+    <string name="action_refresh_weather_data">更新天氣資料</string>
 
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
@@ -87,8 +88,10 @@
     <!-- WeatherFragment -->
     <string name="alert_dialog_close">關閉</string>
     <string name="toast_save_settings">已儲存設定</string>
-    <string name="toast_refresh_weather_data">取得天氣資料中，請稍後...</string>
-    <string name="toast_refresh_weather_data_completed">天氣資料更新完成</string>
+    <string name="toast_refresh_weather_data_start">取得天氣資料中</string>
+    <string name="toast_refresh_weather_data_finish">天氣資料更新完成</string>
+    <string name="toast_refresh_weather_data_failure">天氣資料更新失敗</string>
+    <string name="progress_dialog_refresh_data">資料更新中，請稍候...</string>
 
     <!-- ChimeFragment -->
 

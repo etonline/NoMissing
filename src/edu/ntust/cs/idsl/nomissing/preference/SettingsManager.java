@@ -1,5 +1,6 @@
 package edu.ntust.cs.idsl.nomissing.preference;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -13,20 +14,25 @@ public class SettingsManager {
 	private SharedPreferences pref;
 	private Editor editor;
 
-	private static final String PREF_NAME = "SettingsPref";
-	private static final String KEY_INITIALIZED = "initialized";
-	private static final String KEY_REGISTERED = "registered";
-	private static final String KEY_UUID = "uuid";
-	private static final String KEY_ACCESS_TOKEN = "access_token";
-	private static final String KEY_CALENDAR_ID = "calendar_id";
-	private static final String KEY_TTS_SPEAKER = "tts_speaker";
-	private static final String KEY_TTS_VOLUME = "tts_volume";
-	private static final String KEY_TTS_SPEED = "tts_speed";
-	private static final String KEY_WEATHER_TTS_ENABLED = "weather_tts_enabled";
-	private static final String KEY_WEATHER_REMINDER_ENABLED = "weather_reminder_enabled";
-	private static final String KEY_WEATHER_REMINDER_HOUR = "weather_reminder_hour";
-	private static final String KEY_WEATHER_REMINDER_MINUTE = "weather_reminder_minute";
-	private static final String KEY_WEATHER_REMINDER_CITY = "weather_reminder_city";
+	public static final String PREF_NAME = "SettingsPref";
+	public static final String KEY_INITIALIZED = "initialized";
+	public static final String KEY_REGISTERED = "registered";
+	public static final String KEY_UUID = "uuid";
+	public static final String KEY_ACCESS_TOKEN = "access_token";
+	public static final String KEY_CALENDAR_ID = "calendar_id";
+	public static final String KEY_TTS_SPEAKER = "tts_speaker";
+	public static final String KEY_TTS_VOLUME = "tts_volume";
+	public static final String KEY_TTS_SPEED = "tts_speed";
+	public static final String KEY_WEATHER_TTS_ENABLED = "weather_tts_enabled";
+	public static final String KEY_WEATHER_REMINDER_ENABLED = "weather_reminder_enabled";
+	public static final String KEY_WEATHER_REMINDER_HOUR = "weather_reminder_hour";
+	public static final String KEY_WEATHER_REMINDER_MINUTE = "weather_reminder_minute";
+	public static final String KEY_WEATHER_REMINDER_CITY = "weather_reminder_city";
+	
+	public static final long DEFAULT_CALENDAR_ID = -1;
+	public static final String DEFAULT_TTS_SPEAKER = "Bruce";
+	public static final int DEFAULT_TTS_VOLUME  = 100;
+	public static final int DEFAULT_TTS_SPEED = 0;
 	
 	private SettingsManager(Context context) {
 		this.context = context;
@@ -123,19 +129,19 @@ public class SettingsManager {
 	}	
 	
 	public long getCalendarID() {
-		return pref.getLong(KEY_CALENDAR_ID, -1);
+		return pref.getLong(KEY_CALENDAR_ID, DEFAULT_CALENDAR_ID);
 	}
 	
 	public String getTTSSpeaker() {
-		return pref.getString(KEY_TTS_SPEAKER, "Bruce");
+		return pref.getString(KEY_TTS_SPEAKER, DEFAULT_TTS_SPEAKER);
 	}
 	
 	public int getTTSVolume() {
-		return pref.getInt(KEY_TTS_VOLUME, 100);
+		return pref.getInt(KEY_TTS_VOLUME, DEFAULT_TTS_VOLUME);
 	}
 	
 	public int getTTSSpeed() {
-		return pref.getInt(KEY_TTS_SPEED, 0);
+		return pref.getInt(KEY_TTS_SPEED, DEFAULT_TTS_SPEED);
 	}
 	
 	public boolean isWeatherTTSEnabled() {

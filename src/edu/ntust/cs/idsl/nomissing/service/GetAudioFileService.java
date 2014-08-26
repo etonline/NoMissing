@@ -19,6 +19,7 @@ import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.ISimpleDao;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
@@ -64,7 +65,7 @@ public class GetAudioFileService extends IntentService {
 			url = intent.getStringExtra("url");
 			Log.i(TAG, url);
 			
-	        NoMissingHttpClient.getInstance(false);
+	        NoMissingHttpClient.setAsync(false);
 	        NoMissingHttpClient.download(url, new BinaryHttpResponseHandler(allowedContentTypes) {
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, byte[] response) {
@@ -99,15 +100,15 @@ public class GetAudioFileService extends IntentService {
 	
 	private void setAudio(String category, long id, String audio) {
 		if (category.equals("reminder")) {
-			Reminder reminder = SQLiteDaoFactory.createReminderDao(this).find(id);
+			Reminder reminder = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).find(id);
 			reminder.setAudio(audio);
-			SQLiteDaoFactory.createReminderDao(this).update(reminder);
+			DaoFactory.getSQLiteDaoFactory().createReminderDao(this).update(reminder);
 		}
 		
 		if (category.equals("chime")) {
-			Chime chime = SQLiteDaoFactory.createChimeDao(this).find((int)id);
+			Chime chime = DaoFactory.getSQLiteDaoFactory().createChimeDao(this).find((int)id);
 			chime.setAudio(audio);
-			SQLiteDaoFactory.createChimeDao(this).update(chime);
+			DaoFactory.getSQLiteDaoFactory().createChimeDao(this).update(chime);
 		}
 	}
 

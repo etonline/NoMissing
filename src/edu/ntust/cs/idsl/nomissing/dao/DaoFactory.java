@@ -17,7 +17,7 @@ public abstract class DaoFactory {
 		return new CalendarProviderDaoFactory();
 	}
 	
-	public static DaoFactory getDaoFactory(long calendarID) {
+	public static DaoFactory getEventDaoFactory(long calendarID) {
 		DaoFactory daoFactory = null;
 		
 		if (calendarID > 0) {

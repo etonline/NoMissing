@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import edu.ntust.cs.idsl.nomissing.R;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
@@ -20,12 +21,12 @@ public class ChimeActivity extends Activity {
 		setContentView(R.layout.activity_chime);
 		
 		int chimeID = getIntent().getIntExtra("id", -1);
-		chime = SQLiteDaoFactory.createChimeDao(this).find(chimeID);
+		chime = DaoFactory.getSQLiteDaoFactory().createChimeDao(this).find(chimeID);
 		openChimeDialog(chime);
 			
 		if (!chime.isRepeating()) {
 			chime.setTriggered(true);
-			SQLiteDaoFactory.createChimeDao(this).update(chime);
+			DaoFactory.getSQLiteDaoFactory().createChimeDao(this).update(chime);
 		}			
 	}
 

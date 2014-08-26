@@ -51,7 +51,7 @@ public class TTSGetConvertStatusService extends IntentService {
 			RequestParams params = new RequestParams();
 	        params.add(PARAM_CONVERT_ID, convertID);
 			
-	        NoMissingHttpClient.getInstance(false);
+	        NoMissingHttpClient.setAsync(false);
 			NoMissingHttpClient.ttsGetConvertStatus(app.getSettings().getUUID(), app.getSettings().getAccessToken(), params, new JsonHttpResponseHandler() {
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

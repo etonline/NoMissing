@@ -17,19 +17,19 @@ import android.util.Log;
 import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
+import edu.ntust.cs.idsl.nomissing.fragment.WeatherFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingRoute;
+import edu.ntust.cs.idsl.nomissing.http.response.WeatherProperty;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
-import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
+import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
 
 public class GetWeatherDataService extends IntentService {
 	
-	private static final String TAG = "GetWeatherDataService";
+	private static final String TAG = GetWeatherDataService.class.getSimpleName();
 	private NoMissingApp app;
-	
 	private static String audioUri;
 	
 	public GetWeatherDataService() {
@@ -40,19 +40,24 @@ public class GetWeatherDataService extends IntentService {
 	public void onCreate() {
 		super.onCreate();
 		app = (NoMissingApp)getApplicationContext();		
-		ToastMaker.toast(this, R.string.toast_refresh_weather_data);
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ToastMaker.toast(this, R.string.toast_refresh_weather_data_completed);
 	}
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		NoMissingHttpClient.getInstance(false);
+		NoMissingHttpClient.setAsync(false);
 		NoMissingHttpClient.get(NoMissingRoute.WEATHER, app.getSettings().getUUID(), app.getSettings().getAccessToken(), new JsonHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				Intent intent = new Intent();
+				intent.setAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_START);
+				sendBroadcast(intent);
+			}
+			
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 				Log.i(TAG, response.toString());	
@@ -61,20 +66,29 @@ public class GetWeatherDataService extends IntentService {
 					for (int i = 0; i < response.length(); i++) {
 						JSONObject jsonObject = response.getJSONObject(i);
 						
-						int cityid = Integer.parseInt(jsonObject.getString("cityid"));
-						String city = jsonObject.getString("name");
-						String stno = jsonObject.getString("stno");
-						String time = jsonObject.getString("time");
-						String memo = jsonObject.getString("memo");
-						String audio = downloadTask(jsonObject.getString("audio"), String.valueOf(cityid) + ".wav");
-						String createdAt = jsonObject.getString("created_at");
-						String updatedAt = jsonObject.getString("updated_at");	
+						int cityid = Integer.parseInt(jsonObject.getString(WeatherProperty.CITY_ID));
+						String city = jsonObject.getString(WeatherProperty.NAME);
+						String stno = jsonObject.getString(WeatherProperty.STNO);
+						String time = jsonObject.getString(WeatherProperty.TIME);
+						String memo = jsonObject.getString(WeatherProperty.MEMO);
+						String audio = downloadTask(jsonObject.getString(WeatherProperty.AUDIO), String.valueOf(cityid) + ".wav");
+						String createdAt = jsonObject.getString(WeatherProperty.CREATED_AT);
+						String updatedAt = jsonObject.getString(WeatherProperty.UPDATED_AT);	
 						
-						Weather weather = new Weather(cityid, city,stno,time,
-								memo,audio,createdAt,updatedAt);
+						Weather weather = new Weather(cityid, city, stno, time, memo, audio, createdAt, updatedAt);
+						DaoFactory.getSQLiteDaoFactory().createWeatherDao(GetWeatherDataService.this).update(weather);
 						
-						SQLiteDaoFactory.createWeatherDao(GetWeatherDataService.this).update(weather);
+						double prograss = (100 / (double)response.length()) * (i + 1);
+						
+						Intent intent = new Intent();
+						intent.setAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_PROGRASS_UPDATE);
+						intent.putExtra("progress", prograss);
+						sendBroadcast(intent);
 					}		
+					
+					Intent intent = new Intent();
+					intent.setAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FINISH);
+					sendBroadcast(intent);
 				} 
 				catch (JSONException e) {
 					e.printStackTrace();
@@ -84,14 +98,17 @@ public class GetWeatherDataService extends IntentService {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 				Log.i(TAG, throwable.toString());	
-			}
+				Intent intent = new Intent();
+				intent.setAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FAILURE);
+				sendBroadcast(intent);
+			}			
         });	
 	}
 	
 	private String downloadTask(String url, final String fileName) {
 		final String[] allowedContentTypes = {"audio/x-wav"};
 		
-		NoMissingHttpClient.getInstance(false);
+		NoMissingHttpClient.setAsync(false);
         NoMissingHttpClient.download(url, new BinaryHttpResponseHandler(allowedContentTypes) {
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, byte[] response) {

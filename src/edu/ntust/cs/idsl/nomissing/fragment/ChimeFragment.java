@@ -16,6 +16,7 @@ import android.widget.ListView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetChimeActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.ChimeListAdapter;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
@@ -35,7 +36,7 @@ public class ChimeFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		
-		chimeList = SQLiteDaoFactory.createChimeDao(getActivity()).findAll();
+		chimeList = DaoFactory.getSQLiteDaoFactory().createChimeDao(getActivity()).findAll();
 		adapter = new ChimeListAdapter(getActivity(), chimeList);
 		setListAdapter(adapter);
 	}
@@ -73,22 +74,22 @@ public class ChimeFragment extends ListFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode != Constant.REQUEST_CODE_SET) return;
 		
-		chimeList = SQLiteDaoFactory.createChimeDao(getActivity()).findAll();
+		chimeList = DaoFactory.getSQLiteDaoFactory().createChimeDao(getActivity()).findAll();
 		adapter = new ChimeListAdapter(getActivity(), chimeList);
 		setListAdapter(adapter);
 		
 		switch (resultCode) {
 		case Constant.RESULT_CODE_CREATE:
-			ToastMaker.toast(getActivity(), getString(R.string.toast_create_chime));
+//			ToastMaker.toast(getActivity(), getString(R.string.toast_create_chime));
 			break;
 		case Constant.RESULT_CODE_UPDATE:
-			ToastMaker.toast(getActivity(), getString(R.string.toast_update_chime));
+//			ToastMaker.toast(getActivity(), getString(R.string.toast_update_chime));
 			break;
 		case Constant.RESULT_CODE_CANCEL:
 //			ToastMaker.toast(getActivity(), getString(R.string.toast_cancel_chime));
 			break;
 		case Constant.RESULT_CODE_DELETE:
-			ToastMaker.toast(getActivity(), getString(R.string.toast_delete_chime));
+//			ToastMaker.toast(getActivity(), getString(R.string.toast_delete_chime));
 			break;
 
 		default:

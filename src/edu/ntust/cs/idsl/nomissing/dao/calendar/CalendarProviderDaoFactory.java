@@ -6,21 +6,17 @@ import android.content.Context;
 
 public class CalendarProviderDaoFactory extends DaoFactory {
 	
-	public static CalendarDao createCalendarDao(Context context) {
-		return new CalendarDao(context);
-	}
-
-	public static EventDao creatEventDao(Context context) {
-		return new EventDao(context);
-	}
-
 	@Override
 	public IEventDao createEventDao(Context context) {
 		return new EventDao(context);
-	}
+	}	
 	
-//	public static ReminderDao createReminder(Context context) {
-//		return new ReminderDao(context);
-//	}
+	public CalendarDao createCalendarDao(Context context) {
+		return new CalendarDao(context);
+	}
+
+	public EventDao creatEventDao(Context context) {
+		return new EventDao(context);
+	}
 
 }

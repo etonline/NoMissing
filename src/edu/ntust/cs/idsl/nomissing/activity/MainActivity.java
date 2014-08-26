@@ -27,6 +27,7 @@ import android.widget.ListView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.adapter.NavDrawerListAdapter;
 import edu.ntust.cs.idsl.nomissing.constant.NavDrawerItem;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.calendar.CalendarProviderDaoFactory;
 import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.ChimeFragment;
@@ -161,6 +162,24 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		displayView(position);	
 	}	
+
+	@Override
+	public void onBackPressed() {
+		if (doubleBackToExitPressedOnce) {
+			super.onBackPressed();
+			return;
+		}
+
+		this.doubleBackToExitPressedOnce = true;
+		ToastMaker.toast(this, getString(R.string.click_back_again_to_exit));
+
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				doubleBackToExitPressedOnce = false;
+			}
+		}, 2000);
+	}
 	
 	private void displayView(int position) {
 		Fragment fragment = null;
@@ -199,29 +218,11 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 		} else {
 			Log.e("MainActivity", "Error in creating fragment");
 		}
-	}
-
-	@Override
-	public void onBackPressed() {
-		if (doubleBackToExitPressedOnce) {
-			super.onBackPressed();
-			return;
-		}
-
-		this.doubleBackToExitPressedOnce = true;
-		ToastMaker.toast(this, getString(R.string.click_back_again_to_exit));
-
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				doubleBackToExitPressedOnce = false;
-			}
-		}, 2000);
-	}
+	}	
 	
 	private void openSettingCalendarDialog() {
-		final List<Calendar> calendars = 
-				CalendarProviderDaoFactory.createCalendarDao(this).findByAccessLevel(Calendars.CAL_ACCESS_OWNER);
+		final List<Calendar> calendars = 	DaoFactory.getCalendarProviderDaoFactory()
+				.createCalendarDao(this).findByAccessLevel(Calendars.CAL_ACCESS_OWNER);
 	
 		new AlertDialog.Builder(this)
 		.setTitle(R.string.dialog_set_calendar)

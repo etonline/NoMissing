@@ -1,9 +1,8 @@
 package edu.ntust.cs.idsl.nomissing.dao.sqlite;
 
+import android.content.Context;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.IEventDao;
-import edu.ntust.cs.idsl.nomissing.dao.calendar.EventDao;
-import android.content.Context;
 
 public class SQLiteDaoFactory extends DaoFactory {
 		

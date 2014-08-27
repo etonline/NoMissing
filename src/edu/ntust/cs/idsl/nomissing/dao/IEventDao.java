@@ -18,4 +18,6 @@ public interface IEventDao {
 
 	public Event find(long calendarID, long eventID, long startMillis, long endMillis);
 	
+	public Event find(long eventID);
+	
 }

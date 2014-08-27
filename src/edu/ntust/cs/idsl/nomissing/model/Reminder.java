@@ -19,7 +19,6 @@ public class Reminder {
 
 	public Reminder(long id, long calendarID, long eventID, long reminderTime,
 			String audio, long createdAt, long updatedAt) {
-		super();
 		this.id = id;
 		this.calendarID = calendarID;
 		this.eventID = eventID;

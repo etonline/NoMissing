@@ -1271,39 +1271,41 @@ containing a value of this type.
         public static final int abc_textfield_searchview_holo_light=0x7f020054;
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
-        public static final int background=0x7f020057;
-        public static final int calendar_next_arrow=0x7f020058;
-        public static final int calendar_prev_arrow=0x7f020059;
-        public static final int cell_bg=0x7f02005a;
-        public static final int counter_bg=0x7f02005b;
-        public static final int disable_cell=0x7f02005c;
-        public static final int drawer_shadow=0x7f02005d;
-        public static final int ic_action_accept=0x7f02005e;
-        public static final int ic_action_alarms=0x7f02005f;
-        public static final int ic_action_cloud=0x7f020060;
-        public static final int ic_action_discard=0x7f020061;
-        public static final int ic_action_edit=0x7f020062;
-        public static final int ic_action_event=0x7f020063;
-        public static final int ic_action_go_to_today=0x7f020064;
-        public static final int ic_action_important=0x7f020065;
-        public static final int ic_action_new=0x7f020066;
-        public static final int ic_action_new_event=0x7f020067;
-        public static final int ic_action_refresh=0x7f020068;
-        public static final int ic_action_replay=0x7f020069;
-        public static final int ic_action_save=0x7f02006a;
-        public static final int ic_action_search=0x7f02006b;
-        public static final int ic_action_settings=0x7f02006c;
-        public static final int ic_action_time=0x7f02006d;
-        public static final int ic_action_view_as_list=0x7f02006e;
-        public static final int ic_drawer=0x7f02006f;
-        public static final int ic_launcher=0x7f020070;
-        public static final int left_arrow=0x7f020071;
-        public static final int list_item_bg_normal=0x7f020072;
-        public static final int list_item_bg_pressed=0x7f020073;
-        public static final int list_selector=0x7f020074;
-        public static final int red_border=0x7f020075;
-        public static final int red_border_gray_bg=0x7f020076;
-        public static final int right_arrow=0x7f020077;
+        public static final int activity_init_background=0x7f020057;
+        public static final int background=0x7f020058;
+        public static final int calendar_next_arrow=0x7f020059;
+        public static final int calendar_prev_arrow=0x7f02005a;
+        public static final int cell_bg=0x7f02005b;
+        public static final int counter_bg=0x7f02005c;
+        public static final int disable_cell=0x7f02005d;
+        public static final int drawer_shadow=0x7f02005e;
+        public static final int ic_action_accept=0x7f02005f;
+        public static final int ic_action_alarms=0x7f020060;
+        public static final int ic_action_cloud=0x7f020061;
+        public static final int ic_action_discard=0x7f020062;
+        public static final int ic_action_edit=0x7f020063;
+        public static final int ic_action_event=0x7f020064;
+        public static final int ic_action_go_to_today=0x7f020065;
+        public static final int ic_action_important=0x7f020066;
+        public static final int ic_action_new=0x7f020067;
+        public static final int ic_action_new_event=0x7f020068;
+        public static final int ic_action_refresh=0x7f020069;
+        public static final int ic_action_replay=0x7f02006a;
+        public static final int ic_action_save=0x7f02006b;
+        public static final int ic_action_search=0x7f02006c;
+        public static final int ic_action_settings=0x7f02006d;
+        public static final int ic_action_time=0x7f02006e;
+        public static final int ic_action_view_as_list=0x7f02006f;
+        public static final int ic_drawer=0x7f020070;
+        public static final int ic_launcher=0x7f020071;
+        public static final int left_arrow=0x7f020072;
+        public static final int list_item_bg_normal=0x7f020073;
+        public static final int list_item_bg_pressed=0x7f020074;
+        public static final int list_selector=0x7f020075;
+        public static final int no_missing=0x7f020076;
+        public static final int red_border=0x7f020077;
+        public static final int red_border_gray_bg=0x7f020078;
+        public static final int right_arrow=0x7f020079;
     }
     public static final class id {
         public static final int action_about=0x7f0b007c;
@@ -1380,6 +1382,7 @@ containing a value of this type.
         public static final int icon=0x7f0b002a;
         public static final int ifRoom=0x7f0b000a;
         public static final int image=0x7f0b0027;
+        public static final int imageView1=0x7f0b003c;
         public static final int imageViewAdd=0x7f0b0065;
         public static final int imageViewEvent=0x7f0b0055;
         public static final int imageViewTime=0x7f0b0061;
@@ -1420,7 +1423,6 @@ containing a value of this type.
         public static final int textViewAgenda=0x7f0b0067;
         public static final int textViewDate=0x7f0b0064;
         public static final int textViewEvent=0x7f0b0062;
-        public static final int textViewLoading=0x7f0b003c;
         public static final int textViewLocation=0x7f0b0053;
         public static final int textViewRepeat=0x7f0b005d;
         public static final int textViewTime=0x7f0b0054;
@@ -1513,9 +1515,10 @@ containing a value of this type.
         public static final int activity_set_weather=0x7f0e0002;
         public static final int fragment_calendar=0x7f0e0003;
         public static final int fragment_chime=0x7f0e0004;
-        public static final int fragment_settings=0x7f0e0005;
-        public static final int fragment_weather=0x7f0e0006;
-        public static final int main=0x7f0e0007;
+        public static final int fragment_home=0x7f0e0005;
+        public static final int fragment_settings=0x7f0e0006;
+        public static final int fragment_weather=0x7f0e0007;
+        public static final int main=0x7f0e0008;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1578,6 +1581,7 @@ containing a value of this type.
          */
         public static final int alert_dialog_close=0x7f080040;
         public static final int app_name=0x7f080003;
+        public static final int audio_file_created=0x7f0800a5;
         /**   Strings for possible PreferenceActivity Back/Next buttons 
          */
         public static final int back_button_label=0x7f080000;
@@ -1687,6 +1691,7 @@ containing a value of this type.
         public static final int pref_tts_volume=0x7f080058;
         public static final int progress_dialog_please_wait=0x7f080098;
         public static final int progress_dialog_refresh_data=0x7f080045;
+        public static final int reminder_time_setting_error=0x7f0800a4;
         public static final int set_event_check_box_all_day=0x7f080060;
         public static final int set_event_check_box_reminder=0x7f080062;
         public static final int set_event_edit_text_hint_description=0x7f08005f;
@@ -1712,6 +1717,7 @@ containing a value of this type.
         public static final int skip_button_label=0x7f080002;
         public static final int southern_region=0x7f080090;
         public static final int southern_region_cities=0x7f080095;
+        public static final int start_time_setting_error=0x7f0800a3;
         public static final int taichung_city=0x7f080084;
         public static final int tainan_city=0x7f08007f;
         public static final int taipei_city=0x7f080078;
@@ -1731,6 +1737,7 @@ containing a value of this type.
         public static final int toast_cancel_chime=0x7f080049;
         public static final int toast_create_chime=0x7f080047;
         public static final int toast_delete_chime=0x7f08004a;
+        public static final int toast_network_inavailable=0x7f0800a6;
         public static final int toast_refresh_weather_data_failure=0x7f080044;
         public static final int toast_refresh_weather_data_finish=0x7f080043;
         public static final int toast_refresh_weather_data_start=0x7f080042;

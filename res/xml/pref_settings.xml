@@ -22,21 +22,21 @@
             android:title="@string/settings_activity_list_preference_speaker" >
         </ListPreference>
 
-        <edu.ntust.cs.idsl.nomissing.util.SeekBarPreference
+        <edu.ntust.cs.idsl.nomissing.preference.SeekBarPreference
             android:dialogLayout="@layout/pref_seekbar"
             android:dialogTitle="@string/pref_tts_volume"
             android:key="tts_volume"
             android:summary="100 (預設)"
             android:title="@string/pref_tts_volume" >
-        </edu.ntust.cs.idsl.nomissing.util.SeekBarPreference>
+        </edu.ntust.cs.idsl.nomissing.preference.SeekBarPreference>
         
-        <edu.ntust.cs.idsl.nomissing.util.SeekBarPreference
+        <edu.ntust.cs.idsl.nomissing.preference.SeekBarPreference
             android:dialogLayout="@layout/pref_seekbar"
             android:dialogTitle="@string/pref_tts_speed"
             android:key="tts_speed"
             android:summary="0 (預設)"
             android:title="@string/pref_tts_speed" >
-        </edu.ntust.cs.idsl.nomissing.util.SeekBarPreference>
+        </edu.ntust.cs.idsl.nomissing.preference.SeekBarPreference>
         
     </PreferenceCategory>
 

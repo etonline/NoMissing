@@ -19,15 +19,15 @@ public final class R {
 		public static final int caldroid_white = 0x7f090000;
 	}
 	public static final class drawable {
-		public static final int calendar_next_arrow = 0x7f020058;
-		public static final int calendar_prev_arrow = 0x7f020059;
-		public static final int cell_bg = 0x7f02005a;
-		public static final int disable_cell = 0x7f02005c;
-		public static final int ic_launcher = 0x7f020070;
-		public static final int left_arrow = 0x7f020071;
-		public static final int red_border = 0x7f020075;
-		public static final int red_border_gray_bg = 0x7f020076;
-		public static final int right_arrow = 0x7f020077;
+		public static final int calendar_next_arrow = 0x7f020059;
+		public static final int calendar_prev_arrow = 0x7f02005a;
+		public static final int cell_bg = 0x7f02005b;
+		public static final int disable_cell = 0x7f02005d;
+		public static final int ic_launcher = 0x7f020071;
+		public static final int left_arrow = 0x7f020072;
+		public static final int red_border = 0x7f020077;
+		public static final int red_border_gray_bg = 0x7f020078;
+		public static final int right_arrow = 0x7f020079;
 	}
 	public static final class id {
 		public static final int calendar_gridview = 0x7f0b005f;

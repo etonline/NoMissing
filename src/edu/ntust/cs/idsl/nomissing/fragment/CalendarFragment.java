@@ -146,16 +146,16 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 		
 		switch (resultCode) {
 		case RESULT_CREATE:
-			ToastMaker.toast(getActivity(), "建立");
+//			ToastMaker.toast(getActivity(), "建立");
 			break;
 		case RESULT_UPDATE:
-			ToastMaker.toast(getActivity(), "更新");
+//			ToastMaker.toast(getActivity(), "更新");
 			break;
 		case RESULT_CANCEL:
-			ToastMaker.toast(getActivity(), "取消");
+//			ToastMaker.toast(getActivity(), "取消");
 			break;
 		case RESULT_DELETE:
-			ToastMaker.toast(getActivity(), "刪除");
+//			ToastMaker.toast(getActivity(), "刪除");
 			break;
 
 		default:
@@ -214,7 +214,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		long endMillis = getEndOfDate(calendar).getTimeInMillis();
 
-		monthEvents = DaoFactory.getEventDaoFactory((int)app.getSettings().getCalendarID()).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
+		monthEvents = DaoFactory.getEventDaoFactory(calenderID).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
 		for(Event event : monthEvents) {
 			calendar.setTimeInMillis(event.getStartTime());
 			caldroidFragment.setBackgroundResourceForDate(R.color.indianred, calendar.getTime());
@@ -231,7 +231,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
     	long startMillis = getStartOfDate(day).getTimeInMillis();
     	long endMillis = getEndOfDate(day).getTimeInMillis();
     	
-    	dayEvents = monthEvents = DaoFactory.getEventDaoFactory((int)app.getSettings().getCalendarID()).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
+    	dayEvents = monthEvents = DaoFactory.getEventDaoFactory(calenderID).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
     	adapter = new EventListAdapter(getActivity(), dayEvents);
     	listViewEvents.setAdapter(adapter);  		
 	}

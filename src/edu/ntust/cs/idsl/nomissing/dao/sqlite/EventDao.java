@@ -12,16 +12,26 @@ import edu.ntust.cs.idsl.nomissing.model.Event;
 
 public class EventDao extends SQLiteDao implements IEventDao {
 
+	private static final String[] EVENTS_COLUMNS = new String[] {
+		NoMissingDB.EVENTS_KEY_ID,
+		NoMissingDB.EVENTS_KEY_CALENDAR_ID,
+		NoMissingDB.EVENTS_KEY_TITLE,
+		NoMissingDB.EVENTS_KEY_LOCATION,
+		NoMissingDB.EVENTS_KEY_DESCRIPTION,
+		NoMissingDB.EVENTS_KEY_START_TIME,
+		NoMissingDB.EVENTS_KEY_END_TIME,
+		NoMissingDB.EVENTS_KEY_HAS_REMINDER,
+		NoMissingDB.EVENTS_KEY_CREATED_AT,
+		NoMissingDB.EVENTS_KEY_UPDATED_AT
+	};
+	
 	public EventDao(Context context) {
 		super(context);
 	}
 
 	@Override
 	public long insert(Event event) {
-		open();
-
 		ContentValues values = new ContentValues();
-//		values.put(NoMissingDB.EVENTS_KEY_ID, event.getId()); 
 		values.put(NoMissingDB.EVENTS_KEY_CALENDAR_ID, event.getCalendarID());
 		values.put(NoMissingDB.EVENTS_KEY_TITLE, event.getTitle());
 		values.put(NoMissingDB.EVENTS_KEY_LOCATION, event.getLocation());
@@ -32,6 +42,7 @@ public class EventDao extends SQLiteDao implements IEventDao {
 		values.put(NoMissingDB.EVENTS_KEY_CREATED_AT, event.getCreatedAt());
 		values.put(NoMissingDB.EVENTS_KEY_UPDATED_AT, event.getUpdatedAt());
 
+		open();
 		long row = db.insert(NoMissingDB.TABLE_EVENTS, null, values);
 		close();
 		
@@ -40,10 +51,10 @@ public class EventDao extends SQLiteDao implements IEventDao {
 
 	@Override
 	public long update(Event event) {
-		open();
+		String whereClause = NoMissingDB.EVENTS_KEY_ID + " = ?";
+		String[] whereArgs = new String[] { String.valueOf(event.getId()) };
 
 		ContentValues values = new ContentValues();
-//		values.put(NoMissingDB.EVENTS_KEY_ID, event.getId()); 
 		values.put(NoMissingDB.EVENTS_KEY_CALENDAR_ID, event.getCalendarID());
 		values.put(NoMissingDB.EVENTS_KEY_TITLE, event.getTitle());
 		values.put(NoMissingDB.EVENTS_KEY_LOCATION, event.getLocation());
@@ -54,9 +65,8 @@ public class EventDao extends SQLiteDao implements IEventDao {
 		values.put(NoMissingDB.EVENTS_KEY_CREATED_AT, event.getCreatedAt());
 		values.put(NoMissingDB.EVENTS_KEY_UPDATED_AT, event.getUpdatedAt());
 
-		int row =  db.update(NoMissingDB.TABLE_EVENTS, values, NoMissingDB.EVENTS_KEY_ID + " = ?",
-				new String[] { String.valueOf(event.getId()) });
-		
+		open();
+		int row =  db.update(NoMissingDB.TABLE_EVENTS, values, whereClause, whereArgs);
 		close();
 		
 		return row;
@@ -64,112 +74,69 @@ public class EventDao extends SQLiteDao implements IEventDao {
 
 	@Override
 	public long delete(long id) {
+		String whereClause = NoMissingDB.EVENTS_KEY_ID + " = ?";
+		String[] whereArgs = new String[] { String.valueOf(id) };
+		
 		open();
-		int row = db.delete(NoMissingDB.TABLE_EVENTS, 
-				NoMissingDB.EVENTS_KEY_ID + " = ?", new String[] { String.valueOf(id) });
+		int row = db.delete(NoMissingDB.TABLE_EVENTS, whereClause, whereArgs);
 		close();
 		
 		return row;
 	}
 
 	public List<Event> findAll() {
-		List<Event> eventList = new ArrayList<Event>();
-		String selectQuery = "SELECT  * FROM " + NoMissingDB.TABLE_EVENTS;
+		List<Event> events = new ArrayList<Event>();
 		
 		open();
-		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		// looping through all rows and adding to list
-		if (cursor.moveToFirst()) {
-			do {
-				Event event = new Event();
-				event.setId(cursor.getLong(0));
-				event.setCalendarID(cursor.getLong(1));
-				event.setTitle(cursor.getString(2));
-				event.setLocation(cursor.getString(3));
-				event.setDescription(cursor.getString(4));
-				event.setStartTime(cursor.getLong(5));
-				event.setEndTime(cursor.getLong(6));
-				event.setReminder(cursor.getInt(7) > 0);
-				event.setCreatedAt(cursor.getLong(8));
-				event.setUpdatedAt(cursor.getLong(9));
-				
-				eventList.add(event);
-			} while (cursor.moveToNext());
+		Cursor cursor = db.query(NoMissingDB.TABLE_EVENTS, EVENTS_COLUMNS, null, null, null, null, null);
+		while (cursor.moveToNext()) {
+			Event event = new Event();
+			event.setId(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_ID)));
+			event.setCalendarID(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_CALENDAR_ID)));
+			event.setTitle(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_TITLE)));
+			event.setLocation(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_LOCATION)));
+			event.setDescription(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_DESCRIPTION)));
+			event.setStartTime(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_START_TIME)));
+			event.setEndTime(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_END_TIME)));
+			event.setReminder(cursor.getInt(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_HAS_REMINDER)) > 0);
+			event.setCreatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_CREATED_AT)));
+			event.setUpdatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_UPDATED_AT)));
+			events.add(event);
 		}
 		cursor.close();
 		close();
 		
-		return eventList;
-	}
-
-	public Event find(long id) {
-		open();
-
-		Cursor cursor = db
-				.query(NoMissingDB.TABLE_EVENTS, new String[] {
-						NoMissingDB.EVENTS_KEY_ID,
-						NoMissingDB.EVENTS_KEY_CALENDAR_ID,
-						NoMissingDB.EVENTS_KEY_TITLE,
-						NoMissingDB.EVENTS_KEY_LOCATION,
-						NoMissingDB.EVENTS_KEY_DESCRIPTION,
-						NoMissingDB.EVENTS_KEY_START_TIME,
-						NoMissingDB.EVENTS_KEY_END_TIME,
-						NoMissingDB.EVENTS_KEY_HAS_REMINDER,
-						NoMissingDB.EVENTS_KEY_CREATED_AT,
-						NoMissingDB.EVENTS_KEY_UPDATED_AT },
-						NoMissingDB.EVENTS_KEY_ID + "=?",
-						new String[] { String.valueOf(id) }, null, null,
-						null, null);
-		if (cursor != null)
-			cursor.moveToFirst();
-
-		Event event = new Event();
-		event.setId(cursor.getLong(0));
-		event.setCalendarID(cursor.getLong(1));
-		event.setTitle(cursor.getString(2));
-		event.setLocation(cursor.getString(3));
-		event.setDescription(cursor.getString(4));
-		event.setStartTime(cursor.getLong(5));
-		event.setEndTime(cursor.getLong(6));
-		event.setReminder(cursor.getInt(7) > 0);
-		event.setCreatedAt(cursor.getLong(8));
-		event.setUpdatedAt(cursor.getLong(9));
-		
-		cursor.close();
-		close();
-		
-		return event;
+		return events;
 	}
 	
 	public List<Event> find(long calendarID, long startMillis, long endMillis) {
 		List<Event> eventList = new ArrayList<Event>();
-		String selectQuery = 
-				"SELECT  * FROM " + NoMissingDB.TABLE_EVENTS + 
-				" WHERE " + NoMissingDB.EVENTS_KEY_CALENDAR_ID + " = " + calendarID +
-				" AND " + NoMissingDB.EVENTS_KEY_START_TIME + " >= " + startMillis +
-				" AND " + NoMissingDB.EVENTS_KEY_END_TIME + " <= " + endMillis;
+		
+		String selection = 
+				"((" + NoMissingDB.EVENTS_KEY_CALENDAR_ID + " = ?) " + 
+				"AND (" + NoMissingDB.EVENTS_KEY_START_TIME + " >= ?) " + 
+				"AND ("+ NoMissingDB.EVENTS_KEY_END_TIME + " <= ?))";
+		
+		String[] selectionArgs = new String[] {
+				String.valueOf(calendarID), 
+				String.valueOf(startMillis), 
+				String.valueOf(endMillis)};
 		
 		open();
-		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		// looping through all rows and adding to list
-		if (cursor.moveToFirst()) {
-			do {
-				Event event = new Event();
-				event.setId(cursor.getLong(0));
-				event.setCalendarID(cursor.getLong(1));
-				event.setTitle(cursor.getString(2));
-				event.setLocation(cursor.getString(3));
-				event.setDescription(cursor.getString(4));
-				event.setStartTime(cursor.getLong(5));
-				event.setEndTime(cursor.getLong(6));
-				event.setReminder(cursor.getInt(7) > 0);
-				event.setCreatedAt(cursor.getLong(8));
-				event.setUpdatedAt(cursor.getLong(9));
-				
-				eventList.add(event);
-			} while (cursor.moveToNext());
+		Cursor cursor = db.query(NoMissingDB.TABLE_EVENTS, EVENTS_COLUMNS, selection, selectionArgs, null, null, null);
+		while (cursor.moveToNext()) {
+			Event event = new Event();
+			event.setId(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_ID)));
+			event.setCalendarID(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_CALENDAR_ID)));
+			event.setTitle(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_TITLE)));
+			event.setLocation(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_LOCATION)));
+			event.setDescription(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_DESCRIPTION)));
+			event.setStartTime(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_START_TIME)));
+			event.setEndTime(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_END_TIME)));
+			event.setReminder(cursor.getInt(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_HAS_REMINDER)) > 0);
+			event.setCreatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_CREATED_AT)));
+			event.setUpdatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_UPDATED_AT)));
+			eventList.add(event);
 		}
 		cursor.close();
 		close();
@@ -177,37 +144,67 @@ public class EventDao extends SQLiteDao implements IEventDao {
 		return eventList;		
 	}
 	
+	@Override
 	public Event find(long eventID, long calendarID, long startMillis, long endMillis) {
 		Event event = new Event();
-		String selectQuery = 
-				"SELECT  * FROM " + NoMissingDB.TABLE_EVENTS + 
-				" WHERE " + NoMissingDB.EVENTS_KEY_CALENDAR_ID + " = " + calendarID +
-				" AND " + NoMissingDB.EVENTS_KEY_ID + " = " + eventID +
-				" AND " + NoMissingDB.EVENTS_KEY_START_TIME + " >= " + startMillis +
-				" AND " + NoMissingDB.EVENTS_KEY_END_TIME + " <= " + endMillis;
+				
+		String selection = 
+				"((" + NoMissingDB.EVENTS_KEY_ID + " = ?) " + 
+				"AND (" + NoMissingDB.EVENTS_KEY_CALENDAR_ID + " >= ?) " + 
+				"AND (" + NoMissingDB.EVENTS_KEY_START_TIME + " >= ?) " + 
+				"AND ("+ NoMissingDB.EVENTS_KEY_END_TIME + " <= ?))";
+		
+		String[] selectionArgs = new String[] {
+				String.valueOf(eventID), 
+				String.valueOf(calendarID), 
+				String.valueOf(startMillis), 
+				String.valueOf(endMillis)};
 		
 		open();
-		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		// looping through all rows and adding to list
-		if (cursor.moveToFirst()) {
-//			do {
-				event.setId(cursor.getLong(0));
-				event.setCalendarID(cursor.getLong(1));
-				event.setTitle(cursor.getString(2));
-				event.setLocation(cursor.getString(3));
-				event.setDescription(cursor.getString(4));
-				event.setStartTime(cursor.getLong(5));
-				event.setEndTime(cursor.getLong(6));
-				event.setReminder(cursor.getInt(7) > 0);
-				event.setCreatedAt(cursor.getLong(8));
-				event.setUpdatedAt(cursor.getLong(9));
-//			} while (cursor.moveToNext());
+		Cursor cursor = db.query(NoMissingDB.TABLE_EVENTS, EVENTS_COLUMNS, selection, selectionArgs, null, null, null);
+		if (cursor != null) {
+			cursor.moveToFirst();
+			event.setId(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_ID)));
+			event.setCalendarID(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_CALENDAR_ID)));
+			event.setTitle(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_TITLE)));
+			event.setLocation(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_LOCATION)));
+			event.setDescription(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_DESCRIPTION)));
+			event.setStartTime(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_START_TIME)));
+			event.setEndTime(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_END_TIME)));
+			event.setReminder(cursor.getInt(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_HAS_REMINDER)) > 0);
+			event.setCreatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_CREATED_AT)));
+			event.setUpdatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_UPDATED_AT)));
 		}
 		cursor.close();
 		close();
 		
 		return event;		
+	}
+	
+	public Event find(long id) {
+		Event event = new Event();
+		String selection = NoMissingDB.EVENTS_KEY_ID + "=?";
+		String[] selectionArgs = new String[] { String.valueOf(id) };
+		
+		open();
+		Cursor cursor = db.query(NoMissingDB.TABLE_EVENTS, EVENTS_COLUMNS, selection, selectionArgs, null, null, null, null);
+		if (cursor != null) {
+			cursor.moveToFirst();
+			event.setId(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_ID)));
+			event.setCalendarID(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_CALENDAR_ID)));
+			event.setTitle(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_TITLE)));
+			event.setLocation(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_LOCATION)));
+			event.setDescription(cursor.getString(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_DESCRIPTION)));
+			event.setStartTime(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_START_TIME)));
+			event.setEndTime(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_END_TIME)));
+			event.setReminder(cursor.getInt(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_HAS_REMINDER)) > 0);
+			event.setCreatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_CREATED_AT)));
+			event.setUpdatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.EVENTS_KEY_UPDATED_AT)));
+		}
+		cursor.close();
+		close();
+		
+		return event;
 	}
 
 }

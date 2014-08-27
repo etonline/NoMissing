@@ -1,13 +1,10 @@
 package edu.ntust.cs.idsl.nomissing.service;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 
 import org.apache.http.Header;
-import org.json.JSONObject;
 
 import android.app.IntentService;
 import android.content.Context;
@@ -15,21 +12,13 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.loopj.android.http.BinaryHttpResponseHandler;
-import com.loopj.android.http.FileAsyncHttpResponseHandler;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.dao.ISimpleDao;
-import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
-import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
-import edu.ntust.cs.idsl.nomissing.util.FileUtil;
-import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 public class GetAudioFileService extends IntentService {
 	
@@ -58,8 +47,6 @@ public class GetAudioFileService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		if (intent.getAction().equals(ACTION_GET_AUDIO_FILE)) {
-			Log.v(TAG, "start");
-			
 			id = intent.getLongExtra("id", 0);
 			category = intent.getStringExtra("category");
 			url = intent.getStringExtra("url");

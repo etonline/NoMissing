@@ -15,5 +15,9 @@ public class NotificationHandlerFactory {
 	public static WeatherNotificationHandler createWeatherNotificationHandler(Context context) {
 		return new WeatherNotificationHandler(context);
 	}
+	
+	public static ProgressNotificationHandler createProgressNotificationHandler(Context context) {
+		return new ProgressNotificationHandler(context);
+	}
 
 }

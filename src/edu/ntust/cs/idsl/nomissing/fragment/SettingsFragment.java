@@ -1,6 +1,7 @@
 package edu.ntust.cs.idsl.nomissing.fragment;
 
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,8 +20,8 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Calendar;
+import edu.ntust.cs.idsl.nomissing.preference.SeekBarPreference;
 import edu.ntust.cs.idsl.nomissing.preference.SettingsManager;
-import edu.ntust.cs.idsl.nomissing.util.SeekBarPreference;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
@@ -52,7 +53,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		ttsSpeaker = app.getSettings().getTTSSpeaker();
 		ttsVolume = app.getSettings().getTTSVolume();
 		ttsSpeed = app.getSettings().getTTSSpeed();
-		
+
 		setPrefCalendar();
 		setPrefTTSSpeaker();
 		setPrefTTSVolume();
@@ -60,14 +61,14 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	}
 	
 	private void setPrefCalendar() {
-		prefCalendar = (Preference) findPreference(SettingsManager.KEY_CALENDAR_ID);
+		prefCalendar = (Preference) findPreference("calendar_id");
 		List<Calendar> calendars = DaoFactory.getCalendarProviderDaoFactory().createCalendarDao(getActivity()).findAll();
 		prefCalendar.setSummary(Calendar.getCalendarNameById(calendars, calendarID));
 		prefCalendar.setOnPreferenceClickListener(this);
 	}
 	
 	private void setPrefTTSSpeaker() {
-        prefTTSSpeaker = (ListPreference) findPreference(SettingsManager.KEY_TTS_SPEAKER);
+        prefTTSSpeaker = (ListPreference) findPreference("tts_speaker");
         prefTTSSpeaker.setSummary(ttsSpeaker);
         prefTTSSpeaker.setOnPreferenceChangeListener(this);
 	}
@@ -75,7 +76,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	private void setPrefTTSVolume() {
 		final int MIN_TTS_VOLUME = 0;
 		final int MAX_TTS_VOLUME = 100;
-		prefTTSVolume = (SeekBarPreference) findPreference(SettingsManager.KEY_TTS_VOLUME);
+		prefTTSVolume = (SeekBarPreference) findPreference("tts_volume");
         prefTTSVolume.init(MIN_TTS_VOLUME, MAX_TTS_VOLUME, ttsVolume);
         prefTTSVolume.setSummary(String.valueOf(ttsVolume));
         prefTTSVolume.setOnPreferenceChangeListener(this);
@@ -84,7 +85,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	private void setPrefTTSSpeed() {
 		final int MIN_TTS_SPEED = -10;
 		final int MAX_TTS_SPEED = 10;
-		prefTTSSpeed = (SeekBarPreference) findPreference(SettingsManager.KEY_TTS_SPEED);
+		prefTTSSpeed = (SeekBarPreference) findPreference("tts_speed");
 		prefTTSSpeed.init(MIN_TTS_SPEED, MAX_TTS_SPEED, ttsSpeed);
 		prefTTSSpeed.setSummary(String.valueOf(ttsSpeed));	
 		prefTTSSpeed.setOnPreferenceChangeListener(this);

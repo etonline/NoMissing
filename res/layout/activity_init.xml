@@ -1,17 +1,20 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="${relativePackage}.${activityClass}"
-    android:background="@drawable/background" >
+    android:background="@drawable/activity_init_background"
+    tools:context="${relativePackage}.${activityClass}" >
 
-    <TextView
-        android:id="@+id/textViewLoading"
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/init_text_view_text_loading"
-        android:textColor="@color/white" />
+        android:layout_height="50dp" 
+        android:layout_gravity="center|center_horizontal">
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/no_missing" />
+    </FrameLayout>
+
+</LinearLayout>

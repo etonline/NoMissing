@@ -3,27 +3,34 @@ package edu.ntust.cs.idsl.nomissing.dao.sqlite;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.R.integer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import edu.ntust.cs.idsl.nomissing.dao.ISimpleDao;
 import edu.ntust.cs.idsl.nomissing.database.NoMissingDB;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 
 public class ChimeDao extends SQLiteDao implements ISimpleDao<Chime> {
 
+	private static final String[] CHIMES_COLUMNS = new String[] {
+		NoMissingDB.CHIMES_KEY_ID,
+		NoMissingDB.CHIMES_KEY_HOUR,
+		NoMissingDB.CHIMES_KEY_MINUTE,
+		NoMissingDB.CHIMES_KEY_IS_ENABLED,
+		NoMissingDB.CHIMES_KEY_IS_REPEATING,
+		NoMissingDB.CHIMES_KEY_IS_TRIGGERED,
+		NoMissingDB.CHIMES_KEY_AUDIO,
+		NoMissingDB.CHIMES_KEY_CREATED_AT,
+		NoMissingDB.CHIMES_KEY_UPDATED_AT
+	};
+	
 	public ChimeDao(Context context) {
 		super(context);
 	}
 
 	@Override
 	public int insert(Chime chime) {
-		open();
-
 		ContentValues values = new ContentValues();
-//		values.put(NoMissingDB.CHIMES_KEY_ID, chime.getId()); 
 		values.put(NoMissingDB.CHIMES_KEY_HOUR, chime.getHour());
 		values.put(NoMissingDB.CHIMES_KEY_MINUTE, chime.getMinute());
 		values.put(NoMissingDB.CHIMES_KEY_IS_ENABLED, chime.isEnabled());
@@ -33,18 +40,19 @@ public class ChimeDao extends SQLiteDao implements ISimpleDao<Chime> {
 		values.put(NoMissingDB.CHIMES_KEY_CREATED_AT, chime.getCreatedAt());
 		values.put(NoMissingDB.CHIMES_KEY_UPDATED_AT, chime.getUpdatedAt());
 
-		int row = (int)db.insert(NoMissingDB.TABLE_CHIMES, null, values);
+		open();
+		int row = (int) db.insert(NoMissingDB.TABLE_CHIMES, null, values);
 		close();
-		
+
 		return row;
 	}
 
 	@Override
 	public int update(Chime chime) {
-		open();
+		String whereClause = NoMissingDB.CHIMES_KEY_ID + " = ?";
+		String[] whereArgs = new String[] { String.valueOf(chime.getId()) };
 
 		ContentValues values = new ContentValues();
-//		values.put(NoMissingDB.CHIMES_KEY_ID, chime.getId()); 
 		values.put(NoMissingDB.CHIMES_KEY_HOUR, chime.getHour());
 		values.put(NoMissingDB.CHIMES_KEY_MINUTE, chime.getMinute());
 		values.put(NoMissingDB.CHIMES_KEY_IS_ENABLED, chime.isEnabled());
@@ -54,9 +62,8 @@ public class ChimeDao extends SQLiteDao implements ISimpleDao<Chime> {
 		values.put(NoMissingDB.CHIMES_KEY_CREATED_AT, chime.getCreatedAt());
 		values.put(NoMissingDB.CHIMES_KEY_UPDATED_AT, chime.getUpdatedAt());		
 
-		int row =  db.update(NoMissingDB.TABLE_CHIMES, values, NoMissingDB.CHIMES_KEY_ID + " = ?",
-				new String[] { String.valueOf(chime.getId()) });
-		
+		open();
+		int row =  db.update(NoMissingDB.TABLE_CHIMES, values, whereClause, whereArgs);
 		close();
 		
 		return row;
@@ -64,9 +71,11 @@ public class ChimeDao extends SQLiteDao implements ISimpleDao<Chime> {
 
 	@Override
 	public int delete(int id) {
+		String whereClause = NoMissingDB.CHIMES_KEY_ID + " = ?";
+		String[] whereArgs = new String[] { String.valueOf(id) };
+		
 		open();
-		int row = db.delete(NoMissingDB.TABLE_CHIMES, 
-				NoMissingDB.CHIMES_KEY_ID + " = ?", new String[] { String.valueOf(id) });
+		int row = db.delete(NoMissingDB.TABLE_CHIMES, whereClause, whereArgs);
 		close();
 		
 		return row;
@@ -74,97 +83,52 @@ public class ChimeDao extends SQLiteDao implements ISimpleDao<Chime> {
 
 	@Override
 	public List<Chime> findAll() {
-		List<Chime> chimeList = new ArrayList<Chime>();
-		String selectQuery = "SELECT  * FROM " + NoMissingDB.TABLE_CHIMES;
+		List<Chime> chimes = new ArrayList<Chime>();
 		
 		open();
-		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		// looping through all rows and adding to list
-		if (cursor.moveToFirst()) {
-			do {
-				Chime chime = new Chime(
-						cursor.getInt(0), 
-						cursor.getInt(1),
-						cursor.getInt(2), 
-						cursor.getInt(3) > 0,
-						cursor.getInt(4) > 0, 
-						cursor.getInt(5) > 0,
-						cursor.getString(6),
-						cursor.getLong(7), 
-						cursor.getLong(8));
-				
-				chimeList.add(chime);
-			} while (cursor.moveToNext());
+		Cursor cursor = db.query(NoMissingDB.TABLE_CHIMES, CHIMES_COLUMNS, null, null, null, null, null);
+		while (cursor.moveToNext()) {
+			Chime chime = new Chime(
+					cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_ID)), 
+					cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_HOUR)),
+					cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_MINUTE)), 
+					cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_IS_ENABLED)) > 0,
+					cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_IS_REPEATING)) > 0, 
+					cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_IS_TRIGGERED)) > 0,
+					cursor.getString(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_AUDIO)),
+					cursor.getLong(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_CREATED_AT)), 
+					cursor.getLong(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_UPDATED_AT)));
+			chimes.add(chime);
 		}
 		cursor.close();
 		close();
 		
-		return chimeList;
+		return chimes;
 	}
 
 	@Override
 	public Chime find(int id) {
-		open();
-
-		Cursor cursor = db
-				.query(NoMissingDB.TABLE_CHIMES, new String[] {
-						NoMissingDB.CHIMES_KEY_ID,
-						NoMissingDB.CHIMES_KEY_HOUR,
-						NoMissingDB.CHIMES_KEY_MINUTE,
-						NoMissingDB.CHIMES_KEY_IS_ENABLED,
-						NoMissingDB.CHIMES_KEY_IS_REPEATING,
-						NoMissingDB.CHIMES_KEY_IS_TRIGGERED,
-						NoMissingDB.CHIMES_KEY_AUDIO,
-						NoMissingDB.CHIMES_KEY_CREATED_AT,
-						NoMissingDB.CHIMES_KEY_UPDATED_AT },
-						NoMissingDB.CHIMES_KEY_ID + "=?",
-						new String[] { String.valueOf(id) }, null, null,
-						null, null);
-		if (cursor != null)
-			cursor.moveToFirst();
-
-		Chime chime = new Chime(
-				cursor.getInt(0), 
-				cursor.getInt(1),
-				cursor.getInt(2), 
-				cursor.getInt(3) > 0,
-				cursor.getInt(4) > 0, 
-				cursor.getInt(5) > 0,
-				cursor.getString(6),
-				cursor.getLong(7), 
-				cursor.getLong(8));
+		Chime chime = new Chime();
+		String selection = NoMissingDB.CHIMES_KEY_ID + " = ?";
+		String[] selectionArgs = new String[] { String.valueOf(id) };		
 		
+		open();
+		Cursor cursor = db.query(NoMissingDB.TABLE_CHIMES, CHIMES_COLUMNS, selection, selectionArgs, null, null, null, null);
+		if (cursor.moveToFirst()) {   
+			chime.setId(cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_ID)));
+			chime.setHour(cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_HOUR)));
+			chime.setMinute(cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_MINUTE)));
+			chime.setEnabled(cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_IS_ENABLED)) > 0);
+			chime.setRepeating(cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_IS_REPEATING)) > 0);
+			chime.setTriggered(cursor.getInt(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_IS_TRIGGERED)) > 0);
+			chime.setAudio(cursor.getString(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_AUDIO)));
+			chime.setCreatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_CREATED_AT)));
+			chime.setUpdatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.CHIMES_KEY_UPDATED_AT)));			
+		}
 		cursor.close();
 		close();
 		
 		return chime;
 	}
-	
-	/**
-	 * Returns the next available ID to be assigned to a new task. This
-	 * number is equal to the highest current ID + 1.
-	 * 
-	 * @return the next available task ID to be assigned to a new task
-	 */
-//	public int getNextID() {
-//
-//		String selectQuery = "SELECT MAX(" + NoMissingDB.CHIMES_KEY_ID +
-//				") FROM " + NoMissingDB.TABLE_CHIMES;
-//		open();
-//		Cursor cursor = db.rawQuery(selectQuery, null);
-//
-//		if (cursor.moveToFirst()){
-//			int i = cursor.getInt(0) + 1;
-//			cursor.close();
-//			close();
-//			return i;
-//		}
-//		else{
-//			cursor.close();
-//			close();
-//			return 1;
-//		}
-//	}
 
 }

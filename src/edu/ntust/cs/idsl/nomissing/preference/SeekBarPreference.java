@@ -1,4 +1,4 @@
-package edu.ntust.cs.idsl.nomissing.util;
+package edu.ntust.cs.idsl.nomissing.preference;
 
 import android.content.Context;
 import android.preference.DialogPreference;

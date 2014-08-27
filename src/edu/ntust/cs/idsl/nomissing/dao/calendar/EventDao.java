@@ -26,6 +26,7 @@ public class EventDao extends CalendarProviderDao implements IEventDao {
 	    Instances.DESCRIPTION,
 	    Instances.BEGIN,    
 	    Instances.END,
+	    Instances.HAS_ALARM,
 	    Instances.ALL_DAY,
 	    Instances.RRULE,
 	};
@@ -37,8 +38,9 @@ public class EventDao extends CalendarProviderDao implements IEventDao {
 	private static final int PROJECTION_DESCRIPTION_INDEX = 4;
 	private static final int PROJECTION_BEGIN_INDEX = 5;
 	private static final int PROJECTION_END_INDEX = 6;
-	private static final int PROJECTION_ALL_DAY_INDEX = 7;
-	private static final int PROJECTION_RRULE_INDEX = 8;	
+	private static final int PROJECTION_HAS_ALARM_INDEX = 7;
+	private static final int PROJECTION_ALL_DAY_INDEX = 8;
+	private static final int PROJECTION_RRULE_INDEX = 9;	
 	
 	public EventDao(Context context) {
 		super(context);
@@ -47,12 +49,13 @@ public class EventDao extends CalendarProviderDao implements IEventDao {
 	@Override
 	public long insert(Event event) {
 		ContentValues values = new ContentValues();
-		values.put(Events.CALENDAR_ID, 1);
+		values.put(Events.CALENDAR_ID, event.getCalendarID());
 		values.put(Events.TITLE, event.getTitle());
 		values.put(Events.EVENT_LOCATION, event.getLocation());
-		values.put(Events.DESCRIPTION, event.getDescription());
 		values.put(Events.DTSTART, event.getStartTime());
 		values.put(Events.DTEND, event.getEndTime());
+		values.put(Events.HAS_ALARM, event.hasReminder());
+		values.put(Events.DESCRIPTION, event.getDescription());
 		values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getDisplayName());
 		
 		Uri uri = contentResolver.insert(Events.CONTENT_URI, values);
@@ -63,10 +66,11 @@ public class EventDao extends CalendarProviderDao implements IEventDao {
 	@Override
 	public long update(Event event) {
 		ContentValues values = new ContentValues();
-		values.put(Events.DTSTART, event.getStartTime());
-		values.put(Events.DTEND, event.getEndTime());
 		values.put(Events.TITLE, event.getTitle());
 		values.put(Events.EVENT_LOCATION, event.getLocation());
+		values.put(Events.DTSTART, event.getStartTime());
+		values.put(Events.DTEND, event.getEndTime());
+		values.put(Events.HAS_ALARM, event.hasReminder());
 		values.put(Events.DESCRIPTION, event.getDescription());	
 
 		Uri uri = ContentUris.withAppendedId(Events.CONTENT_URI, event.getId());
@@ -85,18 +89,17 @@ public class EventDao extends CalendarProviderDao implements IEventDao {
 	public List<Event> findAll() {
 		List<Event> events = new ArrayList<Event>();
 		  
-		Cursor cursor = null;
-		cursor =  contentResolver.query(Events.CONTENT_URI, EVENTS_PROJECTION, null, null, null);
+		Cursor cursor = contentResolver.query(Events.CONTENT_URI, EVENTS_PROJECTION, null, null, null);
 		while (cursor.moveToNext()) {
 			Event event = new Event();    
 		    event.setId(cursor.getLong(cursor.getColumnIndex(Events._ID)));
 		    event.setCalendarID(cursor.getLong(cursor.getColumnIndex(Events.CALENDAR_ID)));
 		    event.setTitle(cursor.getString(cursor.getColumnIndex(Events.TITLE)));
 		    event.setLocation(cursor.getString(cursor.getColumnIndex(Events.EVENT_LOCATION)));
-		    event.setDescription(cursor.getString(cursor.getColumnIndex(Events.DESCRIPTION)));
+		    event.setReminder(cursor.getInt(cursor.getColumnIndex(Events.HAS_ALARM)) > 0);
 		    event.setStartTime(cursor.getLong(cursor.getColumnIndex(Events.DTSTART)));
 		    event.setEndTime(cursor.getLong(cursor.getColumnIndex(Events.DTEND)));
-		    
+		    event.setDescription(cursor.getString(cursor.getColumnIndex(Events.DESCRIPTION)));
 		    events.add(event);
 		}
 		cursor.close();
@@ -107,9 +110,6 @@ public class EventDao extends CalendarProviderDao implements IEventDao {
 	@Override
 	public List<Event> find(long calendarID, long startMillis, long endMillis) {
 		List<Event> events = new ArrayList<Event>();
-		  
-		Cursor cursor = null;
-		
 		String selection = Instances.CALENDAR_ID + " = ?";
 		String[] selectionArgs = new String[] {String.valueOf(calendarID)};
 		
@@ -117,17 +117,17 @@ public class EventDao extends CalendarProviderDao implements IEventDao {
 		ContentUris.appendId(builder, startMillis);
 		ContentUris.appendId(builder, endMillis);
 
-		cursor =  contentResolver.query(builder.build(), INSTANCE_PROJECTION, selection, selectionArgs, null);
+		Cursor cursor =  contentResolver.query(builder.build(), INSTANCE_PROJECTION, selection, selectionArgs, null);
 		while (cursor.moveToNext()) {
 			Event event = new Event();    
 		    event.setId(cursor.getLong(PROJECTION_EVENT_ID_INDEX));
 		    event.setCalendarID(cursor.getLong(PROJECTION_CALENDAR_ID_INDEX));
 		    event.setTitle(cursor.getString(PROJECTION_TITLE_INDEX));
 		    event.setLocation(cursor.getString(PROJECTION_LOCATION_INDEX));
-		    event.setDescription(cursor.getString(PROJECTION_DESCRIPTION_INDEX));
+		    event.setReminder(cursor.getInt(PROJECTION_HAS_ALARM_INDEX) > 0);
 		    event.setStartTime(cursor.getLong(PROJECTION_BEGIN_INDEX));
 		    event.setEndTime(cursor.getLong(PROJECTION_END_INDEX));
-		    
+		    event.setDescription(cursor.getString(PROJECTION_DESCRIPTION_INDEX));
 		    events.add(event);
 		}
 		cursor.close();
@@ -136,31 +136,51 @@ public class EventDao extends CalendarProviderDao implements IEventDao {
 	}
 
 	@Override
-	public Event find(long calendarID, long eventID, long startMillis, long endMillis) {
+	public Event find(long eventID, long calendarID, long startMillis, long endMillis) {
 		Event event = new Event();
-		  
-		Cursor cursor = null;
-		
-		String selection = Instances.EVENT_ID+ " = ?";
+		String selection = Instances.EVENT_ID + " = ?";
 		String[] selectionArgs = new String[] {String.valueOf(eventID)};
 		
 		Uri.Builder builder = Instances.CONTENT_URI.buildUpon();
 		ContentUris.appendId(builder, startMillis);
 		ContentUris.appendId(builder, endMillis);
 
-		cursor =  contentResolver.query(builder.build(), INSTANCE_PROJECTION, selection, selectionArgs, null);
-		while (cursor.moveToNext()) {
+		Cursor cursor =  contentResolver.query(builder.build(), INSTANCE_PROJECTION, selection, selectionArgs, null);
+		if (cursor.moveToFirst()) {
 		    event.setId(cursor.getLong(PROJECTION_EVENT_ID_INDEX));
 		    event.setCalendarID(cursor.getLong(PROJECTION_CALENDAR_ID_INDEX));
 		    event.setTitle(cursor.getString(PROJECTION_TITLE_INDEX));
 		    event.setLocation(cursor.getString(PROJECTION_LOCATION_INDEX));
-		    event.setDescription(cursor.getString(PROJECTION_DESCRIPTION_INDEX));
+		    event.setReminder(cursor.getInt(PROJECTION_HAS_ALARM_INDEX) > 0);
 		    event.setStartTime(cursor.getLong(PROJECTION_BEGIN_INDEX));
 		    event.setEndTime(cursor.getLong(PROJECTION_END_INDEX));
+		    event.setDescription(cursor.getString(PROJECTION_DESCRIPTION_INDEX));
 		}
 		cursor.close();
 		
 		return event;
 	}
+	
+	@Override
+	public Event find(long eventID) {
+		Event event = new Event();
+		String selection = Events._ID + " = ?";
+		String[] selectionArgs = new String[] { String.valueOf(eventID) };
+		
+		Cursor cursor =  contentResolver.query(Events.CONTENT_URI, EVENTS_PROJECTION, selection, selectionArgs, null);
+		if (cursor.moveToFirst()) {   
+		    event.setId(cursor.getLong(PROJECTION_EVENT_ID_INDEX));
+		    event.setCalendarID(cursor.getLong(PROJECTION_CALENDAR_ID_INDEX));
+		    event.setTitle(cursor.getString(PROJECTION_TITLE_INDEX));
+		    event.setLocation(cursor.getString(PROJECTION_LOCATION_INDEX));
+		    event.setReminder(cursor.getInt(PROJECTION_HAS_ALARM_INDEX) > 0);
+		    event.setStartTime(cursor.getLong(PROJECTION_BEGIN_INDEX));
+		    event.setEndTime(cursor.getLong(PROJECTION_END_INDEX));
+		    event.setDescription(cursor.getString(PROJECTION_DESCRIPTION_INDEX));
+		}
+		cursor.close();
+		
+		return event;
+	}	
 	
 }

@@ -20,7 +20,7 @@ public abstract class DaoFactory {
 	public static DaoFactory getEventDaoFactory(long calendarID) {
 		DaoFactory daoFactory = null;
 		
-		if (calendarID > 0) {
+		if (calendarID == 0) {
 			daoFactory = new SQLiteDaoFactory();
 		} else {
 			daoFactory = new CalendarProviderDaoFactory();

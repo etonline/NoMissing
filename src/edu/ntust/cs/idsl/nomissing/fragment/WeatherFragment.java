@@ -20,6 +20,8 @@ import edu.ntust.cs.idsl.nomissing.activity.SetWeatherActivity;
 import edu.ntust.cs.idsl.nomissing.activity.WeatherActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.WeatherExpandListAdapter;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
+import edu.ntust.cs.idsl.nomissing.model.ProgressStatus;
+import edu.ntust.cs.idsl.nomissing.notification.NotificationHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
 import edu.ntust.cs.idsl.nomissing.service.GetWeatherDataService;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
@@ -31,6 +33,7 @@ public class WeatherFragment extends Fragment implements OnChildClickListener {
 
 	private NoMissingApp app;
 	private ExpandableListView expandableListView;
+	private MenuItem menuItemRefresh;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,19 +54,13 @@ public class WeatherFragment extends Fragment implements OnChildClickListener {
         return rootView;
 	}
 	
-	private void setBroadcastReceiver() {
-		IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_START);
-        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_PROGRASS_UPDATE);
-        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FINISH);
-        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FAILURE);
-		getActivity().registerReceiver(GetWeatherDataReceiver, intentFilter);	
-	}
+
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.fragment_weather, menu);
+		menuItemRefresh = (MenuItem) menu.findItem(R.id.action_refresh_weather_data);
 	}
 
 	@Override
@@ -89,35 +86,50 @@ public class WeatherFragment extends Fragment implements OnChildClickListener {
 		return true;
 	}
 	
+	private void setBroadcastReceiver() {
+		IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_START);
+        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_PROGRASS_UPDATE);
+        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FINISH);
+        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FAILURE);
+		getActivity().registerReceiver(GetWeatherDataReceiver, intentFilter);	
+	}	
+	
 	private final BroadcastReceiver GetWeatherDataReceiver = new BroadcastReceiver() {
-		final int progressMax = 100;
-		ProgressDialog progressDialog;
-		
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_START)) {
-				ToastMaker.toast(getActivity(), R.string.toast_refresh_weather_data_start);
-				progressDialog = new ProgressDialog(getActivity());
-				progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-				progressDialog.setMessage(getString(R.string.progress_dialog_refresh_data));
-				progressDialog.setMax(progressMax);
-				progressDialog.setCancelable(false);
-				progressDialog.show();			
+				menuItemRefresh.setVisible(false);
+				ToastMaker.toast(context, R.string.toast_refresh_weather_data_start);	
+				ProgressStatus progressStatus = new ProgressStatus(
+						ProgressStatus.START,
+						context.getString(R.string.action_refresh_weather_data),
+						context.getString(R.string.toast_refresh_weather_data_start), 0);
+				NotificationHandlerFactory.createProgressNotificationHandler(context).sendNotification(progressStatus);		
 			}
 			
 			if(intent.getAction().equals(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_PROGRASS_UPDATE)) {
 				double progress = intent.getDoubleExtra("progress", 0);
-				progressDialog.setProgress((int)progress);
+				ProgressStatus progressStatus = new ProgressStatus(
+						ProgressStatus.PROGRESS_UPDATE,
+						context.getString(R.string.action_refresh_weather_data),
+						context.getString(R.string.toast_refresh_weather_data_start), (int)progress);
+				NotificationHandlerFactory.createProgressNotificationHandler(context).sendNotification(progressStatus);
 			}
 			
 			if(intent.getAction().equals(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FINISH)) {
-				progressDialog.dismiss();
-				ToastMaker.toast(getActivity(), R.string.toast_refresh_weather_data_finish);
+				ProgressStatus progressStatus = new ProgressStatus(
+						ProgressStatus.FINISH,
+						context.getString(R.string.action_refresh_weather_data),
+						context.getString(R.string.toast_refresh_weather_data_finish), 100);
+				NotificationHandlerFactory.createProgressNotificationHandler(context).sendNotification(progressStatus);
+				menuItemRefresh.setVisible(true);
+				ToastMaker.toast(context, R.string.toast_refresh_weather_data_finish);
 			}
 			
 			if(intent.getAction().equals(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FAILURE)) {
-				progressDialog.dismiss();
-				ToastMaker.toast(getActivity(), R.string.toast_refresh_weather_data_failure);
+				menuItemRefresh.setVisible(true);
+				ToastMaker.toast(context, R.string.toast_refresh_weather_data_failure);
 			}
 		}
 	};

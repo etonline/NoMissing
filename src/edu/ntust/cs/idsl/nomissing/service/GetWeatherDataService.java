@@ -17,19 +17,22 @@ import android.util.Log;
 import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.fragment.WeatherFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingRoute;
 import edu.ntust.cs.idsl.nomissing.http.response.WeatherProperty;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
+import edu.ntust.cs.idsl.nomissing.util.Connectivity;
+import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 public class GetWeatherDataService extends IntentService {
 	
 	private static final String TAG = GetWeatherDataService.class.getSimpleName();
 	private NoMissingApp app;
+	private boolean isNetworkAvailable;
 	private static String audioUri;
 	
 	public GetWeatherDataService() {
@@ -40,6 +43,11 @@ public class GetWeatherDataService extends IntentService {
 	public void onCreate() {
 		super.onCreate();
 		app = (NoMissingApp)getApplicationContext();		
+		
+		isNetworkAvailable = (Connectivity.isConnected(this)) ? true : false;
+		
+		if (!isNetworkAvailable) 
+			ToastMaker.toast(this, R.string.toast_network_inavailable);	
 	}
 
 	@Override
@@ -49,10 +57,14 @@ public class GetWeatherDataService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
+		if (!isNetworkAvailable)
+			return;
+		
 		NoMissingHttpClient.setAsync(false);
 		NoMissingHttpClient.get(NoMissingRoute.WEATHER, app.getSettings().getUUID(), app.getSettings().getAccessToken(), new JsonHttpResponseHandler() {
 			@Override
 			public void onStart() {
+//				Intent intent = new Intent(GetWeatherDataService.this, ServerResponseReceiver.class);
 				Intent intent = new Intent();
 				intent.setAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_START);
 				sendBroadcast(intent);
@@ -80,12 +92,14 @@ public class GetWeatherDataService extends IntentService {
 						
 						double prograss = (100 / (double)response.length()) * (i + 1);
 						
+//						Intent intent = new Intent(GetWeatherDataService.this, ServerResponseReceiver.class);
 						Intent intent = new Intent();
 						intent.setAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_PROGRASS_UPDATE);
 						intent.putExtra("progress", prograss);
 						sendBroadcast(intent);
 					}		
 					
+//					Intent intent = new Intent(GetWeatherDataService.this, ServerResponseReceiver.class);
 					Intent intent = new Intent();
 					intent.setAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FINISH);
 					sendBroadcast(intent);
@@ -98,6 +112,7 @@ public class GetWeatherDataService extends IntentService {
 			@Override
 			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 				Log.i(TAG, throwable.toString());	
+//				Intent intent = new Intent(GetWeatherDataService.this, ServerResponseReceiver.class);
 				Intent intent = new Intent();
 				intent.setAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FAILURE);
 				sendBroadcast(intent);

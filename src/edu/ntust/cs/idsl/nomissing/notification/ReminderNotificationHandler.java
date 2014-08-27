@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.EventActivity;
+import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
@@ -20,8 +21,7 @@ public class ReminderNotificationHandler extends NotificationHandler<Reminder> {
 
 	@Override
 	public void sendNotification(Reminder reminder) {
-//		Event event = SQLiteDaoFactory.createEventDao(context).find(reminder.getEventID());
-		Event event = null;
+		Event event = DaoFactory.getEventDaoFactory(reminder.getCalendarID()).createEventDao(context).find(reminder.getEventID());
 		boolean vibrate = true;
 			
 		NotificationCompat.Builder notification = new NotificationCompat.Builder(context)

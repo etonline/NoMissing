@@ -122,7 +122,7 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		boolean drawerOpen = drawerLayout.isDrawerOpen(drawerNavigation);
-		menu.findItem(R.id.action_about).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_about).setVisible(false);
 		return super.onPrepareOptionsMenu(menu);
 	}	
 	

@@ -26,6 +26,8 @@ import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.service.TTSConvertTextService;
+import edu.ntust.cs.idsl.nomissing.util.Connectivity;
+import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
@@ -190,6 +192,12 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 		chime.setId(chimeID);
 		
 		if (isChimeEnabled) {
+			if (!Connectivity.isConnected(this)) {
+				isChimeEnabled = false;
+				ToastMaker.toast(this, R.string.toast_network_inavailable);	
+				return;
+			}
+			
 			AlarmHandlerFactory.createChimeAlarmHandler(this).setAlarm(chime);	
 			getTTSAudio();
 		}
@@ -207,6 +215,12 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 		
 		AlarmHandlerFactory.createChimeAlarmHandler(this).cancelAlarm(chime);
 		if (isChimeEnabled) {
+			if (!Connectivity.isConnected(this)) {
+				isChimeEnabled = false;
+				ToastMaker.toast(this, R.string.toast_network_inavailable);	
+				return;
+			}
+			
 			AlarmHandlerFactory.createChimeAlarmHandler(this).setAlarm(chime);
 			getTTSAudio();
 		}

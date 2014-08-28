@@ -1,6 +1,5 @@
 package edu.ntust.cs.idsl.nomissing.fragment;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +22,7 @@ import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.ProgressStatus;
 import edu.ntust.cs.idsl.nomissing.notification.NotificationHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
-import edu.ntust.cs.idsl.nomissing.service.GetWeatherDataService;
+import edu.ntust.cs.idsl.nomissing.service.weather.WeatherService;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
@@ -67,7 +66,7 @@ public class WeatherFragment extends Fragment implements OnChildClickListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_refresh_weather_data:
-			getActivity().startService(new Intent(getActivity(), GetWeatherDataService.class));
+			WeatherService.startService(getActivity(), new Bundle());
 			return true;
 		case R.id.action_set_weather:
 			startActivity(new Intent(getActivity(), SetWeatherActivity.class));

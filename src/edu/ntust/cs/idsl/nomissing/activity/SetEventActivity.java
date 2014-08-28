@@ -7,10 +7,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,10 +24,9 @@ import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
-import edu.ntust.cs.idsl.nomissing.http.parameter.TTSConvertTextParameter;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
-import edu.ntust.cs.idsl.nomissing.service.TTSConvertTextService;
+import edu.ntust.cs.idsl.nomissing.service.tts.TextToSpeechService;
 import edu.ntust.cs.idsl.nomissing.util.Connectivity;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
@@ -400,16 +397,16 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 	}
 	
 	private void getTTSAudio() {
-		Intent intent = new Intent(this, TTSConvertTextService.class);
-		intent.setAction(TTSConvertTextService.ACTION_CONVERT_TEXT);
-		intent.putExtra("category", "reminder");
-		intent.putExtra("id", reminderID);
-		intent.putExtra(TTSConvertTextParameter.TTS_TEXT, reminder.getStringForTTS(event));
-		intent.putExtra(TTSConvertTextParameter.TTS_SPEAKER, app.getSettings().getTTSSpeaker());
-		intent.putExtra(TTSConvertTextParameter.VOLUME, app.getSettings().getTTSVolume());
-		intent.putExtra(TTSConvertTextParameter.SPEED, app.getSettings().getTTSSpeed());
-		intent.putExtra(TTSConvertTextParameter.OUTPUT_TYPE, "wav");
-		startService(intent);				
+		Bundle extras = new Bundle();
+		extras.putString(TextToSpeechService.EXTRA_CATEGORY, TextToSpeechService.CATEGORY_REMINDER);
+		extras.putLong(TextToSpeechService.EXTRA_ENTITY_ID, reminderID);
+		extras.putString(TextToSpeechService.EXTRA_TTS_TEXT, reminder.getStringForTTS(event));
+		extras.putString(TextToSpeechService.EXTRA_TTS_SPEAKER, app.getSettings().getTTSSpeaker());
+		extras.putInt(TextToSpeechService.EXTRA_TTS_VOLUME, app.getSettings().getTTSVolume());
+		extras.putInt(TextToSpeechService.EXTRA_TTS_SPEED, app.getSettings().getTTSSpeed());
+		extras.putString(TextToSpeechService.EXTRA_TTS_OUTPUT_TYPE, "wav");
+		
+		TextToSpeechService.startService(this, extras);							
 	}
 
 }

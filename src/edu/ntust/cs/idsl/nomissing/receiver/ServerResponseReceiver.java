@@ -1,24 +1,11 @@
 package edu.ntust.cs.idsl.nomissing.receiver;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.http.response.TTSConvertTextProperty;
-import edu.ntust.cs.idsl.nomissing.http.response.TTSGetConvertStatusProperty;
-import edu.ntust.cs.idsl.nomissing.http.resultcode.TTSConvertTextResultCode;
-import edu.ntust.cs.idsl.nomissing.http.resultcode.TTSGetConvertStatusResultCode;
-import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.ProgressStatus;
-import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.notification.NotificationHandlerFactory;
-import edu.ntust.cs.idsl.nomissing.service.GetAudioFileService;
-import edu.ntust.cs.idsl.nomissing.service.TTSGetConvertStatusService;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
@@ -44,63 +31,11 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		
 		if (intent.getAction().equals(ACTION_TTS_CONVERT_TEXT_RESPONSE)) {
-			String category = intent.getStringExtra("category");
-			long id = intent.getLongExtra("id", 0);
-			String response = intent.getStringExtra("response");
-			Log.v(TAG, response);
-			
-			try {
-				JSONObject jsonObject = new JSONObject(response);
-				String convertID = jsonObject.getString(TTSConvertTextProperty.RESULT_CONVERT_ID);
-				int resultCode = Integer.valueOf(jsonObject.getString(TTSConvertTextProperty.RESULT_CODE));
-				
-				if (resultCode == TTSConvertTextResultCode.SUCCESS) {
-					Intent newIntent = new Intent(context, TTSGetConvertStatusService.class);
-					newIntent.setAction(TTSGetConvertStatusService.ACTION_GET_CONVERT_STATUS);
-					newIntent.putExtra("category", category);
-					newIntent.putExtra("id", id);
-					newIntent.putExtra("convertID", convertID);
-					context.startService(newIntent);				
-				} else {
-//					ToastMaker.toast(context, "語音檔產生失敗");
-				}
-			} catch (JSONException e) {
-				Log.v(TAG, e.toString());
-			}			
+		
 		}
 		
 		if (intent.getAction().equals(ACTION_TTS_GET_CONVERT_STATUS_RESPONSE)) {
-			String category = intent.getStringExtra("category");
-			long id = intent.getLongExtra("id", 0);
-			String convertID = intent.getStringExtra("convertID");
-			String response = intent.getStringExtra("response");
-			Log.v(TAG, response);			
 			
-			try {
-				JSONObject jsonObject = new JSONObject(response);
-				int statusCode = Integer.valueOf(jsonObject.getString(TTSGetConvertStatusProperty.STATUS_CODE));
-				
-				if (statusCode != TTSGetConvertStatusResultCode.CONVERT_STATUS_COMPLETED) {
-					Intent newIntent = new Intent(context, TTSGetConvertStatusService.class);
-					newIntent.setAction(TTSGetConvertStatusService.ACTION_GET_CONVERT_STATUS);
-					newIntent.putExtra("category", category);
-					newIntent.putExtra("id", id);
-					newIntent.putExtra("convertID", convertID);
-					context.startService(newIntent);			
-				} else {
-					String audio = jsonObject.getString("audio");
-					setAudio(context, category, id, audio);
-					
-					Intent newIntent = new Intent(context, GetAudioFileService.class);
-					newIntent.setAction(GetAudioFileService.ACTION_GET_AUDIO_FILE);
-					newIntent.putExtra("id", id);
-					newIntent.putExtra("category", category);
-					newIntent.putExtra("url", audio);
-					context.startService(newIntent);	
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}				
 		}
 		
 		if (intent.getAction().equals(ACTION_GET_AUDIO_FILE_RESPONSE)) {
@@ -139,22 +74,6 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 			ToastMaker.toast(context, R.string.toast_refresh_weather_data_failure);
 		}		
 	
-	}
-	
-	private void setAudio(Context context, String category, long id, String audio) {
-		if (category.equals("reminder")) {
-			Reminder reminder = DaoFactory.getSQLiteDaoFactory().createReminderDao(context).find(id);
-			reminder.setAudio(audio);
-			DaoFactory.getSQLiteDaoFactory().createReminderDao(context).update(reminder);
-		}
-		
-		if (category.equals("chime")) {
-			Chime chime = DaoFactory.getSQLiteDaoFactory().createChimeDao(context).find((int)id);
-			chime.setAudio(audio);
-			DaoFactory.getSQLiteDaoFactory().createChimeDao(context).update(chime);
-		}
-		
-		ToastMaker.toast(context, R.string.audio_file_created);
 	}
 	
 }

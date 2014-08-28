@@ -70,20 +70,21 @@
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
 
-        <service android:name=".service.TTSConvertTextService" />
-        <service android:name=".service.TTSGetConvertStatusService" />
+        <service android:name=".service.tts.TTSConvertTextService" />
+        <service android:name=".service.tts.TTSGetConvertStatusService" />
+        <service android:name=".service.tts.GetAudioFileService" />
+        <service android:name=".service.weather.GettingDataService" />
+        <service android:name=".service.weather.GettingAudioService" />
         <service android:name=".service.MediaPlayerService" />
-        <service android:name=".service.ChimeAlarmInitService" />
-        <service android:name=".service.GetWeatherDataService" />
-        <service android:name=".service.GetAudioFileService" />
-
+        
         <receiver android:name=".receiver.ServerResponseReceiver" />
         <receiver android:name=".receiver.AlarmReceiver" />
         <receiver android:name=".receiver.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
+        </receiver>    
+
     </application>
 
 </manifest>

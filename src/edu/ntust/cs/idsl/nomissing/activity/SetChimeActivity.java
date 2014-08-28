@@ -6,7 +6,6 @@ import java.util.Calendar;
 
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -24,9 +23,8 @@ import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
-import edu.ntust.cs.idsl.nomissing.http.parameter.TTSConvertTextParameter;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
-import edu.ntust.cs.idsl.nomissing.service.TTSConvertTextService;
+import edu.ntust.cs.idsl.nomissing.service.tts.TextToSpeechService;
 import edu.ntust.cs.idsl.nomissing.util.Connectivity;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
@@ -243,16 +241,16 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 	}
 	
 	private void getTTSAudio() {
-		Intent intent = new Intent(this, TTSConvertTextService.class);
-		intent.setAction(TTSConvertTextService.ACTION_CONVERT_TEXT);
-		intent.putExtra("category", "chime");
-		intent.putExtra("id", (long)chime.getId());
-		intent.putExtra(TTSConvertTextParameter.TTS_TEXT, chime.getStringForTTS());
-		intent.putExtra(TTSConvertTextParameter.TTS_SPEAKER, app.getSettings().getTTSSpeaker());
-		intent.putExtra(TTSConvertTextParameter.VOLUME, app.getSettings().getTTSVolume());
-		intent.putExtra(TTSConvertTextParameter.SPEED, app.getSettings().getTTSSpeed());
-		intent.putExtra(TTSConvertTextParameter.OUTPUT_TYPE, "wav");
-		SetChimeActivity.this.startService(intent);				
+		Bundle extras = new Bundle();
+		extras.putString(TextToSpeechService.EXTRA_CATEGORY, TextToSpeechService.CATEGORY_CHIME);
+		extras.putLong(TextToSpeechService.EXTRA_ENTITY_ID, (long)chime.getId());
+		extras.putString(TextToSpeechService.EXTRA_TTS_TEXT, chime.getStringForTTS());
+		extras.putString(TextToSpeechService.EXTRA_TTS_SPEAKER, app.getSettings().getTTSSpeaker());
+		extras.putInt(TextToSpeechService.EXTRA_TTS_VOLUME, app.getSettings().getTTSVolume());
+		extras.putInt(TextToSpeechService.EXTRA_TTS_SPEED, app.getSettings().getTTSSpeed());
+		extras.putString(TextToSpeechService.EXTRA_TTS_OUTPUT_TYPE, "wav");
+		
+		TextToSpeechService.startService(this, extras);		
 	}
 
 }

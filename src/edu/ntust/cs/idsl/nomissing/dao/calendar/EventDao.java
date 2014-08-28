@@ -15,6 +15,9 @@ import android.provider.CalendarContract.Instances;
 import edu.ntust.cs.idsl.nomissing.dao.IEventDao;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 @SuppressLint("NewApi")
 public class EventDao extends CalendarProviderDao implements IEventDao {
 

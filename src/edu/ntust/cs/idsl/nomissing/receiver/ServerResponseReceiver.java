@@ -3,29 +3,27 @@ package edu.ntust.cs.idsl.nomissing.receiver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.activity.EventActivity;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
+import edu.ntust.cs.idsl.nomissing.http.response.TTSConvertTextProperty;
+import edu.ntust.cs.idsl.nomissing.http.response.TTSGetConvertStatusProperty;
 import edu.ntust.cs.idsl.nomissing.http.resultcode.TTSConvertTextResultCode;
 import edu.ntust.cs.idsl.nomissing.http.resultcode.TTSGetConvertStatusResultCode;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
-import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.model.ProgressStatus;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
-import edu.ntust.cs.idsl.nomissing.notification.NotificationHandler;
 import edu.ntust.cs.idsl.nomissing.notification.NotificationHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.service.GetAudioFileService;
 import edu.ntust.cs.idsl.nomissing.service.TTSGetConvertStatusService;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class ServerResponseReceiver extends BroadcastReceiver {
 	
 	public static final String TAG = ServerResponseReceiver.class.getSimpleName();
@@ -34,10 +32,10 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 	public static final String ACTION_TTS_GET_CONVERT_STATUS_RESPONSE = "edu.ntust.cs.idsl.nomissing.action.TTS_CONVERT_CONVERT_RESPONSE";
 	public static final String ACTION_GET_AUDIO_FILE_RESPONSE = "edu.ntust.cs.idsl.nomissing.action.GET_AUDIO_FILE_RESPONSE";	
 	
-	public static String ACTION_GET_WEATHER_DATE_START = "edu.ntust.cs.idsl.nomissing.action.START";
-	public static String ACTION_GET_WEATHER_DATE_PROGRASS_UPDATE = "edu.ntust.cs.idsl.nomissing.action.WEATHER_PROGRASS_UPDATE";
-	public static String ACTION_GET_WEATHER_DATE_FINISH = "edu.ntust.cs.idsl.nomissing.action.GET_WEATHER_DATE_SUCESS";
-	public static String ACTION_GET_WEATHER_DATE_FAILURE = "edu.ntust.cs.idsl.nomissing.action.GET_WEATHER_DATE_FAILURE";
+	public static final String ACTION_GET_WEATHER_DATE_START = "edu.ntust.cs.idsl.nomissing.action.START";
+	public static final String ACTION_GET_WEATHER_DATE_PROGRASS_UPDATE = "edu.ntust.cs.idsl.nomissing.action.WEATHER_PROGRASS_UPDATE";
+	public static final String ACTION_GET_WEATHER_DATE_FINISH = "edu.ntust.cs.idsl.nomissing.action.GET_WEATHER_DATE_SUCESS";
+	public static final String ACTION_GET_WEATHER_DATE_FAILURE = "edu.ntust.cs.idsl.nomissing.action.GET_WEATHER_DATE_FAILURE";
 	
 	public ServerResponseReceiver() {
 	}
@@ -53,8 +51,8 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 			
 			try {
 				JSONObject jsonObject = new JSONObject(response);
-				String convertID = jsonObject.getString("resultConvertID");
-				int resultCode = Integer.valueOf(jsonObject.getString("resultCode"));
+				String convertID = jsonObject.getString(TTSConvertTextProperty.RESULT_CONVERT_ID);
+				int resultCode = Integer.valueOf(jsonObject.getString(TTSConvertTextProperty.RESULT_CODE));
 				
 				if (resultCode == TTSConvertTextResultCode.SUCCESS) {
 					Intent newIntent = new Intent(context, TTSGetConvertStatusService.class);
@@ -80,7 +78,7 @@ public class ServerResponseReceiver extends BroadcastReceiver {
 			
 			try {
 				JSONObject jsonObject = new JSONObject(response);
-				int statusCode = Integer.valueOf(jsonObject.getString("statusCode"));
+				int statusCode = Integer.valueOf(jsonObject.getString(TTSGetConvertStatusProperty.STATUS_CODE));
 				
 				if (statusCode != TTSGetConvertStatusResultCode.CONVERT_STATUS_COMPLETED) {
 					Intent newIntent = new Intent(context, TTSGetConvertStatusService.class);

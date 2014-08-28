@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.preference.SettingsManager;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class BootReceiver extends BroadcastReceiver {
 	
 	public BootReceiver() {

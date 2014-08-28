@@ -24,6 +24,7 @@ import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
+import edu.ntust.cs.idsl.nomissing.http.parameter.TTSConvertTextParameter;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.service.TTSConvertTextService;
 import edu.ntust.cs.idsl.nomissing.util.Connectivity;
@@ -34,6 +35,11 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
  */
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class SetChimeActivity extends PreferenceActivity implements OnPreferenceClickListener, OnPreferenceChangeListener {
+	
+	private static final String KEY_CHIME_ENABLED = "chime_enabled";
+	private static final String KEY_CHIME_TIME = "chime_time";
+	private static final String KEY_CHIME_REPEATING = "chime_repeating";
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
 	
 	private NoMissingApp app;
 	
@@ -50,7 +56,6 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 	
 	private Chime chime;
 	private Calendar calendar;
-	private SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -75,13 +80,13 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 	}
 	
 	private void setPrefChimeEnabled() {
-		prefChimeEnabled = (CheckBoxPreference) findPreference("chime_enabled");
+		prefChimeEnabled = (CheckBoxPreference) findPreference(KEY_CHIME_ENABLED);
 		prefChimeEnabled.setChecked(isChimeEnabled);
 		prefChimeEnabled.setOnPreferenceChangeListener(this);
 	}
 	
 	private void setPrefChimeTime() {
-		prefChimeTime = (Preference) findPreference("chime_time");
+		prefChimeTime = (Preference) findPreference(KEY_CHIME_TIME);
 		
 		calendar = Calendar.getInstance();
 		if (chimeID != 0) {
@@ -97,7 +102,7 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 	}
 	
 	private void setPrefChimeRepeating() {
-		prefChimeRepeating = (ListPreference) findPreference("chime_repeating");
+		prefChimeRepeating = (ListPreference) findPreference(KEY_CHIME_REPEATING);
 		prefChimeRepeating.setSummary(getString(chime.getRepeating()));
 		prefChimeRepeating.setOnPreferenceChangeListener(this);
 	}
@@ -242,11 +247,11 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 		intent.setAction(TTSConvertTextService.ACTION_CONVERT_TEXT);
 		intent.putExtra("category", "chime");
 		intent.putExtra("id", (long)chime.getId());
-		intent.putExtra(TTSConvertTextService.PARAM_TTS_TEXT, chime.getStringForTTS());
-		intent.putExtra(TTSConvertTextService.PARAM_TTS_SPEAKER, app.getSettings().getTTSSpeaker());
-		intent.putExtra(TTSConvertTextService.PARAM_VOLUME, app.getSettings().getTTSVolume());
-		intent.putExtra(TTSConvertTextService.PARAM_SPEED, app.getSettings().getTTSSpeed());
-		intent.putExtra(TTSConvertTextService.PARAM_OUTPUT_TYPE, "wav");
+		intent.putExtra(TTSConvertTextParameter.TTS_TEXT, chime.getStringForTTS());
+		intent.putExtra(TTSConvertTextParameter.TTS_SPEAKER, app.getSettings().getTTSSpeaker());
+		intent.putExtra(TTSConvertTextParameter.VOLUME, app.getSettings().getTTSVolume());
+		intent.putExtra(TTSConvertTextParameter.SPEED, app.getSettings().getTTSSpeed());
+		intent.putExtra(TTSConvertTextParameter.OUTPUT_TYPE, "wav");
 		SetChimeActivity.this.startService(intent);				
 	}
 

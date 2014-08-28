@@ -8,6 +8,9 @@ import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.preference.SettingsManager;
 import edu.ntust.cs.idsl.nomissing.receiver.AlarmReceiver;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class WeatherAlarmHandler extends AlarmHandler<Weather> {
 
 	public WeatherAlarmHandler(Context context) {

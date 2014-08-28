@@ -2,6 +2,9 @@ package edu.ntust.cs.idsl.nomissing.notification;
 
 import android.content.Context;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class NotificationHandlerFactory {
 
 	public static ReminderNotificationHandler createReminderNotificationHandler(Context context) {

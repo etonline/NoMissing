@@ -7,9 +7,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import edu.ntust.cs.idsl.nomissing.dao.ISimpleDao;
-import edu.ntust.cs.idsl.nomissing.database.NoMissingDB;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
+import edu.ntust.cs.idsl.nomissing.sqlite.NoMissingDB;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class ChimeDao extends SQLiteDao implements ISimpleDao<Chime> {
 
 	private static final String[] CHIMES_COLUMNS = new String[] {

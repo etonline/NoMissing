@@ -3,6 +3,9 @@ package edu.ntust.cs.idsl.nomissing.notification;
 import android.app.PendingIntent;
 import android.content.Context;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public abstract class NotificationHandler<T> {
 	protected Context context;
 	

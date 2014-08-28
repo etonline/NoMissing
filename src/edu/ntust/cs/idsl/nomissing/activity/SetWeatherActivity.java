@@ -32,6 +32,12 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class SetWeatherActivity extends PreferenceActivity implements OnPreferenceClickListener, OnPreferenceChangeListener {
 	
+	private static final String KEY_WEATHER_TTS_ENABLED = "weather_tts_enabled";
+	private static final String KEY_WEATHER_REMINDER_ENABLED = "weather_reminder_enabled";
+	private static final String KEY_WEATHER_REMINDER_TIME = "weather_reminder_time";
+	private static final String KEY_WEATHER_REMINDER_CITY = "weather_reminder_city";
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
+	
 	private NoMissingApp app;
 	
 	private CheckBoxPreference prefTTSEnabled;
@@ -46,9 +52,7 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	private int reminderCity;
 	
 	private Weather weather;
-	
 	private Calendar reminderCalendar;
-	private SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -74,19 +78,19 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	}
 	
 	private void setPrefTTSEnabled() {
-		prefTTSEnabled = (CheckBoxPreference) findPreference("tts_enabled");
+		prefTTSEnabled = (CheckBoxPreference) findPreference(KEY_WEATHER_TTS_ENABLED);
 		prefTTSEnabled.setChecked(isTTSEnabled);
 		prefTTSEnabled.setOnPreferenceChangeListener(this);
 	}
 	
 	private void setPrefWeatherReminder() {
-		prefReminderEnabled = (CheckBoxPreference) findPreference("reminder_enabled");
+		prefReminderEnabled = (CheckBoxPreference) findPreference(KEY_WEATHER_REMINDER_ENABLED);
 		prefReminderEnabled.setChecked(isReminderEnabled);
 		prefReminderEnabled.setOnPreferenceChangeListener(this);
 	}
 	
 	private void setPrefReminderTime() {
-		prefReminderTime = (Preference) findPreference("reminder_time");
+		prefReminderTime = (Preference) findPreference(KEY_WEATHER_REMINDER_TIME);
 
 		reminderCalendar = Calendar.getInstance();
 		reminderCalendar.set(Calendar.HOUR_OF_DAY, reminderHour);	
@@ -104,7 +108,7 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	}
 	
 	private void setPrefReminderCity() {
-		prefReminderCity = (ListPreference) findPreference("reminder_city");
+		prefReminderCity = (ListPreference) findPreference(KEY_WEATHER_REMINDER_CITY);
 		
 		List<String> cityKeys = new ArrayList<String>();		
 		for (City city : City.values()) {	

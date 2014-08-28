@@ -4,6 +4,9 @@ import android.content.Context;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.IEventDao;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class SQLiteDaoFactory extends DaoFactory {
 		
 	@Override

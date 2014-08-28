@@ -20,9 +20,12 @@ import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class GetAudioFileService extends IntentService {
 	
-	public static String ACTION_GET_AUDIO_FILE = "edu.ntust.cs.idsl.nomissing.action.GET_AUDIO_FILE";
+	public static final String ACTION_GET_AUDIO_FILE = "edu.ntust.cs.idsl.nomissing.action.GET_AUDIO_FILE";
 	public static final String TAG = GetAudioFileService.class.getSimpleName();
 	private final static String[] allowedContentTypes = {"audio/x-wav"};
 	

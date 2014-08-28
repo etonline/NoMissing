@@ -9,6 +9,9 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import edu.ntust.cs.idsl.nomissing.R;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class SeekBarPreference extends DialogPreference implements OnSeekBarChangeListener {
 
 	private SeekBar mSeekBar;

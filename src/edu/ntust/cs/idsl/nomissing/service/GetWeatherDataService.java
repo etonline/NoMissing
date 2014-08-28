@@ -28,6 +28,9 @@ import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
 import edu.ntust.cs.idsl.nomissing.util.Connectivity;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class GetWeatherDataService extends IntentService {
 	
 	private static final String TAG = GetWeatherDataService.class.getSimpleName();
@@ -121,7 +124,7 @@ public class GetWeatherDataService extends IntentService {
 	}
 	
 	private String downloadTask(String url, final String fileName) {
-		final String[] allowedContentTypes = {"audio/x-wav"};
+		final String[] allowedContentTypes = {"audio/x-wav", "video/x-flv"};
 		
 		NoMissingHttpClient.setAsync(false);
         NoMissingHttpClient.download(url, new BinaryHttpResponseHandler(allowedContentTypes) {

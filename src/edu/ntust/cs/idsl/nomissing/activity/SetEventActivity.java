@@ -26,12 +26,16 @@ import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
+import edu.ntust.cs.idsl.nomissing.http.parameter.TTSConvertTextParameter;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.service.TTSConvertTextService;
 import edu.ntust.cs.idsl.nomissing.util.Connectivity;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class SetEventActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
 
@@ -400,11 +404,11 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 		intent.setAction(TTSConvertTextService.ACTION_CONVERT_TEXT);
 		intent.putExtra("category", "reminder");
 		intent.putExtra("id", reminderID);
-		intent.putExtra(TTSConvertTextService.PARAM_TTS_TEXT, reminder.getStringForTTS(event));
-		intent.putExtra(TTSConvertTextService.PARAM_TTS_SPEAKER, app.getSettings().getTTSSpeaker());
-		intent.putExtra(TTSConvertTextService.PARAM_VOLUME, app.getSettings().getTTSVolume());
-		intent.putExtra(TTSConvertTextService.PARAM_SPEED, app.getSettings().getTTSSpeed());
-		intent.putExtra(TTSConvertTextService.PARAM_OUTPUT_TYPE, "wav");
+		intent.putExtra(TTSConvertTextParameter.TTS_TEXT, reminder.getStringForTTS(event));
+		intent.putExtra(TTSConvertTextParameter.TTS_SPEAKER, app.getSettings().getTTSSpeaker());
+		intent.putExtra(TTSConvertTextParameter.VOLUME, app.getSettings().getTTSVolume());
+		intent.putExtra(TTSConvertTextParameter.SPEED, app.getSettings().getTTSSpeed());
+		intent.putExtra(TTSConvertTextParameter.OUTPUT_TYPE, "wav");
 		startService(intent);				
 	}
 

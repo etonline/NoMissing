@@ -1,11 +1,13 @@
 package edu.ntust.cs.idsl.nomissing.preference;
 
-import android.R.integer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import edu.ntust.cs.idsl.nomissing.constant.City;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class SettingsManager {
 	
 	private static SettingsManager instance;
@@ -15,14 +17,18 @@ public class SettingsManager {
 	private Editor editor;
 
 	public static final String PREF_NAME = "SettingsPref";
+	
 	public static final String KEY_INITIALIZED = "initialized";
 	public static final String KEY_REGISTERED = "registered";
 	public static final String KEY_UUID = "uuid";
 	public static final String KEY_ACCESS_TOKEN = "access_token";
+	
 	public static final String KEY_CALENDAR_ID = "calendar_id";
+	
 	public static final String KEY_TTS_SPEAKER = "tts_speaker";
 	public static final String KEY_TTS_VOLUME = "tts_volume";
 	public static final String KEY_TTS_SPEED = "tts_speed";
+	
 	public static final String KEY_WEATHER_TTS_ENABLED = "weather_tts_enabled";
 	public static final String KEY_WEATHER_REMINDER_ENABLED = "weather_reminder_enabled";
 	public static final String KEY_WEATHER_REMINDER_HOUR = "weather_reminder_hour";

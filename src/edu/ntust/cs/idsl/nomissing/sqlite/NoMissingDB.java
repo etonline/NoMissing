@@ -1,4 +1,4 @@
-package edu.ntust.cs.idsl.nomissing.database;
+package edu.ntust.cs.idsl.nomissing.sqlite;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import edu.ntust.cs.idsl.nomissing.constant.City;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class NoMissingDB extends SQLiteOpenHelper {
 		
 	// Database Version

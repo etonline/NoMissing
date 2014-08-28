@@ -13,6 +13,9 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import edu.ntust.cs.idsl.nomissing.constant.EventFreq;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 @SuppressLint("UseSparseArrays")
 public class EventFreqSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 	

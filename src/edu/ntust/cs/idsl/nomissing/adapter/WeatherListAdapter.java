@@ -11,6 +11,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class WeatherListAdapter extends BaseAdapter {
 
 	private Context context;

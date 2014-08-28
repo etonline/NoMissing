@@ -7,9 +7,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import edu.ntust.cs.idsl.nomissing.dao.ISimpleDao;
-import edu.ntust.cs.idsl.nomissing.database.NoMissingDB;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
+import edu.ntust.cs.idsl.nomissing.sqlite.NoMissingDB;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class WeatherDao extends SQLiteDao implements ISimpleDao<Weather> {
 	
 	private static final String[] WEATHER_COLUMNS = {

@@ -10,6 +10,9 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.WeatherActivity;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class WeatherNotificationHandler extends NotificationHandler<Weather> {
 
 	public WeatherNotificationHandler(Context context) {

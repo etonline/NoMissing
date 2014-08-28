@@ -4,6 +4,9 @@ import java.util.List;
 
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public interface IReminderDao {
 
 	public long insert(Reminder reminder);

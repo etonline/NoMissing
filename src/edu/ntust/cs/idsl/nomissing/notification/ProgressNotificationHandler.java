@@ -1,18 +1,16 @@
 package edu.ntust.cs.idsl.nomissing.notification;
 
-import javax.security.auth.PrivateCredentialPermission;
-
-import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.R.string;
-import edu.ntust.cs.idsl.nomissing.activity.EventActivity;
-import edu.ntust.cs.idsl.nomissing.model.ProgressStatus;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import edu.ntust.cs.idsl.nomissing.R;
+import edu.ntust.cs.idsl.nomissing.model.ProgressStatus;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class ProgressNotificationHandler extends NotificationHandler<ProgressStatus> {
 
 	private static final int progressMax = 100;

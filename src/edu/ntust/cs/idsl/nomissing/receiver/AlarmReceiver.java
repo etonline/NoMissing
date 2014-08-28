@@ -7,12 +7,14 @@ import android.util.Log;
 import edu.ntust.cs.idsl.nomissing.activity.ChimeActivity;
 import edu.ntust.cs.idsl.nomissing.activity.EventActivity;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.notification.NotificationHandlerFactory;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class AlarmReceiver extends BroadcastReceiver {
 	
 	public static final String TAG = AlarmReceiver.class.getSimpleName();

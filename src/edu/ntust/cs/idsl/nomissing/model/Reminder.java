@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 @SuppressLint({ "SimpleDateFormat", "NewApi" })
 public class Reminder {
 	private long id;

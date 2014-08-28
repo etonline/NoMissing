@@ -8,6 +8,9 @@ import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.receiver.AlarmReceiver;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class ChimeAlarmHandler extends AlarmHandler<Chime> {
 
 	public ChimeAlarmHandler(Context context) {

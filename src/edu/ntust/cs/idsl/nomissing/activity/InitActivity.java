@@ -71,7 +71,7 @@ public class InitActivity extends Activity {
 
 	public void registerTask() {
 		RequestParams params = new RequestParams();
-		params.add(RegisterParameter.REGISTER_UUID, app.getSettings().getUUID());
+		params.add(RegisterParameter.UUID, app.getSettings().getUUID());
 
 		NoMissingHttpClient.setAsync(true);
 		NoMissingHttpClient.register(params, new JsonHttpResponseHandler() {

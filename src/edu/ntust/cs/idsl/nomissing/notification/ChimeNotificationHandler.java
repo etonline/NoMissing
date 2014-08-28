@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.activity.ChimeActivity;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class ChimeNotificationHandler extends NotificationHandler<Chime> {
 
 	public ChimeNotificationHandler(Context context) {

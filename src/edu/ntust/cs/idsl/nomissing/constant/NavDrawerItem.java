@@ -5,6 +5,9 @@ import java.util.List;
 
 import edu.ntust.cs.idsl.nomissing.R;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public enum NavDrawerItem {
 
 	HOME(R.drawable.ic_action_view_as_list, R.string.nav_home),

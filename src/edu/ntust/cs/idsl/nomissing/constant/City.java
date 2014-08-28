@@ -2,6 +2,9 @@ package edu.ntust.cs.idsl.nomissing.constant;
 
 import edu.ntust.cs.idsl.nomissing.R;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public enum City {
 	
 	TAIPEI_CITY(63000, R.string.taipei_city),

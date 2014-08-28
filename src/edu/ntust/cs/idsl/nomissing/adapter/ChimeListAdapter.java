@@ -16,6 +16,9 @@ import android.widget.TextView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 @SuppressLint("SimpleDateFormat")
 public class ChimeListAdapter extends BaseAdapter {
 

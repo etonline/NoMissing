@@ -14,18 +14,18 @@ import com.loopj.android.http.RequestParams;
 
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
+import edu.ntust.cs.idsl.nomissing.http.parameter.TTSGetConvertStatusParameter;
 import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class TTSGetConvertStatusService extends IntentService {
 	
-	public static String ACTION_GET_CONVERT_STATUS = "edu.ntust.cs.idsl.nomissing.action.GET_CONVERT_STATUS";
-	public static final String TAG = "TTSGetConvertStatusService";
-	
-	public static final String PARAM_CONVERT_ID = "convertID";
+	public static final String ACTION_GET_CONVERT_STATUS = "edu.ntust.cs.idsl.nomissing.action.GET_CONVERT_STATUS";
+	private static final String TAG = TTSGetConvertStatusService.class.getSimpleName();
 	
 	private NoMissingApp app;
-	private String username;
-	private String password;
 	
 	private String category;
 	private long id;
@@ -46,10 +46,10 @@ public class TTSGetConvertStatusService extends IntentService {
 		if (intent.getAction().equals(ACTION_GET_CONVERT_STATUS)) {
 			category = intent.getStringExtra("category");
 			id = intent.getLongExtra("id", -1);
-			convertID = intent.getStringExtra(PARAM_CONVERT_ID);
+			convertID = intent.getStringExtra(TTSGetConvertStatusParameter.CONVERT_ID);
 			
 			RequestParams params = new RequestParams();
-	        params.add(PARAM_CONVERT_ID, convertID);
+	        params.add(TTSGetConvertStatusParameter.CONVERT_ID, convertID);
 			
 	        NoMissingHttpClient.setAsync(false);
 			NoMissingHttpClient.ttsGetConvertStatus(app.getSettings().getUUID(), app.getSettings().getAccessToken(), params, new JsonHttpResponseHandler() {

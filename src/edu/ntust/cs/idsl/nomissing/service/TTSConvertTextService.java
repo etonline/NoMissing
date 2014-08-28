@@ -14,19 +14,17 @@ import com.loopj.android.http.RequestParams;
 
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
+import edu.ntust.cs.idsl.nomissing.http.parameter.TTSConvertTextParameter;
 import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class TTSConvertTextService extends IntentService {
 	
 	private static final String TAG = TTSConvertTextService.class.getSimpleName();
 	
-	public static String ACTION_CONVERT_TEXT = "edu.ntust.cs.idsl.nomissing.action.CONVERT_TEXT";
-	public static final String PARAM_TTS_TEXT = "TTStext";
-	public static final String PARAM_TTS_SPEAKER = "TTSSpeaker";
-	public static final String PARAM_VOLUME = "volume";
-	public static final String PARAM_SPEED = "speed";
-	public static final String PARAM_OUTPUT_TYPE = "outtype";
-	
+	public static final String ACTION_CONVERT_TEXT = "edu.ntust.cs.idsl.nomissing.action.CONVERT_TEXT";
 	private NoMissingApp app;
 	private String category;
 	private long id;
@@ -48,18 +46,18 @@ public class TTSConvertTextService extends IntentService {
 			category = intent.getStringExtra("category");
 			id = intent.getLongExtra("id", -1);
 			
-			String TTStext = intent.getStringExtra(PARAM_TTS_TEXT);
-			String TTSSpeaker = intent.getStringExtra(PARAM_TTS_SPEAKER);
-			int volume = intent.getIntExtra(PARAM_VOLUME, 100);
-			int speed = intent.getIntExtra(PARAM_SPEED, 0);
-			String outtype = intent.getStringExtra(PARAM_OUTPUT_TYPE);
+			String TTStext = intent.getStringExtra(TTSConvertTextParameter.TTS_TEXT);
+			String TTSSpeaker = intent.getStringExtra(TTSConvertTextParameter.TTS_SPEAKER);
+			int volume = intent.getIntExtra(TTSConvertTextParameter.VOLUME, 100);
+			int speed = intent.getIntExtra(TTSConvertTextParameter.SPEED, 0);
+			String outtype = intent.getStringExtra(TTSConvertTextParameter.OUTPUT_TYPE);
 			
 			RequestParams params = new RequestParams();
-	        params.add(PARAM_TTS_TEXT, TTStext);
-	        params.add(PARAM_TTS_SPEAKER, TTSSpeaker);
-	        params.add(PARAM_VOLUME, Integer.toString(volume));
-	        params.add(PARAM_SPEED, Integer.toString(speed));
-	        params.add(PARAM_OUTPUT_TYPE, outtype);
+	        params.add(TTSConvertTextParameter.TTS_TEXT, TTStext);
+	        params.add(TTSConvertTextParameter.TTS_SPEAKER, TTSSpeaker);
+	        params.add(TTSConvertTextParameter.VOLUME, Integer.toString(volume));
+	        params.add(TTSConvertTextParameter.SPEED, Integer.toString(speed));
+	        params.add(TTSConvertTextParameter.OUTPUT_TYPE, outtype);
 			
 	        NoMissingHttpClient.setAsync(false);
 			NoMissingHttpClient.ttsConvertText(app.getSettings().getUUID(), app.getSettings().getAccessToken(), params, new JsonHttpResponseHandler() {

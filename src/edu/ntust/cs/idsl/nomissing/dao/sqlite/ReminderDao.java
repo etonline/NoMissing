@@ -7,9 +7,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import edu.ntust.cs.idsl.nomissing.dao.IReminderDao;
-import edu.ntust.cs.idsl.nomissing.database.NoMissingDB;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
+import edu.ntust.cs.idsl.nomissing.sqlite.NoMissingDB;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class ReminderDao extends SQLiteDao implements IReminderDao {
 
 	private static final String[] REMINDERS_COLUMNS = new String[] {

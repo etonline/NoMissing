@@ -2,6 +2,9 @@ package edu.ntust.cs.idsl.nomissing.constant;
 
 import edu.ntust.cs.idsl.nomissing.R;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public enum Region {
 
 	NORTHERN(R.string.northern_region, R.string.northern_region_cities),

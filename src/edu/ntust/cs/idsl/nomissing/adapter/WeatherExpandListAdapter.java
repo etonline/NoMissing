@@ -18,6 +18,9 @@ import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.dao.sqlite.WeatherDao;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class WeatherExpandListAdapter extends BaseExpandableListAdapter {
 
 	private Context context;

@@ -7,6 +7,9 @@ import android.provider.CalendarContract.Calendars;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.dao.calendar.CalendarProviderDaoFactory;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class Calendar {
 	private long id;
 	private String name;

@@ -7,6 +7,9 @@ import android.content.Intent;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.receiver.AlarmReceiver;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class ReminderAlarmHandler extends AlarmHandler<Reminder> {
 
 	public ReminderAlarmHandler(Context context) {

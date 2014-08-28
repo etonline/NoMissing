@@ -11,7 +11,9 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.dao.ICalendarDao;
 import edu.ntust.cs.idsl.nomissing.model.Calendar;
 
-
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 @SuppressLint("InlinedApi")
 public class CalendarDao extends CalendarProviderDao implements ICalendarDao {
 

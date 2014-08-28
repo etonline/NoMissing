@@ -7,9 +7,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import edu.ntust.cs.idsl.nomissing.dao.IEventDao;
-import edu.ntust.cs.idsl.nomissing.database.NoMissingDB;
 import edu.ntust.cs.idsl.nomissing.model.Event;
+import edu.ntust.cs.idsl.nomissing.sqlite.NoMissingDB;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class EventDao extends SQLiteDao implements IEventDao {
 
 	private static final String[] EVENTS_COLUMNS = new String[] {

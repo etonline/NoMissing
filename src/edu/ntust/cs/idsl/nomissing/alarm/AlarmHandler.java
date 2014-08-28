@@ -5,6 +5,9 @@ import java.util.Calendar;
 import android.app.PendingIntent;
 import android.content.Context;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public abstract class AlarmHandler<T> {
 	protected Context context;
 

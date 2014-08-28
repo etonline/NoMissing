@@ -1,5 +1,8 @@
 package edu.ntust.cs.idsl.nomissing.model;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class ProgressStatus {
 
 	public static final int START = 0;

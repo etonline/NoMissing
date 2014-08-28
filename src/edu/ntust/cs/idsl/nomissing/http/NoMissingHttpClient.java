@@ -5,6 +5,9 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 public class NoMissingHttpClient {
 
 	public static final String TAG = NoMissingHttpClient.class.getSimpleName();
@@ -19,18 +22,6 @@ public class NoMissingHttpClient {
 
 	public static void register(RequestParams params, AsyncHttpResponseHandler responseHandler) {
 		client.post(NoMissingRoute.REGISTER, params, responseHandler);
-	}
-
-	public static void login(RequestParams params, AsyncHttpResponseHandler responseHandler) {
-		client.post(NoMissingRoute.LOGIN, params, responseHandler);
-	}
-
-	public static void logout(RequestParams params, AsyncHttpResponseHandler responseHandler) {
-		client.get(NoMissingRoute.LOGOUT, params, responseHandler);
-	}
-
-	public static void signup(RequestParams params, AsyncHttpResponseHandler responseHandler) {
-		client.post(NoMissingRoute.SIGNUP, params, responseHandler);
 	}
 
 	public static void get(String url, String username, String password, AsyncHttpResponseHandler responseHandler) {

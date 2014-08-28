@@ -20,6 +20,9 @@ import android.widget.Toast;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.MainActivity;
 
+/**
+ * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
+ */
 @SuppressLint("NewApi")
 public class MediaPlayerService extends Service implements
 		MediaPlayer.OnPreparedListener, 
@@ -60,7 +63,7 @@ public class MediaPlayerService extends Service implements
             	
         		String audio = intent.getStringExtra("audio");
         		Uri uri = Uri.parse(audio);
-//        		Log.i(TAG, audio);
+        		Log.i(TAG, audio);
         		
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);            	
 				mediaPlayer.setDataSource(this, uri);

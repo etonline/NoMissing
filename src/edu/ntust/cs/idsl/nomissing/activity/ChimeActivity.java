@@ -2,12 +2,12 @@ package edu.ntust.cs.idsl.nomissing.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
 
@@ -16,14 +16,24 @@ import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
  */
 public class ChimeActivity extends Activity {
 	
+	private static final String ACTION = "edu.ntust.cs.idsl.nomissing.action.ChimeActivity";
+	private static final String EXTRA_CHIME_ID = "edu.ntust.cs.idsl.nomissing.extra.CHIME_ID";
 	private Chime chime;
+	
+	public static void startActivity(Context context, int chimeID) {
+		Intent intent = new Intent(context, ChimeActivity.class);
+		intent.setAction(ACTION);
+		intent.putExtra(EXTRA_CHIME_ID, chimeID);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+		context.startActivity(intent);	
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chime);
 		
-		int chimeID = getIntent().getIntExtra("id", -1);
+		int chimeID = getIntent().getIntExtra(EXTRA_CHIME_ID, 0);
 		chime = DaoFactory.getSQLiteDaoFactory().createChimeDao(this).find(chimeID);
 		openChimeDialog(chime);
 			
@@ -49,14 +59,14 @@ public class ChimeActivity extends Activity {
 		cityWeatherDialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-				startTTSAudio(chime.getAudio());
+				MediaPlayerService.startActionPlay(ChimeActivity.this, chime.getAudio());
 			}
 		});
 		
 		cityWeatherDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			@Override
 			public void onDismiss(DialogInterface dialog) {
-				stopTTSAudio();
+				MediaPlayerService.startActionStop(ChimeActivity.this, chime.getAudio());
 				finish();
 			}
 		});
@@ -64,17 +74,4 @@ public class ChimeActivity extends Activity {
 		cityWeatherDialog.show();
 	}
 	
-	private void startTTSAudio(String audio) {
-		Intent startIntent = new Intent(this, MediaPlayerService.class);
-		startIntent.setAction(MediaPlayerService.ACTION_PLAY);
-		startIntent.putExtra("audio", audio);		
-		startService(startIntent);			
-	}
-	
-	private void stopTTSAudio() {
-		Intent stopIntent = new Intent(this, MediaPlayerService.class);
-		stopIntent.setAction(MediaPlayerService.ACTION_STOP);
-		startService(stopIntent);			
-	}	
-
 }

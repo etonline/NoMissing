@@ -4,7 +4,7 @@ import android.app.IntentService;
 import android.content.Context;
 import android.os.Bundle;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
-import edu.ntust.cs.idsl.nomissing.service.tts.GetAudioFileService;
+import edu.ntust.cs.idsl.nomissing.service.tts.TTSGetAudioService;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
@@ -19,7 +19,7 @@ public abstract class WeatherService extends IntentService {
 	}
 	
 	public static void startService(Context context, Bundle extras) {
-		new GettingDataService().startAction(context, extras);
+		new WeatherDataService().startAction(context, extras);
 	}
 
 	@Override
@@ -27,10 +27,10 @@ public abstract class WeatherService extends IntentService {
 		super.onCreate();
 		app = (NoMissingApp)getApplicationContext();		
 		
-		if (getClass().equals(GettingDataService.class))
-			successor = new GettingAudioService();
+		if (getClass().equals(WeatherDataService.class))
+			successor = new WeatherAudioService();
 		
-		if (getClass().equals(GetAudioFileService.class))
+		if (getClass().equals(TTSGetAudioService.class))
 			successor = null;
 	}
 

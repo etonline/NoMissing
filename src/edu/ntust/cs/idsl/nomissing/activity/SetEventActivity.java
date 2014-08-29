@@ -7,6 +7,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.Menu;
@@ -36,9 +38,15 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class SetEventActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
 
-	public static final String TAG = SetEventActivity.class.getSimpleName();
-	private NoMissingApp app;
+	private static final String ACTION = "edu.ntust.cs.idsl.nomissing.action.SetEventActivity";
+	private static final String EXTRA_EVENT_ID = "edu.ntust.cs.idsl.nomissing.extra.CALENDAR_ID";
+	private static final String EXTRA_CALENDAR_ID = "edu.ntust.cs.idsl.nomissing.extra.EVENT_ID";
+	private static final String EXTRA_START_MILLIS = "edu.ntust.cs.idsl.nomissing.extra.START_MILLIS";
+	private static final String EXTRA_END_MILLIS = "edu.ntust.cs.idsl.nomissing.extra.END_MILLIS";
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy/M/d (EEE)");
+	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
 	
+	private NoMissingApp app;
 	private EditText editTextTitle;
 	private EditText editTextLocation;
 	private EditText editTextStartDate;
@@ -56,9 +64,6 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 	private long startMillis;
 	private long endMillis;
 	
-	final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy/M/d (EEE)");
-	final SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
-	
 	private Calendar startCalendar;
 	private Calendar endCalendar;
 	private Calendar reminderCalendar;
@@ -66,16 +71,26 @@ public class SetEventActivity extends Activity implements OnClickListener, OnChe
 	private Event event;
 	private Reminder reminder;
 	
+	public static Intent getAction(Context context, long calendarID, long eventID, long startMillis, long endMillis) {
+		Intent intent = new Intent(context, SetEventActivity.class);
+		intent.setAction(ACTION);
+		intent.putExtra(EXTRA_CALENDAR_ID, calendarID);
+		intent.putExtra(EXTRA_EVENT_ID, eventID);
+		intent.putExtra(EXTRA_START_MILLIS, startMillis);
+		intent.putExtra(EXTRA_END_MILLIS, endMillis);
+		return intent;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_set_event);
 		app = (NoMissingApp)getApplicationContext();
 
-        calendarID = getIntent().getLongExtra("calendarID", 0);
-		eventID = getIntent().getLongExtra("eventID", 0);
-		startMillis = getIntent().getLongExtra("startMillis", 0);
-		endMillis = getIntent().getLongExtra("endMillis", 0);
+        calendarID = getIntent().getLongExtra(EXTRA_CALENDAR_ID, 0);
+		eventID = getIntent().getLongExtra(EXTRA_EVENT_ID, 0);
+		startMillis = getIntent().getLongExtra(EXTRA_START_MILLIS, 0);
+		endMillis = getIntent().getLongExtra(EXTRA_END_MILLIS, 0);
 		
 		getEvent();
 		getReminder();

@@ -12,7 +12,7 @@ import edu.ntust.cs.idsl.nomissing.receiver.AlarmReceiver;
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
 public class WeatherAlarmHandler extends AlarmHandler<Weather> {
-
+	
 	public WeatherAlarmHandler(Context context) {
 		super(context);
 	}
@@ -20,31 +20,27 @@ public class WeatherAlarmHandler extends AlarmHandler<Weather> {
 	@Override
 	public void setAlarm(Weather weather) {
 		SettingsManager userSettings = SettingsManager.getInstance(context);
-		int cityID = userSettings.getWeatherReminderCity();
-		long triggerAtMillis = calculateAlarm(userSettings.getWeatherReminderHour(), userSettings.getWeatherReminderMinute()).getTimeInMillis();
-		long intervalMillis = 86400 * 1000; // one day
+		int hour = userSettings.getWeatherReminderHour();
+		int minute = userSettings.getWeatherReminderMinute();
+		long triggerAtMillis = calculateAlarm(hour, minute).getTimeInMillis();
+		long intervalMillis = ONE_DAY_MILLIS;
 		
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		PendingIntent pendingIntent = getPendingIntent(AlarmReceiver.ACTION_WEATHER_ALARM, weather);
+		PendingIntent pendingIntent = getPendingIntent(weather);
 		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerAtMillis, intervalMillis, pendingIntent);
 	}
 
 	@Override
 	public void cancelAlarm(Weather weather) {
-		SettingsManager userSettings = SettingsManager.getInstance(context);
-		int cityID = userSettings.getWeatherReminderCity();
-		
-		PendingIntent pendingIntent = getPendingIntent(AlarmReceiver.ACTION_WEATHER_ALARM, weather);
+		PendingIntent pendingIntent = getPendingIntent(weather);
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);		
 		alarmManager.cancel(pendingIntent);
 		pendingIntent.cancel();	
 	}
 
 	@Override
-	protected PendingIntent getPendingIntent(String action, Weather weather) {
-		Intent intent =  new Intent(context, AlarmReceiver.class);
-		intent.putExtra("id", weather.getCityID());
-		intent.setAction(action);
+	protected PendingIntent getPendingIntent(Weather weather) {
+		Intent intent =  AlarmReceiver.getActionWeatherAlarm(context, weather.getCityID());
 		return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 

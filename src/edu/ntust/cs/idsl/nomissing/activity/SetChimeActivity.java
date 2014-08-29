@@ -6,6 +6,8 @@ import java.util.Calendar;
 
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -34,6 +36,8 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class SetChimeActivity extends PreferenceActivity implements OnPreferenceClickListener, OnPreferenceChangeListener {
 	
+	private static final String ACTION = "edu.ntust.cs.idsl.nomissing.action.SetChimeActivity";
+	private static final String EXTRA_CHIME_ID = "edu.ntust.cs.idsl.nomissing.extra.CHIME_ID";
 	private static final String KEY_CHIME_ENABLED = "chime_enabled";
 	private static final String KEY_CHIME_TIME = "chime_time";
 	private static final String KEY_CHIME_REPEATING = "chime_repeating";
@@ -55,6 +59,13 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
 	private Chime chime;
 	private Calendar calendar;
 	
+	public static Intent getAction(Context context, int chimeID) {
+		Intent intent = new Intent(context, SetChimeActivity.class);
+		intent.setAction(ACTION);
+		intent.putExtra(EXTRA_CHIME_ID, chimeID);
+		return intent;
+	}
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +75,7 @@ public class SetChimeActivity extends PreferenceActivity implements OnPreference
         getActionBar().setHomeButtonEnabled(true);	
         app = (NoMissingApp)getApplicationContext();
 		
-		chimeID = getIntent().getIntExtra("chimeID", 0);
+		chimeID = getIntent().getIntExtra(EXTRA_CHIME_ID, 0);
 		chime = (chimeID != 0 ) ? DaoFactory.getSQLiteDaoFactory().createChimeDao(this).find(chimeID) : new Chime();
 		
 		chimeHour = chime.getHour();

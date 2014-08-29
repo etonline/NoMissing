@@ -43,9 +43,9 @@ public abstract class TextToSpeechService extends IntentService {
 			successor = new TTSGetConvertStatusService();
 		
 		if (getClass().equals(TTSGetConvertStatusService.class))
-			successor = new GetAudioFileService();
+			successor = new TTSGetAudioService();
 		
-		if (getClass().equals(GetAudioFileService.class))
+		if (getClass().equals(TTSGetAudioService.class))
 			successor = null;
 	}
 	

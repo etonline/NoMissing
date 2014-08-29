@@ -1,24 +1,14 @@
 package edu.ntust.cs.idsl.nomissing.service;
 
-import java.io.File;
-
 import android.annotation.SuppressLint;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
-import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.activity.MainActivity;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
@@ -31,13 +21,33 @@ public class MediaPlayerService extends Service implements
 		AudioManager.OnAudioFocusChangeListener {
 
 	private static final String TAG = MediaPlayerService.class.getSimpleName();
-	
 	public static final String ACTION_PLAY = "edu.ntust.cs.idsl.nomissing.action.PLAY";
     public static final String ACTION_PAUSE = "edu.ntust.cs.idsl.nomissing.action.PAUSE";
     public static final String ACTION_STOP = "edu.ntust.cs.idsl.nomissing.action.STOP";
-        
+    public static final String EXTRA_AUDIO_URI = "edu.ntust.cs.idsl.nomissing.extra.AUDIO_URI";
     private MediaPlayer mediaPlayer;
 
+	public static void startActionPlay(Context context, String audioURI) {
+		Intent intent = new Intent(context, MediaPlayerService.class);
+		intent.setAction(MediaPlayerService.ACTION_PLAY);
+		intent.putExtra(EXTRA_AUDIO_URI, audioURI);		
+		context.startService(intent);		
+	}
+	
+	public static void startActionPause(Context context, String audioURI) {
+		Intent intent = new Intent(context, MediaPlayerService.class);
+		intent.setAction(MediaPlayerService.ACTION_PAUSE);
+		intent.putExtra(EXTRA_AUDIO_URI, audioURI);		
+		context.startService(intent);			
+	}
+	
+	public static void startActionStop(Context context, String audioURI) {
+		Intent intent = new Intent(context, MediaPlayerService.class);
+		intent.setAction(MediaPlayerService.ACTION_STOP);
+		intent.putExtra(EXTRA_AUDIO_URI, audioURI);		
+		context.startService(intent);			
+	}
+    
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -47,68 +57,43 @@ public class MediaPlayerService extends Service implements
 	public void onCreate() {
 		super.onCreate();
 		mediaPlayer = new MediaPlayer(); 
-		
 		mediaPlayer.setOnPreparedListener(this);
 		mediaPlayer.setOnCompletionListener(this);
 		mediaPlayer.setOnErrorListener(this);
 	}
 
+    @Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-    	
-		String action = intent.getAction();
-		switch (action) {
-		case ACTION_PLAY:
-            try {
-            	Log.i(TAG, "Audio Playing");
-            	
-        		String audio = intent.getStringExtra("audio");
-        		Uri uri = Uri.parse(audio);
-        		Log.i(TAG, audio);
-        		
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);            	
-				mediaPlayer.setDataSource(this, uri);
-	            mediaPlayer.setOnPreparedListener(this);
-	            mediaPlayer.prepareAsync(); 
-			} catch (Exception e) {
-				Log.e("MediaPlayerService", e.toString());
-			}	 
-            break;
-            
-		case ACTION_PAUSE:	
-			if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-				mediaPlayer.pause();
+		if (intent != null) {
+			Log.v(TAG, intent.getAction());	
+			final String action = intent.getAction();
+			final String audioURI = intent.getStringExtra(EXTRA_AUDIO_URI);
+			
+			if (ACTION_PLAY.equals(action)) {		
+				Log.i(TAG, "Audio Playing");
+				handleActionPlay(audioURI);
+			}
+			
+			if (ACTION_PAUSE.equals(action)) {		
 				Log.i(TAG, "Audio Paused");
-			} else {
-				mediaPlayer.start();
-			}		
-			break;
-
-		case ACTION_STOP:
-			if (mediaPlayer != null) {
-				mediaPlayer.stop();
+				handleActionPause();
+			}			
+			
+			if (ACTION_STOP.equals(action)) {	
 				Log.i(TAG, "Audio Stoped");
-				this.stopSelf();
-			}		
-			break;
-			
-		default:
-			break;
+				handleActionStop();
+			}			
 		}
-
-			
-        
 		return startId;
     }
 
     @Override
 	public void onDestroy() {
 		super.onDestroy();
-		
-		if (mediaPlayer != null) {
+		if (mediaPlayer != null)
 			mediaPlayer.release();
-		}
-
-		Log.i("MediaPlayerService","Service killed");
+		
+		Log.i(TAG, "Service killed");
 	}
 
 	@Override
@@ -125,7 +110,6 @@ public class MediaPlayerService extends Service implements
 	public boolean onError(MediaPlayer mp, int what, int extra) {
 		mp.release();
 		mediaPlayer = null;
-//		Toast.makeText(MediaPlayerService.this, "發生錯誤，停止播放", Toast.LENGTH_SHORT).show();
 		return false;
 	}	
 
@@ -136,26 +120,48 @@ public class MediaPlayerService extends Service implements
 
 		switch (focusChange) {
 		case AudioManager.AUDIOFOCUS_GAIN:
-			// 程式取得聲音播放權
 			mediaPlayer.setVolume(0.8f, 0.8f);
 			mediaPlayer.start();				
 			break;
 		case AudioManager.AUDIOFOCUS_LOSS:
-			// 程式尚失聲音播放權，而且時間可能很久
-			stopSelf();		// 結束這個Service
+			stopSelf();		
 			break;
 		case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-			// 程式尚失聲音播放權，但預期很快就會再取得
 			if (mediaPlayer.isPlaying())
 				mediaPlayer.pause();
 			break;
 		case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-			// 程式尚失聲音播放權，但是可以用很小的音量繼續播放
 			if (mediaPlayer.isPlaying())
 				mediaPlayer.setVolume(0.1f, 0.1f);
 			break;
 		}
-		
+	}
+	
+	private void handleActionPlay(String audioURI) {
+        try {
+    		Uri uri = Uri.parse(audioURI);
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);            	
+			mediaPlayer.setDataSource(this, uri);
+            mediaPlayer.setOnPreparedListener(this);
+            mediaPlayer.prepareAsync(); 
+		} catch (Exception e) {
+			Log.e(TAG , e.toString());
+		}	 
+	}
+	
+	private void handleActionPause() {
+		if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+			mediaPlayer.pause();
+		} else {
+			mediaPlayer.start();
+		}				
+	}
+	
+	private void handleActionStop() {
+		if (mediaPlayer != null) {
+			mediaPlayer.stop();
+			this.stopSelf();
+		}			
 	}
 
 }

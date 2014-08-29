@@ -7,6 +7,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -32,6 +34,7 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class SetWeatherActivity extends PreferenceActivity implements OnPreferenceClickListener, OnPreferenceChangeListener {
 	
+	private static final String ACTION = "edu.ntust.cs.idsl.nomissing.action.SetWeatherActivity";
 	private static final String KEY_WEATHER_TTS_ENABLED = "weather_tts_enabled";
 	private static final String KEY_WEATHER_REMINDER_ENABLED = "weather_reminder_enabled";
 	private static final String KEY_WEATHER_REMINDER_TIME = "weather_reminder_time";
@@ -53,6 +56,12 @@ public class SetWeatherActivity extends PreferenceActivity implements OnPreferen
 	
 	private Weather weather;
 	private Calendar reminderCalendar;
+	
+	public static void startActivity(Context context) {
+		Intent intent = new Intent(context, SetWeatherActivity.class);
+		intent.setAction(ACTION);
+		context.startActivity(intent);
+	}
 	
 	@SuppressWarnings("deprecation")
 	@Override

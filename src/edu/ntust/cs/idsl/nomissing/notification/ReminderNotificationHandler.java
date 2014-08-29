@@ -42,9 +42,7 @@ public class ReminderNotificationHandler extends NotificationHandler<Reminder> {
 
 	@Override
 	protected PendingIntent getPendingIntent(Reminder reminder) {
-		Intent intent =  new Intent(context, EventActivity.class);
-		intent.putExtra("id", reminder.getId());
-		return PendingIntent.getActivity(context, 0, intent, 0);
+		return PendingIntent.getActivity(context.getApplicationContext(), 0, new Intent(), 0);
 	}
 
 }

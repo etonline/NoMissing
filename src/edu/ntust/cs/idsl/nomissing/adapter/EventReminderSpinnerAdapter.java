@@ -15,6 +15,7 @@ import edu.ntust.cs.idsl.nomissing.constant.EventReminder;
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
+@Deprecated
 public class EventReminderSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 	
 	private Context context;

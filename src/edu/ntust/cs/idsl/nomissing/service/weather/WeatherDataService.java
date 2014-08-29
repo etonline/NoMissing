@@ -22,9 +22,9 @@ import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
-public class GettingDataService extends WeatherService {
+public class WeatherDataService extends WeatherService {
 	
-	private static final String TAG = GettingDataService.class.getSimpleName();
+	private static final String TAG = WeatherDataService.class.getSimpleName();
 	private static final String ACTION = "edu.ntust.cs.idsl.nomissing.action.GettingDataService";
 
 	@Override
@@ -48,7 +48,7 @@ public class GettingDataService extends WeatherService {
 				saveData(response);	
 
 				if (successor != null) 
-					successor.startAction(GettingDataService.this, extras);	
+					successor.startAction(WeatherDataService.this, extras);	
 			}
 
 			@Override
@@ -60,7 +60,7 @@ public class GettingDataService extends WeatherService {
 
 	@Override
 	protected void startAction(Context context, Bundle extras) {
-		Intent intent = new Intent(context, GettingDataService.class);
+		Intent intent = new Intent(context, WeatherDataService.class);
 		intent.setAction(ACTION);
 		context.startService(intent);
 	}	
@@ -80,7 +80,7 @@ public class GettingDataService extends WeatherService {
 				String updatedAt = jsonObject.getString(WeatherProperty.UPDATED_AT);	
 				
 				Weather weather = new Weather(cityid, city, stno, time, memo, audio, createdAt, updatedAt);
-				DaoFactory.getSQLiteDaoFactory().createWeatherDao(GettingDataService.this).update(weather);
+				DaoFactory.getSQLiteDaoFactory().createWeatherDao(WeatherDataService.this).update(weather);
 			}		
 		} 
 		catch (JSONException e) {

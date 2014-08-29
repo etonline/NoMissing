@@ -21,9 +21,9 @@ import edu.ntust.cs.idsl.nomissing.model.Reminder;
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
-public class GetAudioFileService extends TextToSpeechService {
+public class TTSGetAudioService extends TextToSpeechService {
 
-	private static final String TAG = GetAudioFileService.class.getSimpleName();
+	private static final String TAG = TTSGetAudioService.class.getSimpleName();
 	private static final String ACTION = "edu.ntust.cs.idsl.nomissing.action.GET_CONVERT_STATUS";
 	private static final  String[] allowedContentTypes = {"audio/x-wav"};
 	
@@ -53,14 +53,14 @@ public class GetAudioFileService extends TextToSpeechService {
 			
 			@Override
 			public void onFailure(int statusCode, Header[] headers, byte[] response, Throwable throwable) {
-				Log.i(TAG, throwable.toString());
+				Log.e(TAG, throwable.toString());
 			}
 		});
 	}
 	
 	@Override
 	protected void startAction(Context context, Bundle extras) {
-		Intent intent = new Intent(context, GetAudioFileService.class);
+		Intent intent = new Intent(context, TTSGetAudioService.class);
 		intent.setAction(ACTION);
 		intent.putExtras(extras);
 		context.startService(intent);
@@ -84,6 +84,8 @@ public class GetAudioFileService extends TextToSpeechService {
 	
 	
 	private void setAudio(String category, long id, String audio) {
+		Log.i(TAG, audio);
+		
 		if (category.equals(CATEGORY_REMINDER)) {
 			Reminder reminder = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).find(id);
 			reminder.setAudio(audio);

@@ -28,7 +28,6 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.adapter.NavDrawerListAdapter;
 import edu.ntust.cs.idsl.nomissing.constant.NavDrawerItem;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.dao.calendar.CalendarProviderDaoFactory;
 import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.ChimeFragment;
 import edu.ntust.cs.idsl.nomissing.fragment.HomeFragment;

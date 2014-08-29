@@ -22,7 +22,6 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetEventActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.AgendaListAdapter;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.dao.calendar.CalendarProviderDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
@@ -145,11 +144,7 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
 	}
 	
 	private void setEvent(long calenderID, long eventID, long startMillis, long endMillis) {
-		Intent intent = new Intent(getActivity(), SetEventActivity.class);
-		intent.putExtra("calendarID", calenderID);
-		if (eventID != 0) intent.putExtra("eventID", eventID);
-		if (startMillis != 0) intent.putExtra("startMillis", startMillis);
-		if (endMillis != 0) intent.putExtra("endMillis", endMillis);
+		Intent intent = SetEventActivity.getAction(getActivity(), calenderID, eventID, startMillis, endMillis);
 		startActivityForResult(intent, REQUEST_SET);			
 	}
 

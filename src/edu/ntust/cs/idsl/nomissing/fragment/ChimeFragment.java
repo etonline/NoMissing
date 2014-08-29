@@ -17,10 +17,8 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetChimeActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.ChimeListAdapter;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
-import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
@@ -99,8 +97,7 @@ public class ChimeFragment extends ListFragment {
 	}
 	
 	private void setChime(int chimeID) {
-		Intent intent = new Intent(getActivity(), SetChimeActivity.class);
-		intent.putExtra("chimeID", chimeID);
+		Intent intent = SetChimeActivity.getAction(getActivity(), chimeID);
 		startActivityForResult(intent, Constant.REQUEST_CODE_SET);	
 	}
 	

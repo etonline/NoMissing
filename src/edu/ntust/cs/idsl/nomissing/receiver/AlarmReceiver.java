@@ -18,49 +18,74 @@ import edu.ntust.cs.idsl.nomissing.notification.NotificationHandlerFactory;
 public class AlarmReceiver extends BroadcastReceiver {
 	
 	public static final String TAG = AlarmReceiver.class.getSimpleName();
-	
 	public static final String ACTION_REMINDER_ALARM = "edu.ntust.cs.idsl.nomissing.action.REMINDER_ALARM";
 	public static final String ACTION_CHIME_ALARM = "edu.ntust.cs.idsl.nomissing.action.CHIME_ALARM";
 	public static final String ACTION_WEATHER_ALARM = "edu.ntust.cs.idsl.nomissing.action.WEATHER_ALARM";
+	public static final String EXTRA_ENTITY_ID = "edu.ntust.cs.idsl.nomissing.extra.ENTITY_ID";
 	
 	public AlarmReceiver() {
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.v(TAG, intent.getAction());		
-		
-		if (intent.getAction().equals(ACTION_REMINDER_ALARM)) {
-			long reminderID = intent.getLongExtra("id", 0);
-			Log.i("TAG", String.valueOf(reminderID));
-			Reminder reminder = DaoFactory.getSQLiteDaoFactory().createReminderDao(context).find(reminderID);
+		if (intent != null) {
+			Log.v(TAG, intent.getAction());	
+			final String action = intent.getAction();
+			final long id = intent.getLongExtra(EXTRA_ENTITY_ID, 0);
 			
-			NotificationHandlerFactory.createReminderNotificationHandler(context).sendNotification(reminder);
+			if (ACTION_REMINDER_ALARM.equals(action)) {		
+				handleActionReminderAlarm(context, id);
+				return;
+			}
 			
-			Intent newIntent = new Intent(context, EventActivity.class);
-			newIntent.putExtra("id", reminderID);
-			newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-			context.startActivity(newIntent);	
-		}		
-		
-		if (intent.getAction().equals(ACTION_CHIME_ALARM)) {
-			int chimeID = intent.getIntExtra("id", 0);
-			Chime chime = DaoFactory.getSQLiteDaoFactory().createChimeDao(context).find(chimeID);
+			if (ACTION_CHIME_ALARM.equals(action)) {		
+				handleActionChimeAlarm(context, id);
+				return;
+			}			
 			
-			NotificationHandlerFactory.createChimeNotificationHandler(context).sendNotification(chime);
-			
-			Intent newIntent = new Intent(context, ChimeActivity.class);
-			newIntent.putExtra("id", chimeID);
-			newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-			context.startActivity(newIntent);	
+			if (ACTION_WEATHER_ALARM.equals(action)) {		
+				handleActionWeatherAlarm(context, id);
+				return;
+			}			
 		}
-		
-		if (intent.getAction().equals(ACTION_WEATHER_ALARM)) {
-			int cityID = intent.getIntExtra("id", 0);
-			Weather weather = DaoFactory.getSQLiteDaoFactory().createWeatherDao(context).find(cityID);
-			NotificationHandlerFactory.createWeatherNotificationHandler(context).sendNotification(weather);
-		}
-
+	}
+	
+	private void handleActionReminderAlarm(Context context, long id) {
+		Reminder reminder = DaoFactory.getSQLiteDaoFactory().createReminderDao(context).find(id);
+		NotificationHandlerFactory.createReminderNotificationHandler(context).sendNotification(reminder);
+		EventActivity.startActivity(context, id);
+	}
+	
+	private void handleActionChimeAlarm(Context context, long id) {
+		Chime chime = DaoFactory.getSQLiteDaoFactory().createChimeDao(context).find((int)id);
+		NotificationHandlerFactory.createChimeNotificationHandler(context).sendNotification(chime);
+		ChimeActivity.startActivity(context, (int)id);
+	}
+	
+	private void handleActionWeatherAlarm(Context context, long id) {
+		Weather weather = DaoFactory.getSQLiteDaoFactory().createWeatherDao(context).find((int)id);
+		NotificationHandlerFactory.createWeatherNotificationHandler(context).sendNotification(weather);	
+	}
+	
+	public static Intent getActionReminderAlarm(Context context, long reminderID) {
+		Intent intent = new Intent(context, AlarmReceiver.class);
+		intent.setAction(ACTION_REMINDER_ALARM);
+		intent.putExtra(EXTRA_ENTITY_ID, reminderID);
+		return intent;
+	}
+	
+	public static Intent getActionChimeAlarm(Context context, long chimeID) {
+		Intent intent = new Intent(context, AlarmReceiver.class);
+		intent.setAction(ACTION_CHIME_ALARM);
+		intent.putExtra(EXTRA_ENTITY_ID, chimeID);
+		return intent;
+	}
+	
+	public static Intent getActionWeatherAlarm(Context context, long weatherID) {
+		Intent intent = new Intent(context, AlarmReceiver.class);
+		intent.setAction(ACTION_WEATHER_ALARM);
+		intent.putExtra(EXTRA_ENTITY_ID, weatherID);
+		return intent;
 	}
 	
 }

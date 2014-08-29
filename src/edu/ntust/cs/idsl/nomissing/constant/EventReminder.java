@@ -8,6 +8,7 @@ import edu.ntust.cs.idsl.nomissing.R;
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
+@Deprecated
 public enum EventReminder {
 	
 	ZERO_MINUTE(0, R.string.event_reminder_zero_minute, 0),

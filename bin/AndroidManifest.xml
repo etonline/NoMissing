@@ -34,12 +34,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity
-            android:name=".activity.SignupActivity"
-            android:label="@string/title_activity_signup" />
-        <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main" />
         <activity
@@ -51,9 +45,6 @@
         <activity
             android:name=".activity.SetWeatherActivity"
             android:label="@string/title_activity_set_weather" />
-        <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/title_activity_settings" />
         <activity
             android:name=".activity.EventActivity"
             android:label="@string/title_activity_event"
@@ -70,21 +61,20 @@
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
 
+        <service android:name=".service.MediaPlayerService" />
         <service android:name=".service.tts.TTSConvertTextService" />
         <service android:name=".service.tts.TTSGetConvertStatusService" />
-        <service android:name=".service.tts.GetAudioFileService" />
-        <service android:name=".service.weather.GettingDataService" />
-        <service android:name=".service.weather.GettingAudioService" />
-        <service android:name=".service.MediaPlayerService" />
-        
+        <service android:name=".service.tts.TTSGetAudioService" />
+        <service android:name=".service.weather.WeatherDataService" />
+        <service android:name=".service.weather.WeatherAudioService" />
+
         <receiver android:name=".receiver.ServerResponseReceiver" />
         <receiver android:name=".receiver.AlarmReceiver" />
         <receiver android:name=".receiver.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>    
-
+        </receiver>
     </application>
 
 </manifest>

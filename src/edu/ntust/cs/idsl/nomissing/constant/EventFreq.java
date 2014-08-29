@@ -8,6 +8,7 @@ import edu.ntust.cs.idsl.nomissing.R;
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
+@Deprecated
 public enum EventFreq {
 	SINGLE(0, R.string.event_frequency_single, ""), 
 	DAILY(1, R.string.event_frequency_daily, "FREQ=DAILY"), 

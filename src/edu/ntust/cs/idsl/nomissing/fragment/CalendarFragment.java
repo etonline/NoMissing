@@ -10,7 +10,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,10 +31,8 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetEventActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.EventListAdapter;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
-import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
@@ -262,15 +259,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
 	}
 
 	private void setEvent(long calenderID, long eventID, long startMillis, long endMillis) {
-		Log.i("TAG", String.valueOf(eventID));
-		Log.i("TAG", String.valueOf(calenderID));
-		Log.i("TAG", String.valueOf(startMillis));
-		Log.i("TAG", String.valueOf(endMillis));
-		Intent intent = new Intent(getActivity(), SetEventActivity.class);
-		intent.putExtra("calendarID", calenderID);
-		if (eventID != 0) intent.putExtra("eventID", eventID);
-		if (startMillis != 0) intent.putExtra("startMillis", startMillis);
-		if (endMillis != 0) intent.putExtra("endMillis", endMillis);
+		Intent intent = SetEventActivity.getAction(getActivity(), calenderID, eventID, startMillis, endMillis);
 		startActivityForResult(intent, REQUEST_SET);			
 	}	
 	

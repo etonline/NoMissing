@@ -5,12 +5,12 @@ import java.text.SimpleDateFormat;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
@@ -18,21 +18,29 @@ import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
-@SuppressLint("NewApi")
+@SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class EventActivity extends Activity {
 
-	private NoMissingApp app;
-	private Event event;
+	private static final String ACTION = "edu.ntust.cs.idsl.nomissing.action.EventActivity";
+	private static final String EXTRA_REMINDER_ID = "edu.ntust.cs.idsl.nomissing.extra.REMINDER_ID";
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("a h:mm");
 	private Reminder reminder;
+	private Event event;
+	
+	public static void startActivity(Context context, long reminderID) {
+		Intent intent = new Intent(context, EventActivity.class);
+		intent.setAction(ACTION);
+		intent.putExtra(EXTRA_REMINDER_ID, reminderID);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+		context.startActivity(intent);	
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event);
 		
-		app = (NoMissingApp) getApplicationContext();
-		
-		long reminderID = getIntent().getLongExtra("id", 0);
+		long reminderID = getIntent().getLongExtra(EXTRA_REMINDER_ID, 0);
 		reminder = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).find(reminderID);
 		event = DaoFactory.getEventDaoFactory(reminder.getCalendarID()).createEventDao(this).find(reminder.getEventID());
 		
@@ -41,7 +49,6 @@ public class EventActivity extends Activity {
 	
 	
 	private void openEventDialog(final Event event) {
-		SimpleDateFormat formatter = new SimpleDateFormat("a h:mm");
 		StringBuilder message = new StringBuilder();
 		message.append(getString(R.string.event_title) + event.getTitle() + "\n");
 		if (!event.getLocation().isEmpty()) 
@@ -64,31 +71,19 @@ public class EventActivity extends Activity {
 		cityWeatherDialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-				startTTSAudio(reminder.getAudio());
+				MediaPlayerService.startActionPlay(EventActivity.this, reminder.getAudio());
 			}
 		});
 		
 		cityWeatherDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			@Override
 			public void onDismiss(DialogInterface dialog) {
-				stopTTSAudio();
+				MediaPlayerService.startActionStop(EventActivity.this, reminder.getAudio());
 				finish();
 			}
 		});
 		
 		cityWeatherDialog.show();
 	}
-	
-	private void startTTSAudio(String audio) {
-		Intent startIntent = new Intent(this, MediaPlayerService.class);
-		startIntent.setAction(MediaPlayerService.ACTION_PLAY);
-		startIntent.putExtra("audio", audio);		
-		startService(startIntent);			
-	}
-	
-	private void stopTTSAudio() {
-		Intent stopIntent = new Intent(this, MediaPlayerService.class);
-		stopIntent.setAction(MediaPlayerService.ACTION_STOP);
-		startService(stopIntent);			
-	}
+
 }

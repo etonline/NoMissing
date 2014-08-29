@@ -18,7 +18,6 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.SetWeatherActivity;
 import edu.ntust.cs.idsl.nomissing.activity.WeatherActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.WeatherExpandListAdapter;
-import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.ProgressStatus;
 import edu.ntust.cs.idsl.nomissing.notification.NotificationHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
@@ -30,15 +29,22 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
  */
 public class WeatherFragment extends Fragment implements OnChildClickListener {
 
-	private NoMissingApp app;
 	private ExpandableListView expandableListView;
 	private MenuItem menuItemRefresh;
+	
+	private void setBroadcastReceiver() {
+		IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_START);
+        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_PROGRASS_UPDATE);
+        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FINISH);
+        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FAILURE);
+		getActivity().registerReceiver(GetWeatherDataReceiver, intentFilter);	
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		app = (NoMissingApp)getActivity().getApplicationContext();
 		setBroadcastReceiver();
 	}
 	
@@ -53,8 +59,6 @@ public class WeatherFragment extends Fragment implements OnChildClickListener {
         return rootView;
 	}
 	
-
-
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -69,7 +73,7 @@ public class WeatherFragment extends Fragment implements OnChildClickListener {
 			WeatherService.startService(getActivity(), new Bundle());
 			return true;
 		case R.id.action_set_weather:
-			startActivity(new Intent(getActivity(), SetWeatherActivity.class));
+			SetWeatherActivity.startActivity(getActivity());
 			return true;
 
 		default:
@@ -79,19 +83,8 @@ public class WeatherFragment extends Fragment implements OnChildClickListener {
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-		Intent intent = new Intent(getActivity(), WeatherActivity.class);
-		intent.putExtra("id", (int)id);
-		getActivity().startActivity(intent);	
+		WeatherActivity.startActivity(getActivity(), (int)id);
 		return true;
-	}
-	
-	private void setBroadcastReceiver() {
-		IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_START);
-        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_PROGRASS_UPDATE);
-        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FINISH);
-        intentFilter.addAction(ServerResponseReceiver.ACTION_GET_WEATHER_DATE_FAILURE);
-		getActivity().registerReceiver(GetWeatherDataReceiver, intentFilter);	
 	}	
 	
 	private final BroadcastReceiver GetWeatherDataReceiver = new BroadcastReceiver() {

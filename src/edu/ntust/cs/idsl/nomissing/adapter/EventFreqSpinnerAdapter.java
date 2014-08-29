@@ -2,7 +2,6 @@ package edu.ntust.cs.idsl.nomissing.adapter;
 
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,7 +15,7 @@ import edu.ntust.cs.idsl.nomissing.constant.EventFreq;
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
-@SuppressLint("UseSparseArrays")
+@Deprecated
 public class EventFreqSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 	
 	private Context context;

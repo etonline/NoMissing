@@ -22,9 +22,9 @@ import edu.ntust.cs.idsl.nomissing.receiver.ServerResponseReceiver;
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
-public class GettingAudioService extends WeatherService {
+public class WeatherAudioService extends WeatherService {
 	
-	private static final String TAG = GettingAudioService.class.getSimpleName();
+	private static final String TAG = WeatherAudioService.class.getSimpleName();
 	private static final String ACTION = "edu.ntust.cs.idsl.nomissing.action.GettingDataService";
 	private static final String[] allowedContentTypes = {"audio/x-wav"};
 	private static final String DIR = "weather";
@@ -76,7 +76,7 @@ public class GettingAudioService extends WeatherService {
 
 	@Override
 	protected void startAction(Context context, Bundle extras) {
-		Intent intent = new Intent(context, GettingAudioService.class);
+		Intent intent = new Intent(context, WeatherAudioService.class);
 		intent.setAction(ACTION);
 		context.startService(intent);
 	}		

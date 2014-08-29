@@ -21,24 +21,22 @@ public class ReminderAlarmHandler extends AlarmHandler<Reminder> {
 		long triggerAtMillis = reminder.getReminderTime();
 		
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		PendingIntent pendingIntent = getPendingIntent(AlarmReceiver.ACTION_REMINDER_ALARM , reminder);
+		PendingIntent pendingIntent = getPendingIntent(reminder);
 		
 		alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
 	}
 
 	@Override
 	public void cancelAlarm(Reminder reminder) {
-		PendingIntent pendingIntent = getPendingIntent(AlarmReceiver.ACTION_CHIME_ALARM, reminder);
+		PendingIntent pendingIntent = getPendingIntent(reminder);
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);		
 		alarmManager.cancel(pendingIntent);
 		pendingIntent.cancel();
 	}
 
 	@Override
-	protected PendingIntent getPendingIntent(String action, Reminder reminder) {
-		Intent intent =  new Intent(context, AlarmReceiver.class);
-		intent.putExtra("id", reminder.getId());
-		intent.setAction(action);
+	protected PendingIntent getPendingIntent(Reminder reminder) {
+		Intent intent = AlarmReceiver.getActionReminderAlarm(context, reminder.getId());
 		return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 

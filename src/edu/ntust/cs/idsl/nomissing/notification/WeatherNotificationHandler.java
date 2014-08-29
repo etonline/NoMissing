@@ -24,7 +24,7 @@ public class WeatherNotificationHandler extends NotificationHandler<Weather> {
 		boolean vibrate = true;
 		
 		NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
-			.setAutoCancel(true)
+			.setAutoCancel(false)
 			.setContentIntent(getPendingIntent(weather))
 			.setContentTitle(context.getString(R.string.title_activity_weather))
 			.setContentText(weather.getCity())
@@ -39,8 +39,7 @@ public class WeatherNotificationHandler extends NotificationHandler<Weather> {
 
 	@Override
 	protected PendingIntent getPendingIntent(Weather weather) {
-		Intent intent =  new Intent(context, WeatherActivity.class);
-		intent.putExtra("id", weather.getCityID());
+		Intent intent = WeatherActivity.getAction(context, weather.getCityID());
 		return PendingIntent.getActivity(context, 0, intent, 0);
 	}
 	

@@ -6,6 +6,7 @@ import android.content.Context;
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
 public class AlarmHandlerFactory {
+	
 	public static ReminderAlarmHandler createReminderAlarmHandler(Context context) {
 		return new ReminderAlarmHandler(context);
 	}
@@ -17,4 +18,5 @@ public class AlarmHandlerFactory {
 	public static WeatherAlarmHandler createWeatherAlarmHandler(Context context) {
 		return new WeatherAlarmHandler(context);
 	}	
+	
 }

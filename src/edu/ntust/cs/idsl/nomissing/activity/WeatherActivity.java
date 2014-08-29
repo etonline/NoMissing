@@ -2,12 +2,12 @@ package edu.ntust.cs.idsl.nomissing.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
@@ -17,19 +17,31 @@ import edu.ntust.cs.idsl.nomissing.service.MediaPlayerService;
  */
 public class WeatherActivity extends Activity {
 	
+	private static final String ACTION = "edu.ntust.cs.idsl.nomissing.action.WeatherActivity";
+	private static final String EXTRA_CITYID = "edu.ntust.cs.idsl.nomissing.extra.CITYID"; 
 	private NoMissingApp app;
 	private Weather weather;
-	public static final String EXTRA_ID = "id"; 
 
+	public static void startActivity(Context context, int cityID) {
+		context.startActivity(getAction(context, cityID));	
+	}	
+	
+	public static Intent getAction(Context context, int cityID) {
+		Intent intent = new Intent(context, WeatherActivity.class);
+		intent.setAction(ACTION);
+		intent.putExtra(EXTRA_CITYID, cityID);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 	
+		return intent;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_weather);
 		app = (NoMissingApp) getApplicationContext();
 		
-		int cityID = getIntent().getIntExtra("id", 0);
+		int cityID = getIntent().getIntExtra(EXTRA_CITYID, 0);
 		weather = DaoFactory.getSQLiteDaoFactory().createWeatherDao(this).find(cityID);
-		
 		openCityWeatherDialog(weather);
 	}
 	
@@ -50,7 +62,7 @@ public class WeatherActivity extends Activity {
 			@Override
 			public void onShow(DialogInterface dialog) {
 				if (app.getSettings().isWeatherTTSEnabled()) 
-					startTTSAudio(weather.getAudio());
+					MediaPlayerService.startActionPlay(WeatherActivity.this, weather.getAudio());
 			}
 		});
 		
@@ -58,25 +70,12 @@ public class WeatherActivity extends Activity {
 			@Override
 			public void onDismiss(DialogInterface dialog) {
 				if (app.getSettings().isWeatherTTSEnabled()) 
-					stopTTSAudio();
+					MediaPlayerService.startActionStop(WeatherActivity.this, weather.getAudio());
 				finish();
 			}
 		});
 		
 		cityWeatherDialog.show();
-	}
-	
-	private void startTTSAudio(String audio) {
-		Intent startIntent = new Intent(this, MediaPlayerService.class);
-		startIntent.setAction(MediaPlayerService.ACTION_PLAY);
-		startIntent.putExtra("audio", audio);		
-		startService(startIntent);			
-	}
-	
-	private void stopTTSAudio() {
-		Intent stopIntent = new Intent(this, MediaPlayerService.class);
-		stopIntent.setAction(MediaPlayerService.ACTION_STOP);
-		startService(stopIntent);			
 	}
 	
 }

@@ -10,68 +10,69 @@ import edu.ntust.cs.idsl.nomissing.R;
  */
 public enum NavDrawerItem {
 
-	HOME(R.drawable.ic_action_view_as_list, R.string.nav_home),
-	CALENDAR(R.drawable.ic_action_go_to_today, R.string.nav_calendar),
-	CHIME(R.drawable.ic_action_alarms, R.string.nav_chime),
-	WEATHER(R.drawable.ic_action_cloud, R.string.nav_weather),
-	SETTING(R.drawable.ic_action_settings, R.string.nav_settings),
-	LOGOUT(android.R.drawable.ic_lock_power_off, R.string.nav_exit);
-	
-	private int icon;
-	private int title;
-	private int count;
-	private boolean isCounterVisible = false;
-	
-	private NavDrawerItem(int icon, int title) {
-		this.icon = icon;
-		this.title = title;
-	}	
-	
-	private NavDrawerItem(int icon, int title, int count, boolean isCounterVisible) {
-		this.icon = icon;
-		this.title = title;
-		this.count = count;
-		this.isCounterVisible = isCounterVisible;
-	}
+    HOME(R.drawable.ic_action_view_as_list, R.string.nav_home), 
+    CALENDAR(R.drawable.ic_action_go_to_today, R.string.nav_calendar), 
+    CHIME(R.drawable.ic_action_alarms, R.string.nav_chime), 
+    WEATHER(R.drawable.ic_action_cloud, R.string.nav_weather), 
+    SETTING(R.drawable.ic_action_settings, R.string.nav_settings), 
+    LOGOUT(android.R.drawable.ic_lock_power_off, R.string.nav_exit);
 
-	public int getIcon() {
-		return icon;
-	}
+    private int icon;
+    private int title;
+    private int count;
+    private boolean isCounterVisible = false;
 
-	public void setIcon(int icon) {
-		this.icon = icon;
-	}
+    private NavDrawerItem(int icon, int title) {
+        this.icon = icon;
+        this.title = title;
+    }
 
-	public int getTitle() {
-		return title;
-	}
+    private NavDrawerItem(int icon, int title, int count,
+            boolean isCounterVisible) {
+        this.icon = icon;
+        this.title = title;
+        this.count = count;
+        this.isCounterVisible = isCounterVisible;
+    }
 
-	public void setTitle(int title) {
-		this.title = title;
-	}
+    public int getIcon() {
+        return icon;
+    }
 
-	public int getCount() {
-		return count;
-	}
+    public void setIcon(int icon) {
+        this.icon = icon;
+    }
 
-	public void setCount(int count) {
-		this.count = count;
-	}
+    public int getTitle() {
+        return title;
+    }
 
-	public boolean isCounterVisible() {
-		return isCounterVisible;
-	}
+    public void setTitle(int title) {
+        this.title = title;
+    }
 
-	public void setCounterVisible(boolean isCounterVisible) {
-		this.isCounterVisible = isCounterVisible;
-	}
-	
-	public static List<NavDrawerItem> getNavDrawerItems() {
-		List<NavDrawerItem> navItems = new ArrayList<NavDrawerItem>();
-		for (NavDrawerItem navItem : NavDrawerItem.values()) {
-			navItems.add(navItem);
-		}
-		return navItems;
-	}
-	
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public boolean isCounterVisible() {
+        return isCounterVisible;
+    }
+
+    public void setCounterVisible(boolean isCounterVisible) {
+        this.isCounterVisible = isCounterVisible;
+    }
+
+    public static List<NavDrawerItem> getNavDrawerItems() {
+        List<NavDrawerItem> navItems = new ArrayList<NavDrawerItem>();
+        for (NavDrawerItem navItem : NavDrawerItem.values()) {
+            navItems.add(navItem);
+        }
+        return navItems;
+    }
+
 }

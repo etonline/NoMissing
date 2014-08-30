@@ -37,38 +37,40 @@
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main" />
         <activity
-            android:name=".activity.SetEventActivity"
-            android:label="@string/title_activity_set_event" />
-        <activity
-            android:name=".activity.SetChimeActivity"
-            android:label="@string/title_activity_set_chime" />
-        <activity
-            android:name=".activity.SetWeatherActivity"
-            android:label="@string/title_activity_set_weather" />
-        <activity
             android:name=".activity.EventActivity"
             android:label="@string/title_activity_event"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />        
+        <activity
+            android:name=".activity.EventSetterActivity"
+            android:label="@string/title_activity_event_setter" />
         <activity
             android:name=".activity.ChimeActivity"
             android:label="@string/title_activity_chime"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />        
+        <activity
+            android:name=".activity.ChimeSetterActivity"
+            android:label="@string/title_activity_chime_setter" />
         <activity
             android:name=".activity.WeatherActivity"
             android:label="@string/title_activity_weather"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
+        <activity
+            android:name=".activity.WeatherSetterActivity"
+            android:label="@string/title_activity_weather_setter" />
 
         <service android:name=".service.MediaPlayerService" />
+        <service android:name=".service.RegistrationService" />
         <service android:name=".service.tts.TTSConvertTextService" />
         <service android:name=".service.tts.TTSGetConvertStatusService" />
         <service android:name=".service.tts.TTSGetAudioService" />
         <service android:name=".service.weather.WeatherDataService" />
         <service android:name=".service.weather.WeatherAudioService" />
 
-        <receiver android:name=".receiver.ServerResponseReceiver" />
+        <receiver android:name=".receiver.TTSServiceReceiver" />
+        <receiver android:name=".receiver.WeatherServiceReceiver" />
         <receiver android:name=".receiver.AlarmReceiver" />
         <receiver android:name=".receiver.BootReceiver" >
             <intent-filter>

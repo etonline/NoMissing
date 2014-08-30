@@ -15,32 +15,35 @@ import edu.ntust.cs.idsl.nomissing.model.Weather;
  */
 public class WeatherNotificationHandler extends NotificationHandler<Weather> {
 
-	public WeatherNotificationHandler(Context context) {
-		super(context);
-	}
+    public WeatherNotificationHandler(Context context) {
+        super(context);
+    }
 
-	@Override
-	public void sendNotification(Weather weather) {
-		boolean vibrate = true;
-		
-		NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
-			.setAutoCancel(false)
-			.setContentIntent(getPendingIntent(weather))
-			.setContentTitle(context.getString(R.string.title_activity_weather))
-			.setContentText(weather.getCity())
-			.setDefaults(vibrate ? Notification.DEFAULT_ALL : Notification.DEFAULT_SOUND|Notification.DEFAULT_LIGHTS)
-			.setTicker(context.getString(R.string.title_activity_weather))
-			.setSmallIcon(R.drawable.ic_launcher)
-			.setWhen(System.currentTimeMillis());
-		
-		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.notify(weather.getCityID(), notification.build());	
-	}
+    @Override
+    public void sendNotification(Weather weather) {
+        boolean vibrate = true;
 
-	@Override
-	protected PendingIntent getPendingIntent(Weather weather) {
-		Intent intent = WeatherActivity.getAction(context, weather.getCityID());
-		return PendingIntent.getActivity(context, 0, intent, 0);
-	}
-	
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
+                .setAutoCancel(false)
+                .setContentIntent(getPendingIntent(weather))
+                .setContentTitle(context.getString(R.string.title_activity_weather))
+                .setContentText(weather.getCity())
+                .setDefaults(vibrate 
+                        ? Notification.DEFAULT_ALL
+                        : Notification.DEFAULT_SOUND
+                        | Notification.DEFAULT_LIGHTS)
+                .setTicker(context.getString(R.string.title_activity_weather))
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setWhen(System.currentTimeMillis());
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(weather.getCityID(), notification.build());
+    }
+
+    @Override
+    protected PendingIntent getPendingIntent(Weather weather) {
+        Intent intent = WeatherActivity.getAction(context, weather.getCityID());
+        return PendingIntent.getActivity(context, 0, intent, 0);
+    }
+
 }

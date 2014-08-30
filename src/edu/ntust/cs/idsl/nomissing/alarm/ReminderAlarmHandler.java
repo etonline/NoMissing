@@ -12,32 +12,32 @@ import edu.ntust.cs.idsl.nomissing.receiver.AlarmReceiver;
  */
 public class ReminderAlarmHandler extends AlarmHandler<Reminder> {
 
-	public ReminderAlarmHandler(Context context) {
-		super(context);
-	}
+    public ReminderAlarmHandler(Context context) {
+        super(context);
+    }
 
-	@Override
-	public void setAlarm(Reminder reminder) {
-		long triggerAtMillis = reminder.getReminderTime();
-		
-		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		PendingIntent pendingIntent = getPendingIntent(reminder);
-		
-		alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
-	}
+    @Override
+    public void setAlarm(Reminder reminder) {
+        long triggerAtMillis = reminder.getReminderTime();
 
-	@Override
-	public void cancelAlarm(Reminder reminder) {
-		PendingIntent pendingIntent = getPendingIntent(reminder);
-		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);		
-		alarmManager.cancel(pendingIntent);
-		pendingIntent.cancel();
-	}
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = getPendingIntent(reminder);
 
-	@Override
-	protected PendingIntent getPendingIntent(Reminder reminder) {
-		Intent intent = AlarmReceiver.getActionReminderAlarm(context, reminder.getId());
-		return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-	}
+        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAtMillis, pendingIntent);
+    }
+
+    @Override
+    public void cancelAlarm(Reminder reminder) {
+        PendingIntent pendingIntent = getPendingIntent(reminder);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
+    }
+
+    @Override
+    protected PendingIntent getPendingIntent(Reminder reminder) {
+        Intent intent = AlarmReceiver.getActionReceiveReminderAlarm(context, reminder.getId());
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
 }

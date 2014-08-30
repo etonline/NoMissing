@@ -13,7 +13,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        android:hint="@string/set_event_edit_text_hint_title" />
+        android:hint="@string/event_title" />
 
     <EditText
         android:id="@+id/editTextLocation"
@@ -23,7 +23,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        android:hint="@string/set_event_edit_text_hint_location" />
+        android:hint="@string/event_location" />
 
     <TextView
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        android:text="@string/set_event_text_start"
+        android:text="@string/event_start_time"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/gray" />
 
@@ -71,7 +71,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        android:text="@string/set_event_text_end"
+        android:text="@string/event_end_time"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/gray" />
 
@@ -111,7 +111,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        android:text="@string/set_event_check_box_reminder"
+        android:text="@string/event_reminder"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/gray" />
 
@@ -151,6 +151,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"
-        android:hint="@string/set_event_edit_text_hint_description" />
+        android:hint="@string/event_description" />
 
 </LinearLayout>

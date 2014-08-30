@@ -17,42 +17,41 @@ import edu.ntust.cs.idsl.nomissing.constant.EventReminder;
  */
 @Deprecated
 public class EventReminderSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
-	
-	private Context context;
-	private List<EventReminder> eventReminders;
-	
-	public EventReminderSpinnerAdapter(Context context) {
-		this.context = context;
-		eventReminders = EventReminder.getEventReminders();
-	}
 
-	@Override
-	public int getCount() {
-		return eventReminders.size();
-	}
+    private Context context;
+    private List<EventReminder> eventReminders;
 
-	@Override
-	public Object getItem(int position) {
-		return eventReminders.get(position).getMinutes();
-	}
+    public EventReminderSpinnerAdapter(Context context) {
+        this.context = context;
+        eventReminders = EventReminder.getEventReminders();
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return eventReminders.get(position).getId();
-	}
+    @Override
+    public int getCount() {
+        return eventReminders.size();
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			LayoutInflater mInflater = (LayoutInflater) context
-					.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-			convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
-		}
+    @Override
+    public Object getItem(int position) {
+        return eventReminders.get(position).getMinutes();
+    }
 
-		TextView textViewFreq = (TextView) convertView.findViewById(android.R.id.text1);
-		textViewFreq.setText(eventReminders.get(position).getName());
+    @Override
+    public long getItemId(int position) {
+        return eventReminders.get(position).getId();
+    }
 
-		return convertView;
-	}
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
+        }
+
+        TextView textViewFreq = (TextView) convertView.findViewById(android.R.id.text1);
+        textViewFreq.setText(eventReminders.get(position).getName());
+
+        return convertView;
+    }
 
 }

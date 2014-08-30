@@ -9,27 +9,27 @@ import edu.ntust.cs.idsl.nomissing.dao.sqlite.SQLiteDaoFactory;
  */
 public abstract class DaoFactory {
 
-	private static final int DEFAULT_CALENDAR = 0;
-	
-	public static SQLiteDaoFactory getSQLiteDaoFactory() {
-		return new SQLiteDaoFactory();
-	}
+    private static final int DEFAULT_CALENDAR = 0;
 
-	public static CalendarProviderDaoFactory getCalendarProviderDaoFactory() {
-		return new CalendarProviderDaoFactory();
-	}
-	
-	public static DaoFactory getEventDaoFactory(long calendarID) {
-		DaoFactory daoFactory = null;
-		
-		if (calendarID == DEFAULT_CALENDAR) {
-			daoFactory = new SQLiteDaoFactory();
-		} else {
-			daoFactory = new CalendarProviderDaoFactory();
-		}
+    public static SQLiteDaoFactory getSQLiteDaoFactory() {
+        return new SQLiteDaoFactory();
+    }
 
-		return daoFactory;
-	}
-	
-	public abstract IEventDao createEventDao(Context context);
+    public static CalendarProviderDaoFactory getCalendarProviderDaoFactory() {
+        return new CalendarProviderDaoFactory();
+    }
+
+    public static DaoFactory getEventDaoFactory(long calendarID) {
+        DaoFactory daoFactory = null;
+
+        if (calendarID == DEFAULT_CALENDAR) {
+            daoFactory = new SQLiteDaoFactory();
+        } else {
+            daoFactory = new CalendarProviderDaoFactory();
+        }
+
+        return daoFactory;
+    }
+
+    public abstract IEventDao createEventDao(Context context);
 }

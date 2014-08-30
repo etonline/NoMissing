@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    
+    <!-- Activity Title -->
     <string name="app_name">NoMissing</string>
-    <string name="title_activity_login">登入</string>
-    <string name="title_activity_signup">註冊</string>
-    <string name="title_activity_init">InitActivity</string>
+    <string name="title_activity_init">NoMissing</string>
     <string name="title_activity_main">NoMissing</string>
-    <string name="title_activity_settings">設定</string>
-    <string name="title_activity_set_chime">語音報時設定</string>
-    <string name="title_activity_set_weather">語音天氣設定</string>
+    <string name="title_activity_event">待辦事項</string>
+    <string name="title_activity_event_setter">待辦事項</string>
     <string name="title_activity_chime">語音報時</string>
-    <string name="title_activity_set_event">活動設定</string>
+    <string name="title_activity_chime_setter">語音報時</string>
+    <string name="title_activity_weather">語音氣象</string>
+    <string name="title_activity_weather_setter">語音氣象</string>
+    <string name="title_activity_settings">偏好設定</string>
 
     <!-- Action Bar -->
-    <string name="action_settings">設定</string>
     <string name="action_about">關於</string>
-    <string name="action_add_chime">新增</string>
-    <string name="action_set_chime_ok">完成</string>
-    <string name="action_delete_chime">刪除</string>
-    <string name="action_settings_save">儲存設定</string>
-    <string name="action_settings_default">返回預設值</string>
-    <string name="action_set_weather">提醒設定</string>
-    <string name="action_save">儲存</string>
-    <string name="action_set_event_ok">完成</string>
-    <string name="action_delete_event">刪除</string>
+    <string name="action_search_date">查詢日期</string> 
     <string name="action_add_event">新增活動</string>
-    <string name="action_search_date">查詢日期</string>
-    <string name="action_refresh_weather_data">更新天氣資料</string>
+    <string name="action_delete_event">刪除活動</string>
+    <string name="action_set_event_ok">完成設定</string>
+    <string name="action_add_chime">新增報時</string>
+    <string name="action_set_chime_ok">完成設定</string>
+    <string name="action_delete_chime">刪除報時</string>
+    <string name="action_refresh_data">更新資料</string>
+    <string name="action_set_weather">設定提醒</string>
+    <string name="action_set_weather_ok">完成設定</string>
+    <string name="action_default_settings">還原預設</string>
+    <string name="action_save_settings">儲存設定</string>   
 
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
@@ -34,131 +34,31 @@
     <string name="nav_home">待辦事項</string>
     <string name="nav_calendar">我的日曆</string>
     <string name="nav_chime">語音報時</string>
-    <string name="nav_weather">語音天氣</string>
+    <string name="nav_weather">語音氣象</string>
     <string name="nav_settings">偏好設定</string>
     <string name="nav_exit">離開程式</string>
 
-    <!-- Nav Drawer Menu Items -->
-    <string-array name="nav_drawer_items">
-        <item>待辦事項</item>
-        <item>我的日曆</item>
-        <item>語音報時</item>
-        <item>語音天氣</item>
-        <item>偏好設定</item>
-        <item>離開程式</item>
-    </string-array>
-
-    <!-- Nav Drawer List Item Icons -->
-    <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons">
-        <item>@drawable/ic_action_view_as_list</item>
-        <item>@drawable/ic_action_go_to_today</item>
-        <item>@drawable/ic_action_alarms</item>
-        <item>@drawable/ic_action_cloud</item>
-        <item>@drawable/ic_action_settings</item>
-        <item>@android:drawable/ic_lock_power_off</item>
-    </array>
-
-    <!-- Content Description -->
-    <string name="desc_list_item_icon">Item Icon</string>
-
-    <!-- InitActivity -->
-    <string name="init_text_view_text_loading">程式載入中，請稍後…</string>
-    <string name="init_alert_dialog_title_network_inavailable">連線失敗</string>
-    <string name="init_alert_dialog_message_network_inavailable">您尚未設置網路，請啟用行動網路或 Wi-Fi 後，重新進入本程式以取得完整服務。</string>
-    <string name="init_alert_dialog_button_exit">離開</string>
-
-    <!-- LoginActivity -->
-    <string name="login_edit_text_hint_username">帳號</string>
-    <string name="login_edit_text_hint_password">密碼</string>
-    <string name="login_button_text_login">登入</string>
-    <string name="login_button_text_signup">註冊新帳號</string>
-
-    <!-- SignupActivity -->
-    <string name="signup_edit_text_hint_username">帳號</string>
-    <string name="signup_edit_text_hint_password">密碼</string>
-    <string name="signup_edit_text_hint_confirm_password">確認密碼</string>
-    <string name="signup_edit_text_hint_email">電子郵件</string>
-    <string name="signup_button_text_sign_up">註冊</string>
-    <string name="signup_toast_text_signup_sucess">註冊成功！請輸入您的帳號密碼。</string>
-
-    <!-- HomeFragment -->
+    <!-- MainActivity -->
+    <string name="dialog_set_calendar">設定日曆</string>
+    <string name="default_calendar">NoMissing (預設)</string>
+    <string name="click_back_again_to_exit">再按一次返回鍵離開</string>    
+    
+    <!-- Home -->
     <string name="home_fragment_agenda">待辦事項</string>
 
-    <!-- WeatherFragment -->
-    <string name="alert_dialog_close">關閉</string>
-    <string name="toast_save_settings">已儲存設定</string>
-    <string name="toast_refresh_weather_data_start">取得天氣資料中</string>
-    <string name="toast_refresh_weather_data_finish">天氣資料更新完成</string>
-    <string name="toast_refresh_weather_data_failure">天氣資料更新失敗</string>
-    <string name="progress_dialog_refresh_data">資料更新中，請稍候...</string>
-
-    <!-- ChimeFragment -->
-
-    <string name="no_data"></string>
-    <string name="toast_create_chime">已建立語音報時</string>
-    <string name="toast_update_chime">已更新語音報時</string>
-    <string name="toast_cancel_chime">已取消語音報時</string>
-    <string name="toast_delete_chime">已刪除語音報時</string>
-
-    <!-- SetChimeActivity -->
-    <string name="pref_chime_enabled">開啟報時</string>
-    <string name="pref_chime_time">時間</string>
-    <string name="pref_chime_repeating">重複</string>
-
-    <string-array name="pref_chime_repeating_key">
-        <item>單次</item>
-        <item>每天</item>
-    </string-array>
-    <string-array name="pref_chime_repeating_value">
-        <item>0</item>
-        <item>1</item>
-    </string-array>
-
-    <string name="pref_chime_repeating_one_time">一次</string>
-    <string name="pref_chime_repeating_every_day">每天</string>
-
-    <!-- SetWeatherActivity -->
-    <string name="pref_tts_enabled">開啟語音</string>
-    <string name="pref_reminder_enabled">定時提醒</string>
-    <string name="pref_reminder_time">提醒時間</string>
-    <string name="pref_reminder_city">選擇城市</string>
-
-    <!-- SettingsActivity -->
-    <string name="pref_category_tts_settings">Text-to-Speech</string>
-    <string name="pref_category_calendar_settings">Calendar</string>
-    <string name="pref_calendar">日曆</string>
-    <string name="settings_activity_list_preference_speaker">音源</string>
-
-    <string-array name="pref_tts_speaker_key">
-        <item>Bruce (男生語音)</item>
-        <item>Theresa (女生語音)</item>
-        <item>Angela (小女孩語音)</item>
-    </string-array>
-    <string-array name="pref_tts_speaker_value">
-        <item>Bruce</item>
-        <item>Theresa</item>
-        <item>Angela</item>
-    </string-array>
-
-    <string name="pref_tts_volume">音量</string>
-    <string name="pref_tts_speed">聲速</string>
-    <string name="settings_activity_preference_category_weather_settings">語音天氣</string>
-
-    <!-- SetEventActivity -->
-    <string name="set_event_edit_text_hint_title">標題</string>
-    <string name="set_event_edit_text_hint_location">地點</string>
-    <string name="set_event_text_start">從</string>
-    <string name="set_event_text_end">到</string>
-    <string name="set_event_edit_text_hint_description">描述</string>
-    <string name="set_event_check_box_all_day">全天</string>
-    <string name="set_event_text_frequency">重複頻率</string>
-    <string name="set_event_check_box_reminder">設置提醒</string>
+    <!-- Event -->
+    <string name="event_title">活動名稱</string>
+    <string name="event_location">活動地點</string>
+    <string name="event_start_time">開始時間</string>
+    <string name="event_end_time">結束時間</string>
+    <string name="event_description">描述</string>
+    <string name="event_frequency">重複頻率</string>
     <string name="event_frequency_single">單次</string>
     <string name="event_frequency_daily">每日</string>
     <string name="event_frequency_weekly">每週</string>
     <string name="event_frequency_monthly">每月</string>
     <string name="event_frequency_yearly">每年</string>
+    <string name="event_reminder">設置提醒</string>
     <string name="event_reminder_zero_minute">0 分鐘</string>
     <string name="event_reminder_one_minute">1 分鐘</string>
     <string name="event_reminder_five_minutes">5 分鐘</string>
@@ -175,6 +75,33 @@
     <string name="event_reminder_one_day">1 天</string>
     <string name="event_reminder_two_days">2 天</string>
     <string name="event_reminder_one_week">1 週</string>
+    <string name="start_time_setting_error">開始時間必須早於結束時間</string>
+    <string name="reminder_time_setting_error">提醒時間必須早於開始時間</string>
+    
+    <string name="toast_audio_file_created">語音檔已建立</string>
+    <string name="toast_network_inavailable">請確認網路連線已開啟</string>    
+    
+    <!-- Chime -->
+    <string name="no_data"></string>
+    <string name="pref_chime_enabled">開啟報時</string>
+    <string name="pref_chime_time">時間</string>
+    <string name="pref_chime_repeating">重複</string>
+    <string-array name="pref_chime_repeating_key">
+        <item>單次</item>
+        <item>每天</item>
+    </string-array>
+    <string-array name="pref_chime_repeating_value">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string name="pref_chime_repeating_one_time">一次</string>
+    <string name="pref_chime_repeating_every_day">每天</string>
+        
+    <!-- Weather -->
+    <string name="pref_tts_enabled">開啟語音</string>
+    <string name="pref_reminder_enabled">定時提醒</string>
+    <string name="pref_reminder_time">提醒時間</string>
+    <string name="pref_reminder_city">選擇城市</string>
     <string name="taipei_city">台北市</string>
     <string name="new_taipei_city">新北市</string>
     <string name="keelung_city">基隆市</string>
@@ -206,25 +133,40 @@
     <string name="central_region_cities">苗栗縣, 台中市, 彰化縣, 南投縣, 雲林縣</string>
     <string name="southern_region_cities">嘉義縣, 嘉義市, 台南市, 高雄市, 屏東縣</string>
     <string name="eastern_region_cities">花蓮縣, 台東縣</string>
-    <string name="offshore_islands_region_cities">澎湖縣, 金門縣, 連江縣</string>
-    <string name="progress_dialog_please_wait">Please wait...</string>
-    <string name="default_calendar">NoMissing (預設)</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_weather">語音天氣</string>
-    <string name="click_back_again_to_exit">再按一次返回鍵離開</string>
-    <string name="dialog_set_calendar">設定日曆</string>
+    <string name="offshore_islands_region_cities">澎湖縣, 金門縣, 連江縣</string>    
+    <string name="toast_save_settings">已儲存設定</string>
+      
+    <!-- Settings -->
+    <string name="pref_category_calendar_settings">Calendar</string>
+    <string name="pref_category_tts_settings">Text-to-Speech</string>
+    <string name="pref_calendar">日曆</string>
+    <string name="pref_tts_speaker">音源</string>
+    <string-array name="pref_tts_speaker_key">
+        <item>Bruce (男生語音)</item>
+        <item>Theresa (女生語音)</item>
+        <item>Angela (小女孩語音)</item>
+    </string-array>
+    <string-array name="pref_tts_speaker_value">
+        <item>Bruce</item>
+        <item>Theresa</item>
+        <item>Angela</item>
+    </string-array>
+    <string name="pref_tts_volume">音量</string>
+    <string name="pref_tts_speed">聲速</string>
     
-    <string name="title_activity_event">待辦事項</string>
+    <!-- Weather Service Receiver -->
+    <string name="refresh_weather_data_start">正在取得天氣資料</string>
+    <string name="refresh_weather_data_finish">天氣資料更新完成</string>
+    <string name="refresh_weather_data_failure">天氣資料更新失敗</string>    
     
-    <string name="event_title">活動名稱： </string>
-    <string name="event_location">活動地點： </string>
-    <string name="event_start_time">開始時間： </string>
-    <string name="event_end_time">結束時間： </string>
+    <!-- TTS Service Receiver -->
+    <string name="create_audio_file_start">正在建立語音檔</string>
+    <string name="create_audio_file_finish">已建立語音檔</string>
+    <string name="create_audio_file_failure">語音檔建立失敗</string>    
     
-    <string name="start_time_setting_error">開始時間必須早於結束時間</string>
-    <string name="reminder_time_setting_error">提醒時間必須早於開始時間</string>
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
     
-    <string name="audio_file_created">語音檔已建立</string>
-    <string name="toast_network_inavailable">請確認網路連線已開啟</string>
+    <string name="alert_dialog_close">關閉</string>
 
 </resources>

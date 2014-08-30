@@ -13,151 +13,152 @@ import edu.ntust.cs.idsl.nomissing.R;
  */
 @SuppressLint("SimpleDateFormat")
 public class Chime {
-	
-	private int id;
-	private int hour;
-	private int minute;
-	private boolean isEnabled;
-	private boolean isRepeating;
-	private boolean isTriggered;
-	private String audio;
-	private long createdAt;
-	private long updatedAt;
-	private Calendar calendarCreatedAt;
-	private Calendar calendarUpdatedAt;
 
-	public Chime() {}
-	
-	public Chime(int id, int hour, int minute, boolean isEnabled,
-			boolean isRepeating, boolean isTriggered, String audio,
-			long createdAt, long updatedAt) {
-		super();
-		this.id = id;
-		this.hour = hour;
-		this.minute = minute;
-		this.isEnabled = isEnabled;
-		this.isRepeating = isRepeating;
-		this.isTriggered = isTriggered;
-		this.audio = audio;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		
-		updateCalendarCreatedAt();
-		updateCalendarUpdatedAt();
-	}
+    private int id;
+    private int hour;
+    private int minute;
+    private boolean isEnabled;
+    private boolean isRepeating;
+    private boolean isTriggered;
+    private String audio;
+    private long createdAt;
+    private long updatedAt;
+    private Calendar calendarCreatedAt;
+    private Calendar calendarUpdatedAt;
 
-	private void updateCalendarCreatedAt() {
-		if (calendarCreatedAt == null)
-			calendarCreatedAt = new GregorianCalendar();
+    public Chime() {
+    }
 
-		calendarCreatedAt.setTimeInMillis(createdAt);
-	}
-	
-	private void updateCalendarUpdatedAt() {
-		if (calendarUpdatedAt == null)
-			calendarUpdatedAt = new GregorianCalendar();
+    public Chime(int id, int hour, int minute, boolean isEnabled,
+            boolean isRepeating, boolean isTriggered, String audio,
+            long createdAt, long updatedAt) {
+        super();
+        this.id = id;
+        this.hour = hour;
+        this.minute = minute;
+        this.isEnabled = isEnabled;
+        this.isRepeating = isRepeating;
+        this.isTriggered = isTriggered;
+        this.audio = audio;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
 
-		calendarUpdatedAt.setTimeInMillis(updatedAt);		
-	}
-	
-	
-	public int getId() {
-		return id;
-	}
+        updateCalendarCreatedAt();
+        updateCalendarUpdatedAt();
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    private void updateCalendarCreatedAt() {
+        if (calendarCreatedAt == null)
+            calendarCreatedAt = new GregorianCalendar();
 
-	public int getHour() {
-		return hour;
-	}
+        calendarCreatedAt.setTimeInMillis(createdAt);
+    }
 
-	public void setHour(int hour) {
-		this.hour = hour;
-	}
+    private void updateCalendarUpdatedAt() {
+        if (calendarUpdatedAt == null)
+            calendarUpdatedAt = new GregorianCalendar();
 
-	public int getMinute() {
-		return minute;
-	}
+        calendarUpdatedAt.setTimeInMillis(updatedAt);
+    }
 
-	public void setMinute(int minute) {
-		this.minute = minute;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public boolean isEnabled() {
-		return isEnabled;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setEnabled(boolean isEnabled) {
-		this.isEnabled = isEnabled;
-	}
+    public int getHour() {
+        return hour;
+    }
 
-	public boolean isRepeating() {
-		return isRepeating;
-	}
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
 
-	public void setRepeating(boolean isRepeating) {
-		this.isRepeating = isRepeating;
-	}
+    public int getMinute() {
+        return minute;
+    }
 
-	public boolean isTriggered() {
-		return isTriggered;
-	}
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
 
-	public void setTriggered(boolean isTriggered) {
-		this.isTriggered = isTriggered;
-	}
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 
-	public String getAudio() {
-		return audio;
-	}
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
 
-	public void setAudio(String audio) {
-		this.audio = audio;
-	}	
-	
-	public long getCreatedAt() {
-		return createdAt;
-	}
+    public boolean isRepeating() {
+        return isRepeating;
+    }
 
-	public void setCreatedAt(long createdAt) {
-		this.createdAt = createdAt;
-		updateCalendarCreatedAt();
-	}
+    public void setRepeating(boolean isRepeating) {
+        this.isRepeating = isRepeating;
+    }
 
-	public long getUpdatedAt() {
-		return updatedAt;
-	}
+    public boolean isTriggered() {
+        return isTriggered;
+    }
 
-	public void setUpdatedAt(long updatedAt) {
-		this.updatedAt = updatedAt;
-		updateCalendarUpdatedAt();
-	}
-	
-	public String getTime() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, hour);
-		calendar.set(Calendar.MINUTE, minute);		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
-		String timeString = simpleDateFormat.format(calendar.getTime());
-		
-		return timeString;
-	}
-	
-	public int getRepeating() {
-		return isRepeating ? R.string.pref_chime_repeating_every_day : R.string.pref_chime_repeating_one_time;
-	}
-	
-	public String getStringForTTS() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, hour);
-		calendar.set(Calendar.MINUTE, minute);		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("a h:mm");
-		String timeString = simpleDateFormat.format(calendar.getTime());
-		String tts = "現在時間：" + timeString;
-		
-		return tts;
-	}
+    public void setTriggered(boolean isTriggered) {
+        this.isTriggered = isTriggered;
+    }
+
+    public String getAudio() {
+        return audio;
+    }
+
+    public void setAudio(String audio) {
+        this.audio = audio;
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
+        updateCalendarCreatedAt();
+    }
+
+    public long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(long updatedAt) {
+        this.updatedAt = updatedAt;
+        updateCalendarUpdatedAt();
+    }
+
+    public String getTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
+        String timeString = simpleDateFormat.format(calendar.getTime());
+
+        return timeString;
+    }
+
+    public int getRepeating() {
+        return isRepeating ? R.string.pref_chime_repeating_every_day
+                : R.string.pref_chime_repeating_one_time;
+    }
+
+    public String getStringForTTS() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("a h:mm");
+        String timeString = simpleDateFormat.format(calendar.getTime());
+        String tts = "現在時間：" + timeString;
+
+        return tts;
+    }
 
 }

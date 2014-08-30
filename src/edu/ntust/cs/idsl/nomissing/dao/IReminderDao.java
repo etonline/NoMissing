@@ -9,16 +9,16 @@ import edu.ntust.cs.idsl.nomissing.model.Reminder;
  */
 public interface IReminderDao {
 
-	public long insert(Reminder reminder);
+    public long insert(Reminder reminder);
 
-	public long update(Reminder reminder);
+    public long update(Reminder reminder);
 
-	public long delete(long id);
+    public long delete(long id);
 
-	public List<Reminder> findAll();
+    public List<Reminder> findAll();
 
-	public Reminder find(long id);
+    public Reminder find(long id);
 
-	public Reminder find(long calendarID, long eventID);
+    public Reminder find(long calendarID, long eventID);
 
 }

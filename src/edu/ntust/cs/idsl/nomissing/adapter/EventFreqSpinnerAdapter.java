@@ -17,42 +17,41 @@ import edu.ntust.cs.idsl.nomissing.constant.EventFreq;
  */
 @Deprecated
 public class EventFreqSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
-	
-	private Context context;
-	private List<EventFreq> eventFreqs;
-	
-	public EventFreqSpinnerAdapter(Context context) {
-		this.context = context;
-		eventFreqs = EventFreq.getEventFreqs();
-	}
 
-	@Override
-	public int getCount() {
-		return eventFreqs.size();
-	}
+    private Context context;
+    private List<EventFreq> eventFreqs;
 
-	@Override
-	public Object getItem(int position) {
-		return eventFreqs.get(position).getRrule();
-	}
+    public EventFreqSpinnerAdapter(Context context) {
+        this.context = context;
+        eventFreqs = EventFreq.getEventFreqs();
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return eventFreqs.get(position).getId();
-	}
+    @Override
+    public int getCount() {
+        return eventFreqs.size();
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			LayoutInflater mInflater = (LayoutInflater) context
-					.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-			convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
-		}
+    @Override
+    public Object getItem(int position) {
+        return eventFreqs.get(position).getRrule();
+    }
 
-		TextView textViewFreq = (TextView) convertView.findViewById(android.R.id.text1);
-		textViewFreq.setText(eventFreqs.get(position).getName());
+    @Override
+    public long getItemId(int position) {
+        return eventFreqs.get(position).getId();
+    }
 
-		return convertView;
-	}
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
+        }
+
+        TextView textViewFreq = (TextView) convertView.findViewById(android.R.id.text1);
+        textViewFreq.setText(eventFreqs.get(position).getName());
+
+        return convertView;
+    }
 
 }

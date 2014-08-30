@@ -16,41 +16,40 @@ import edu.ntust.cs.idsl.nomissing.model.Weather;
  */
 public class WeatherListAdapter extends BaseAdapter {
 
-	private Context context;
-	private List<Weather> weatherList;
-	
-	public WeatherListAdapter(Context context, List<Weather> weatherList) {
-		this.context = context;
-		this.weatherList = weatherList;
-	}
+    private Context context;
+    private List<Weather> weatherList;
 
-	@Override
-	public int getCount() {
-		return weatherList.size();
-	}
+    public WeatherListAdapter(Context context, List<Weather> weatherList) {
+        this.context = context;
+        this.weatherList = weatherList;
+    }
 
-	@Override
-	public Object getItem(int position) {
-		return weatherList.get(position);
-	}
+    @Override
+    public int getCount() {
+        return weatherList.size();
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return weatherList.get(position).getCityID();
-	}
+    @Override
+    public Object getItem(int position) {
+        return weatherList.get(position);
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			LayoutInflater mInflater = (LayoutInflater) context
-					.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-			convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
-		}
+    @Override
+    public long getItemId(int position) {
+        return weatherList.get(position).getCityID();
+    }
 
-		TextView textViewCity = (TextView) convertView.findViewById(android.R.id.text1);
-		textViewCity.setText(weatherList.get(position).getCity());
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
+        }
 
-		return convertView;
-	}
+        TextView textViewCity = (TextView) convertView.findViewById(android.R.id.text1);
+        textViewCity.setText(weatherList.get(position).getCity());
+
+        return convertView;
+    }
 
 }

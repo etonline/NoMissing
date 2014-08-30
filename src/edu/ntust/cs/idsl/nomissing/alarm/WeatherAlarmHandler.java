@@ -12,36 +12,36 @@ import edu.ntust.cs.idsl.nomissing.receiver.AlarmReceiver;
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
 public class WeatherAlarmHandler extends AlarmHandler<Weather> {
-	
-	public WeatherAlarmHandler(Context context) {
-		super(context);
-	}
 
-	@Override
-	public void setAlarm(Weather weather) {
-		SettingsManager userSettings = SettingsManager.getInstance(context);
-		int hour = userSettings.getWeatherReminderHour();
-		int minute = userSettings.getWeatherReminderMinute();
-		long triggerAtMillis = calculateAlarm(hour, minute).getTimeInMillis();
-		long intervalMillis = ONE_DAY_MILLIS;
-		
-		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		PendingIntent pendingIntent = getPendingIntent(weather);
-		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerAtMillis, intervalMillis, pendingIntent);
-	}
+    public WeatherAlarmHandler(Context context) {
+        super(context);
+    }
 
-	@Override
-	public void cancelAlarm(Weather weather) {
-		PendingIntent pendingIntent = getPendingIntent(weather);
-		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);		
-		alarmManager.cancel(pendingIntent);
-		pendingIntent.cancel();	
-	}
+    @Override
+    public void setAlarm(Weather weather) {
+        SettingsManager userSettings = SettingsManager.getInstance(context);
+        int hour = userSettings.getWeatherReminderHour();
+        int minute = userSettings.getWeatherReminderMinute();
+        long triggerAtMillis = calculateAlarm(hour, minute).getTimeInMillis();
+        long intervalMillis = ONE_DAY_MILLIS;
 
-	@Override
-	protected PendingIntent getPendingIntent(Weather weather) {
-		Intent intent =  AlarmReceiver.getActionWeatherAlarm(context, weather.getCityID());
-		return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-	}
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = getPendingIntent(weather);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerAtMillis, intervalMillis, pendingIntent);
+    }
+
+    @Override
+    public void cancelAlarm(Weather weather) {
+        PendingIntent pendingIntent = getPendingIntent(weather);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
+    }
+
+    @Override
+    protected PendingIntent getPendingIntent(Weather weather) {
+        Intent intent = AlarmReceiver.getActionReceiveWeatherAlarm(context, weather.getCityID());
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
 }

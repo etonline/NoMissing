@@ -4,9 +4,9 @@
     tools:context="edu.ntust.cs.idsl.nomissing.MainActivity" >
   
     <item
-        android:id="@+id/action_refresh_weather_data"
+        android:id="@+id/action_refresh_data"
 		android:orderInCategory="0"
-        android:title="@string/action_refresh_weather_data"
+        android:title="@string/action_refresh_data"
         android:icon="@drawable/ic_action_refresh"
         android:showAsAction="ifRoom|withText" />
     

@@ -17,17 +17,10 @@ public final class R {
         public static final int abc_slide_out_top=0x7f040005;
     }
     public static final class array {
-        /**  Nav Drawer List Item Icons 
- Keep them in order as the titles are in 
-         */
-        public static final int nav_drawer_icons=0x7f0d0001;
-        /**  Nav Drawer Menu Items 
-         */
-        public static final int nav_drawer_items=0x7f0d0000;
-        public static final int pref_chime_repeating_key=0x7f0d0002;
-        public static final int pref_chime_repeating_value=0x7f0d0003;
-        public static final int pref_tts_speaker_key=0x7f0d0004;
-        public static final int pref_tts_speaker_value=0x7f0d0005;
+        public static final int pref_chime_repeating_key=0x7f0d0000;
+        public static final int pref_chime_repeating_value=0x7f0d0001;
+        public static final int pref_tts_speaker_key=0x7f0d0002;
+        public static final int pref_tts_speaker_value=0x7f0d0003;
     }
     public static final class attr {
         /**  Custom divider drawable to use for elements in the action bar. 
@@ -1308,9 +1301,9 @@ containing a value of this type.
         public static final int right_arrow=0x7f020079;
     }
     public static final class id {
-        public static final int action_about=0x7f0b007c;
-        public static final int action_add_chime=0x7f0b0077;
-        public static final int action_add_event=0x7f0b0076;
+        public static final int action_about=0x7f0b0076;
+        public static final int action_add_chime=0x7f0b0071;
+        public static final int action_add_event=0x7f0b0070;
         public static final int action_bar=0x7f0b001c;
         public static final int action_bar_activity_content=0x7f0b0015;
         public static final int action_bar_container=0x7f0b001b;
@@ -1319,81 +1312,75 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f0b0023;
         public static final int action_bar_title=0x7f0b0022;
         public static final int action_context_bar=0x7f0b001d;
-        public static final int action_delete_chime=0x7f0b0071;
-        public static final int action_delete_event=0x7f0b0073;
+        public static final int action_default_settings=0x7f0b0072;
+        public static final int action_delete_chime=0x7f0b006b;
+        public static final int action_delete_event=0x7f0b006d;
         public static final int action_menu_divider=0x7f0b0016;
         public static final int action_menu_presenter=0x7f0b0017;
         public static final int action_mode_close_button=0x7f0b0024;
-        public static final int action_refresh_weather_data=0x7f0b007a;
-        public static final int action_save=0x7f0b0074;
-        public static final int action_search_date=0x7f0b0075;
-        public static final int action_set_chime_ok=0x7f0b0070;
-        public static final int action_set_event_ok=0x7f0b0072;
-        public static final int action_set_weather=0x7f0b007b;
-        public static final int action_settings_default=0x7f0b0078;
-        public static final int action_settings_ok=0x7f0b0079;
+        public static final int action_refresh_data=0x7f0b0074;
+        public static final int action_save_settings=0x7f0b0073;
+        public static final int action_search_date=0x7f0b006f;
+        public static final int action_set_chime_ok=0x7f0b006a;
+        public static final int action_set_event_ok=0x7f0b006c;
+        public static final int action_set_weather=0x7f0b0075;
+        public static final int action_set_weather_ok=0x7f0b006e;
         public static final int activity_chooser_view_content=0x7f0b0025;
         public static final int always=0x7f0b000b;
-        public static final int back_button=0x7f0b006d;
+        public static final int back_button=0x7f0b0067;
         public static final int beginning=0x7f0b0011;
-        public static final int buttonLogin=0x7f0b003f;
-        public static final int buttonSignup=0x7f0b0040;
-        public static final int button_bar=0x7f0b006c;
-        public static final int calendar1=0x7f0b0063;
-        public static final int calendar_gridview=0x7f0b005f;
-        public static final int calendar_left_arrow=0x7f0b0057;
-        public static final int calendar_month_year_textview=0x7f0b0058;
-        public static final int calendar_right_arrow=0x7f0b0059;
-        public static final int calendar_title_view=0x7f0b0056;
-        public static final int calendar_tv=0x7f0b005e;
-        public static final int checkBoxEnabled=0x7f0b005c;
-        public static final int checkBoxReminder=0x7f0b004c;
+        public static final int button_bar=0x7f0b0066;
+        public static final int calendar1=0x7f0b005d;
+        public static final int calendar_gridview=0x7f0b0059;
+        public static final int calendar_left_arrow=0x7f0b0051;
+        public static final int calendar_month_year_textview=0x7f0b0052;
+        public static final int calendar_right_arrow=0x7f0b0053;
+        public static final int calendar_title_view=0x7f0b0050;
+        public static final int calendar_tv=0x7f0b0058;
+        public static final int checkBoxEnabled=0x7f0b0056;
+        public static final int checkBoxReminder=0x7f0b0043;
         public static final int checkbox=0x7f0b002d;
         public static final int collapseActionView=0x7f0b000d;
-        public static final int counter=0x7f0b0060;
+        public static final int counter=0x7f0b005a;
         public static final int default_activity_button=0x7f0b0028;
         public static final int dialog=0x7f0b000e;
         public static final int disableHome=0x7f0b0008;
-        public static final int drawerLayout=0x7f0b0041;
-        public static final int drawerMenu=0x7f0b0044;
-        public static final int drawerNavigation=0x7f0b0043;
+        public static final int drawerLayout=0x7f0b0048;
+        public static final int drawerMenu=0x7f0b004b;
+        public static final int drawerNavigation=0x7f0b004a;
         public static final int dropdown=0x7f0b000f;
-        public static final int editTextConfirmPassword=0x7f0b0050;
-        public static final int editTextDescription=0x7f0b004f;
-        public static final int editTextEmail=0x7f0b0051;
-        public static final int editTextEndDate=0x7f0b004a;
-        public static final int editTextEndTime=0x7f0b004b;
-        public static final int editTextLocation=0x7f0b0047;
-        public static final int editTextPassword=0x7f0b003e;
-        public static final int editTextReminderDate=0x7f0b004d;
-        public static final int editTextReminderTime=0x7f0b004e;
-        public static final int editTextStartDate=0x7f0b0048;
-        public static final int editTextStartTime=0x7f0b0049;
-        public static final int editTextTitle=0x7f0b0046;
-        public static final int editTextUsername=0x7f0b003d;
+        public static final int editTextDescription=0x7f0b0046;
+        public static final int editTextEndDate=0x7f0b0041;
+        public static final int editTextEndTime=0x7f0b0042;
+        public static final int editTextLocation=0x7f0b003e;
+        public static final int editTextReminderDate=0x7f0b0044;
+        public static final int editTextReminderTime=0x7f0b0045;
+        public static final int editTextStartDate=0x7f0b003f;
+        public static final int editTextStartTime=0x7f0b0040;
+        public static final int editTextTitle=0x7f0b003d;
         public static final int edit_query=0x7f0b0030;
         public static final int end=0x7f0b0013;
         public static final int expand_activities_button=0x7f0b0026;
-        public static final int expandableListView=0x7f0b0069;
+        public static final int expandableListView=0x7f0b0063;
         public static final int expanded_menu=0x7f0b002c;
-        public static final int frame_container=0x7f0b0042;
+        public static final int frame_container=0x7f0b0049;
         public static final int home=0x7f0b0014;
         public static final int homeAsUp=0x7f0b0005;
         public static final int icon=0x7f0b002a;
         public static final int ifRoom=0x7f0b000a;
         public static final int image=0x7f0b0027;
-        public static final int imageView1=0x7f0b003c;
-        public static final int imageViewAdd=0x7f0b0065;
-        public static final int imageViewEvent=0x7f0b0055;
-        public static final int imageViewTime=0x7f0b0061;
+        public static final int imageView1=0x7f0b0047;
+        public static final int imageViewAdd=0x7f0b005f;
+        public static final int imageViewEvent=0x7f0b004f;
+        public static final int imageViewTime=0x7f0b005b;
         public static final int listMode=0x7f0b0001;
-        public static final int listViewAgenda=0x7f0b0068;
-        public static final int listViewEvents=0x7f0b0066;
+        public static final int listViewAgenda=0x7f0b0062;
+        public static final int listViewEvents=0x7f0b0060;
         public static final int list_item=0x7f0b0029;
         public static final int middle=0x7f0b0012;
-        public static final int months_infinite_pager=0x7f0b005b;
+        public static final int months_infinite_pager=0x7f0b0055;
         public static final int never=0x7f0b0009;
-        public static final int next_button=0x7f0b006f;
+        public static final int next_button=0x7f0b0069;
         public static final int none=0x7f0b0010;
         public static final int normal=0x7f0b0000;
         public static final int progress_circular=0x7f0b0018;
@@ -1409,29 +1396,29 @@ containing a value of this type.
         public static final int search_plate=0x7f0b0036;
         public static final int search_src_text=0x7f0b0037;
         public static final int search_voice_btn=0x7f0b003b;
-        public static final int seekBar=0x7f0b006a;
+        public static final int seekBar=0x7f0b0064;
         public static final int shortcut=0x7f0b002e;
         public static final int showCustom=0x7f0b0007;
         public static final int showHome=0x7f0b0004;
         public static final int showTitle=0x7f0b0006;
-        public static final int skip_button=0x7f0b006e;
+        public static final int skip_button=0x7f0b0068;
         public static final int split_action_bar=0x7f0b001e;
         public static final int submit_area=0x7f0b0039;
         public static final int tabMode=0x7f0b0002;
-        public static final int textView=0x7f0b006b;
-        public static final int textView1=0x7f0b0045;
-        public static final int textViewAgenda=0x7f0b0067;
-        public static final int textViewDate=0x7f0b0064;
-        public static final int textViewEvent=0x7f0b0062;
-        public static final int textViewLocation=0x7f0b0053;
-        public static final int textViewRepeat=0x7f0b005d;
-        public static final int textViewTime=0x7f0b0054;
-        public static final int textViewTitle=0x7f0b0052;
+        public static final int textView=0x7f0b0065;
+        public static final int textView1=0x7f0b003c;
+        public static final int textViewAgenda=0x7f0b0061;
+        public static final int textViewDate=0x7f0b005e;
+        public static final int textViewEvent=0x7f0b005c;
+        public static final int textViewLocation=0x7f0b004d;
+        public static final int textViewRepeat=0x7f0b0057;
+        public static final int textViewTime=0x7f0b004e;
+        public static final int textViewTitle=0x7f0b004c;
         public static final int title=0x7f0b002b;
         public static final int top_action_bar=0x7f0b0020;
         public static final int up=0x7f0b0021;
         public static final int useLogo=0x7f0b0003;
-        public static final int weekday_gridview=0x7f0b005a;
+        public static final int weekday_gridview=0x7f0b0054;
         public static final int withText=0x7f0b000c;
     }
     public static final class integer {
@@ -1486,28 +1473,26 @@ containing a value of this type.
         public static final int abc_search_view=0x7f030016;
         public static final int abc_simple_decor=0x7f030017;
         public static final int activity_chime=0x7f030018;
-        public static final int activity_event=0x7f030019;
-        public static final int activity_init=0x7f03001a;
-        public static final int activity_login=0x7f03001b;
-        public static final int activity_main=0x7f03001c;
-        public static final int activity_set_chime=0x7f03001d;
-        public static final int activity_set_event=0x7f03001e;
-        public static final int activity_signup=0x7f03001f;
-        public static final int activity_weather=0x7f030020;
-        public static final int agenda_list_item=0x7f030021;
-        public static final int calendar_view=0x7f030022;
-        public static final int chime_list_item=0x7f030023;
-        public static final int date_cell=0x7f030024;
-        public static final int date_grid_fragment=0x7f030025;
-        public static final int drawer_list_item=0x7f030026;
-        public static final int event_list_item=0x7f030027;
-        public static final int fragment_calendar=0x7f030028;
-        public static final int fragment_chime=0x7f030029;
-        public static final int fragment_home=0x7f03002a;
-        public static final int fragment_weather=0x7f03002b;
-        public static final int pref_seekbar=0x7f03002c;
-        public static final int preference_list_fragment=0x7f03002d;
-        public static final int support_simple_spinner_dropdown_item=0x7f03002e;
+        public static final int activity_chime_setter=0x7f030019;
+        public static final int activity_event=0x7f03001a;
+        public static final int activity_event_setter=0x7f03001b;
+        public static final int activity_init=0x7f03001c;
+        public static final int activity_main=0x7f03001d;
+        public static final int activity_weather=0x7f03001e;
+        public static final int agenda_list_item=0x7f03001f;
+        public static final int calendar_view=0x7f030020;
+        public static final int chime_list_item=0x7f030021;
+        public static final int date_cell=0x7f030022;
+        public static final int date_grid_fragment=0x7f030023;
+        public static final int drawer_list_item=0x7f030024;
+        public static final int event_list_item=0x7f030025;
+        public static final int fragment_calendar=0x7f030026;
+        public static final int fragment_chime=0x7f030027;
+        public static final int fragment_home=0x7f030028;
+        public static final int fragment_weather=0x7f030029;
+        public static final int pref_seekbar=0x7f03002a;
+        public static final int preference_list_fragment=0x7f03002b;
+        public static final int support_simple_spinner_dropdown_item=0x7f03002c;
     }
     public static final class menu {
         public static final int activity_set_chime=0x7f0e0000;
@@ -1561,190 +1546,161 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f08000f;
-        public static final int action_about=0x7f08001b;
-        public static final int action_add_chime=0x7f08001c;
-        public static final int action_add_event=0x7f080025;
-        public static final int action_delete_chime=0x7f08001e;
-        public static final int action_delete_event=0x7f080024;
-        public static final int action_refresh_weather_data=0x7f080027;
-        public static final int action_save=0x7f080022;
-        public static final int action_search_date=0x7f080026;
-        public static final int action_set_chime_ok=0x7f08001d;
-        public static final int action_set_event_ok=0x7f080023;
-        public static final int action_set_weather=0x7f080021;
         /**  Action Bar 
          */
-        public static final int action_settings=0x7f08001a;
-        public static final int action_settings_default=0x7f080020;
-        public static final int action_settings_save=0x7f08001f;
-        /**  WeatherFragment 
+        public static final int action_about=0x7f08001a;
+        public static final int action_add_chime=0x7f08001f;
+        public static final int action_add_event=0x7f08001c;
+        public static final int action_default_settings=0x7f080025;
+        public static final int action_delete_chime=0x7f080021;
+        public static final int action_delete_event=0x7f08001d;
+        public static final int action_refresh_data=0x7f080022;
+        public static final int action_save_settings=0x7f080026;
+        public static final int action_search_date=0x7f08001b;
+        public static final int action_set_chime_ok=0x7f080020;
+        public static final int action_set_event_ok=0x7f08001e;
+        public static final int action_set_weather=0x7f080023;
+        public static final int action_set_weather_ok=0x7f080024;
+        public static final int alert_dialog_close=0x7f08008b;
+        /**  Activity Title 
          */
-        public static final int alert_dialog_close=0x7f080040;
         public static final int app_name=0x7f080003;
-        public static final int audio_file_created=0x7f0800a5;
         /**   Strings for possible PreferenceActivity Back/Next buttons 
          */
         public static final int back_button_label=0x7f080000;
-        public static final int central_region=0x7f08008f;
-        public static final int central_region_cities=0x7f080094;
-        public static final int changhua_county=0x7f08008b;
-        public static final int chiayi_city=0x7f080082;
-        public static final int chiayi_county=0x7f080081;
-        public static final int click_back_again_to_exit=0x7f08009c;
-        public static final int default_calendar=0x7f080099;
+        public static final int central_region=0x7f080074;
+        public static final int central_region_cities=0x7f080079;
+        public static final int changhua_county=0x7f080070;
+        public static final int chiayi_city=0x7f080067;
+        public static final int chiayi_county=0x7f080066;
+        public static final int click_back_again_to_exit=0x7f080031;
+        public static final int create_audio_file_failure=0x7f080089;
+        public static final int create_audio_file_finish=0x7f080088;
+        /**  TTS Service Receiver 
+         */
+        public static final int create_audio_file_start=0x7f080087;
+        public static final int default_calendar=0x7f080030;
         /**  Content Description 
          */
-        public static final int desc_list_item_icon=0x7f080030;
-        public static final int dialog_set_calendar=0x7f08009d;
-        public static final int drawer_close=0x7f080029;
+        public static final int desc_list_item_icon=0x7f08008a;
+        /**  MainActivity 
+         */
+        public static final int dialog_set_calendar=0x7f08002f;
+        public static final int drawer_close=0x7f080028;
         /**  Navigation Drawer 
          */
-        public static final int drawer_open=0x7f080028;
-        public static final int eastern_region=0x7f080091;
-        public static final int eastern_region_cities=0x7f080096;
-        public static final int event_end_time=0x7f0800a2;
-        public static final int event_frequency_daily=0x7f080064;
-        public static final int event_frequency_monthly=0x7f080066;
-        public static final int event_frequency_single=0x7f080063;
-        public static final int event_frequency_weekly=0x7f080065;
-        public static final int event_frequency_yearly=0x7f080067;
-        public static final int event_location=0x7f0800a0;
-        public static final int event_reminder_fifteen_minutes=0x7f08006c;
-        public static final int event_reminder_five_minutes=0x7f08006a;
-        public static final int event_reminder_forty_five_minutes=0x7f080070;
-        public static final int event_reminder_half_day=0x7f080074;
-        public static final int event_reminder_one_day=0x7f080075;
-        public static final int event_reminder_one_hour=0x7f080071;
-        public static final int event_reminder_one_minute=0x7f080069;
-        public static final int event_reminder_one_week=0x7f080077;
-        public static final int event_reminder_ten_minutes=0x7f08006b;
-        public static final int event_reminder_thirty_minutes=0x7f08006f;
-        public static final int event_reminder_three_hours=0x7f080073;
-        public static final int event_reminder_twenty_five_minutes=0x7f08006e;
-        public static final int event_reminder_twenty_minutes=0x7f08006d;
-        public static final int event_reminder_two_days=0x7f080076;
-        public static final int event_reminder_two_hours=0x7f080072;
-        public static final int event_reminder_zero_minute=0x7f080068;
-        public static final int event_start_time=0x7f0800a1;
-        public static final int event_title=0x7f08009f;
-        public static final int hello_world=0x7f08009a;
-        /**  HomeFragment 
+        public static final int drawer_open=0x7f080027;
+        public static final int eastern_region=0x7f080076;
+        public static final int eastern_region_cities=0x7f08007b;
+        public static final int event_description=0x7f080037;
+        public static final int event_end_time=0x7f080036;
+        public static final int event_frequency=0x7f080038;
+        public static final int event_frequency_daily=0x7f08003a;
+        public static final int event_frequency_monthly=0x7f08003c;
+        public static final int event_frequency_single=0x7f080039;
+        public static final int event_frequency_weekly=0x7f08003b;
+        public static final int event_frequency_yearly=0x7f08003d;
+        public static final int event_location=0x7f080034;
+        public static final int event_reminder=0x7f08003e;
+        public static final int event_reminder_fifteen_minutes=0x7f080043;
+        public static final int event_reminder_five_minutes=0x7f080041;
+        public static final int event_reminder_forty_five_minutes=0x7f080047;
+        public static final int event_reminder_half_day=0x7f08004b;
+        public static final int event_reminder_one_day=0x7f08004c;
+        public static final int event_reminder_one_hour=0x7f080048;
+        public static final int event_reminder_one_minute=0x7f080040;
+        public static final int event_reminder_one_week=0x7f08004e;
+        public static final int event_reminder_ten_minutes=0x7f080042;
+        public static final int event_reminder_thirty_minutes=0x7f080046;
+        public static final int event_reminder_three_hours=0x7f08004a;
+        public static final int event_reminder_twenty_five_minutes=0x7f080045;
+        public static final int event_reminder_twenty_minutes=0x7f080044;
+        public static final int event_reminder_two_days=0x7f08004d;
+        public static final int event_reminder_two_hours=0x7f080049;
+        public static final int event_reminder_zero_minute=0x7f08003f;
+        public static final int event_start_time=0x7f080035;
+        /**  Event 
          */
-        public static final int home_fragment_agenda=0x7f08003f;
-        public static final int hsinchu_city=0x7f080087;
-        public static final int hsinchu_county=0x7f080086;
-        public static final int hualien_county=0x7f08007b;
-        public static final int init_alert_dialog_button_exit=0x7f080034;
-        public static final int init_alert_dialog_message_network_inavailable=0x7f080033;
-        public static final int init_alert_dialog_title_network_inavailable=0x7f080032;
-        /**  InitActivity 
+        public static final int event_title=0x7f080033;
+        /**  Home 
          */
-        public static final int init_text_view_text_loading=0x7f080031;
-        public static final int kaohsiung_city=0x7f080080;
-        public static final int keelung_city=0x7f08007a;
-        public static final int kinmen_county=0x7f08007d;
-        public static final int lienchiang_county=0x7f08008d;
-        public static final int login_button_text_login=0x7f080037;
-        public static final int login_button_text_signup=0x7f080038;
-        public static final int login_edit_text_hint_password=0x7f080036;
-        /**  LoginActivity 
-         */
-        public static final int login_edit_text_hint_username=0x7f080035;
-        public static final int miaoli_county=0x7f080083;
-        public static final int nantou_county=0x7f080089;
-        public static final int nav_calendar=0x7f08002b;
-        public static final int nav_chime=0x7f08002c;
-        public static final int nav_exit=0x7f08002f;
-        public static final int nav_home=0x7f08002a;
-        public static final int nav_settings=0x7f08002e;
-        public static final int nav_weather=0x7f08002d;
-        public static final int new_taipei_city=0x7f080079;
+        public static final int home_fragment_agenda=0x7f080032;
+        public static final int hsinchu_city=0x7f08006c;
+        public static final int hsinchu_county=0x7f08006b;
+        public static final int hualien_county=0x7f080060;
+        public static final int kaohsiung_city=0x7f080065;
+        public static final int keelung_city=0x7f08005f;
+        public static final int kinmen_county=0x7f080062;
+        public static final int lienchiang_county=0x7f080072;
+        public static final int miaoli_county=0x7f080068;
+        public static final int nantou_county=0x7f08006e;
+        public static final int nav_calendar=0x7f08002a;
+        public static final int nav_chime=0x7f08002b;
+        public static final int nav_exit=0x7f08002e;
+        public static final int nav_home=0x7f080029;
+        public static final int nav_settings=0x7f08002d;
+        public static final int nav_weather=0x7f08002c;
+        public static final int new_taipei_city=0x7f08005e;
         public static final int next_button_label=0x7f080001;
-        /**  ChimeFragment 
+        /**  Chime 
          */
-        public static final int no_data=0x7f080046;
-        public static final int northern_region=0x7f08008e;
-        public static final int northern_region_cities=0x7f080093;
-        public static final int offshore_islands_region=0x7f080092;
-        public static final int offshore_islands_region_cities=0x7f080097;
-        public static final int penghu_county=0x7f08007e;
-        public static final int pingtung_county=0x7f080088;
-        public static final int pref_calendar=0x7f080056;
-        public static final int pref_category_calendar_settings=0x7f080055;
-        /**  SettingsActivity 
+        public static final int no_data=0x7f080053;
+        public static final int northern_region=0x7f080073;
+        public static final int northern_region_cities=0x7f080078;
+        public static final int offshore_islands_region=0x7f080077;
+        public static final int offshore_islands_region_cities=0x7f08007c;
+        public static final int penghu_county=0x7f080063;
+        public static final int pingtung_county=0x7f08006d;
+        public static final int pref_calendar=0x7f080080;
+        /**  Settings 
          */
-        public static final int pref_category_tts_settings=0x7f080054;
-        /**  SetChimeActivity 
+        public static final int pref_category_calendar_settings=0x7f08007e;
+        public static final int pref_category_tts_settings=0x7f08007f;
+        public static final int pref_chime_enabled=0x7f080054;
+        public static final int pref_chime_repeating=0x7f080056;
+        public static final int pref_chime_repeating_every_day=0x7f080058;
+        public static final int pref_chime_repeating_one_time=0x7f080057;
+        public static final int pref_chime_time=0x7f080055;
+        public static final int pref_reminder_city=0x7f08005c;
+        public static final int pref_reminder_enabled=0x7f08005a;
+        public static final int pref_reminder_time=0x7f08005b;
+        /**  Weather 
          */
-        public static final int pref_chime_enabled=0x7f08004b;
-        public static final int pref_chime_repeating=0x7f08004d;
-        public static final int pref_chime_repeating_every_day=0x7f08004f;
-        public static final int pref_chime_repeating_one_time=0x7f08004e;
-        public static final int pref_chime_time=0x7f08004c;
-        public static final int pref_reminder_city=0x7f080053;
-        public static final int pref_reminder_enabled=0x7f080051;
-        public static final int pref_reminder_time=0x7f080052;
-        /**  SetWeatherActivity 
+        public static final int pref_tts_enabled=0x7f080059;
+        public static final int pref_tts_speaker=0x7f080081;
+        public static final int pref_tts_speed=0x7f080083;
+        public static final int pref_tts_volume=0x7f080082;
+        public static final int refresh_weather_data_failure=0x7f080086;
+        public static final int refresh_weather_data_finish=0x7f080085;
+        /**  Weather Service Receiver 
          */
-        public static final int pref_tts_enabled=0x7f080050;
-        public static final int pref_tts_speed=0x7f080059;
-        public static final int pref_tts_volume=0x7f080058;
-        public static final int progress_dialog_please_wait=0x7f080098;
-        public static final int progress_dialog_refresh_data=0x7f080045;
-        public static final int reminder_time_setting_error=0x7f0800a4;
-        public static final int set_event_check_box_all_day=0x7f080060;
-        public static final int set_event_check_box_reminder=0x7f080062;
-        public static final int set_event_edit_text_hint_description=0x7f08005f;
-        public static final int set_event_edit_text_hint_location=0x7f08005c;
-        /**  SetEventActivity 
-         */
-        public static final int set_event_edit_text_hint_title=0x7f08005b;
-        public static final int set_event_text_end=0x7f08005e;
-        public static final int set_event_text_frequency=0x7f080061;
-        public static final int set_event_text_start=0x7f08005d;
-        public static final int settings_activity_list_preference_speaker=0x7f080057;
-        public static final int settings_activity_preference_category_weather_settings=0x7f08005a;
-        public static final int signup_button_text_sign_up=0x7f08003d;
-        public static final int signup_edit_text_hint_confirm_password=0x7f08003b;
-        public static final int signup_edit_text_hint_email=0x7f08003c;
-        public static final int signup_edit_text_hint_password=0x7f08003a;
-        /**  SignupActivity 
-         */
-        public static final int signup_edit_text_hint_username=0x7f080039;
-        public static final int signup_toast_text_signup_sucess=0x7f08003e;
+        public static final int refresh_weather_data_start=0x7f080084;
+        public static final int reminder_time_setting_error=0x7f080050;
         /**  Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] 
          */
         public static final int skip_button_label=0x7f080002;
-        public static final int southern_region=0x7f080090;
-        public static final int southern_region_cities=0x7f080095;
-        public static final int start_time_setting_error=0x7f0800a3;
-        public static final int taichung_city=0x7f080084;
-        public static final int tainan_city=0x7f08007f;
-        public static final int taipei_city=0x7f080078;
-        public static final int taitung_county=0x7f08008a;
-        public static final int taoyuan_county=0x7f080085;
-        public static final int title_activity_chime=0x7f080018;
-        public static final int title_activity_event=0x7f08009e;
-        public static final int title_activity_init=0x7f080013;
-        public static final int title_activity_login=0x7f080011;
-        public static final int title_activity_main=0x7f080014;
-        public static final int title_activity_set_chime=0x7f080016;
-        public static final int title_activity_set_event=0x7f080019;
-        public static final int title_activity_set_weather=0x7f080017;
-        public static final int title_activity_settings=0x7f080015;
-        public static final int title_activity_signup=0x7f080012;
-        public static final int title_activity_weather=0x7f08009b;
-        public static final int toast_cancel_chime=0x7f080049;
-        public static final int toast_create_chime=0x7f080047;
-        public static final int toast_delete_chime=0x7f08004a;
-        public static final int toast_network_inavailable=0x7f0800a6;
-        public static final int toast_refresh_weather_data_failure=0x7f080044;
-        public static final int toast_refresh_weather_data_finish=0x7f080043;
-        public static final int toast_refresh_weather_data_start=0x7f080042;
-        public static final int toast_save_settings=0x7f080041;
-        public static final int toast_update_chime=0x7f080048;
-        public static final int yilan_county=0x7f08007c;
-        public static final int yunlin_county=0x7f08008c;
+        public static final int southern_region=0x7f080075;
+        public static final int southern_region_cities=0x7f08007a;
+        public static final int start_time_setting_error=0x7f08004f;
+        public static final int taichung_city=0x7f080069;
+        public static final int tainan_city=0x7f080064;
+        public static final int taipei_city=0x7f08005d;
+        public static final int taitung_county=0x7f08006f;
+        public static final int taoyuan_county=0x7f08006a;
+        public static final int title_activity_chime=0x7f080015;
+        public static final int title_activity_chime_setter=0x7f080016;
+        public static final int title_activity_event=0x7f080013;
+        public static final int title_activity_event_setter=0x7f080014;
+        public static final int title_activity_init=0x7f080011;
+        public static final int title_activity_main=0x7f080012;
+        public static final int title_activity_settings=0x7f080019;
+        public static final int title_activity_weather=0x7f080017;
+        public static final int title_activity_weather_setter=0x7f080018;
+        public static final int toast_audio_file_created=0x7f080051;
+        public static final int toast_network_inavailable=0x7f080052;
+        public static final int toast_save_settings=0x7f08007d;
+        public static final int yilan_county=0x7f080061;
+        public static final int yunlin_county=0x7f080071;
     }
     public static final class style {
         /** 

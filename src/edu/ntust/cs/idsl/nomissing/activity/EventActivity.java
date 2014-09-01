@@ -48,6 +48,9 @@ public class EventActivity extends Activity {
         reminder = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).find(reminderID);
         event = DaoFactory.getEventDaoFactory(reminder.getCalendarID()).createEventDao(this).find(reminder.getEventID());
 
+        reminder.setTriggered(true);
+        DaoFactory.getSQLiteDaoFactory().createReminderDao(this).update(reminder);
+        
         openEventDialog(event);
     }
 

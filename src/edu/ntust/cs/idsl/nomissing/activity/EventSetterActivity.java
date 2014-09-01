@@ -112,6 +112,7 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
         reminder = (eventID != 0) 
                 ? DaoFactory.getSQLiteDaoFactory().createReminderDao(this).find(calendarID, eventID)
                 : new Reminder();
+         
         reminderID = reminder.getId();
     }
 
@@ -164,9 +165,9 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
         editTextDescription.setText(event.getDescription());
         editTextReminderDate.setText(dateFormatter.format(reminderCalendar.getTime()));
         editTextReminderTime.setText(timeFormatter.format(reminderCalendar.getTime()));
-        editTextReminderDate.setEnabled(event.hasReminder());
-        editTextReminderTime.setEnabled(event.hasReminder());
-        checkBoxRemider.setChecked(event.hasReminder());
+        editTextReminderDate.setEnabled(reminder.isEnabled());
+        editTextReminderTime.setEnabled(reminder.isEnabled());
+        checkBoxRemider.setChecked(reminder.isEnabled());
 
         editTextStartDate.setOnClickListener(this);
         editTextStartTime.setOnClickListener(this);
@@ -346,6 +347,8 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
             reminder.setCalendarID(calendarID);
             reminder.setEventID(eventID);
             reminder.setReminderTime(reminderCalendar.getTimeInMillis());
+            reminder.setEnabled(checkBoxRemider.isChecked());
+            reminder.setTriggered(false);
             reminder.setCreatedAt(currentTime);
             reminder.setUpdatedAt(currentTime);
             reminderID = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).insert(reminder);
@@ -376,7 +379,11 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
                 return;
             }
 
+            reminder.setCalendarID(calendarID);
+            reminder.setEventID(eventID);
             reminder.setReminderTime(reminderCalendar.getTimeInMillis());
+            reminder.setEnabled(checkBoxRemider.isChecked());
+            reminder.setTriggered(false);
             reminder.setUpdatedAt(currentTime);
             DaoFactory.getSQLiteDaoFactory().createReminderDao(this).update(reminder);
 

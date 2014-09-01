@@ -1,6 +1,7 @@
 package edu.ntust.cs.idsl.nomissing.model;
 
 import android.annotation.SuppressLint;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -13,6 +14,8 @@ public class Reminder {
     private long calendarID;
     private long eventID;
     private long reminderTime;
+    private boolean isEnabled;
+    private boolean isTriggered;
     private String audio;
     private long createdAt;
     private long updatedAt;
@@ -21,11 +24,14 @@ public class Reminder {
     }
 
     public Reminder(long id, long calendarID, long eventID, long reminderTime,
-            String audio, long createdAt, long updatedAt) {
+            boolean isEnabled, boolean isTriggered, String audio,
+            long createdAt, long updatedAt) {
         this.id = id;
         this.calendarID = calendarID;
         this.eventID = eventID;
         this.reminderTime = reminderTime;
+        this.isEnabled = isEnabled;
+        this.isTriggered = isTriggered;
         this.audio = audio;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -61,6 +67,22 @@ public class Reminder {
 
     public void setReminderTime(long reminderTime) {
         this.reminderTime = reminderTime;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
+
+    public boolean isTriggered() {
+        return isTriggered;
+    }
+
+    public void setTriggered(boolean isTriggered) {
+        this.isTriggered = isTriggered;
     }
 
     public String getAudio() {

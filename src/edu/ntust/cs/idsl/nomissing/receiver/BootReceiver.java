@@ -8,6 +8,7 @@ import android.content.Intent;
 import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
+import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.model.Weather;
 import edu.ntust.cs.idsl.nomissing.preference.SettingsManager;
 
@@ -21,8 +22,18 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        setReminderAlarms(context);
         setChimeAlarms(context);
         setWeatherAlarm(context);
+    }
+    
+    private void setReminderAlarms(Context context) {
+        List<Reminder> reminders = DaoFactory.getSQLiteDaoFactory().createReminderDao(context).findAll();
+        for (Reminder reminder : reminders) {
+            AlarmHandlerFactory.createReminderAlarmHandler(context).cancelAlarm(reminder);
+            if (reminder.isEnabled() && !reminder.isTriggered())
+                AlarmHandlerFactory.createReminderAlarmHandler(context).setAlarm(reminder);
+        }
     }
 
     private void setChimeAlarms(Context context) {

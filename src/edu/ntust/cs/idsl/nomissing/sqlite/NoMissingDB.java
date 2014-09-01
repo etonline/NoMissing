@@ -40,6 +40,8 @@ public class NoMissingDB extends SQLiteOpenHelper {
     public static final String REMINDERS_KEY_CALENDAR_ID = "calendar_id";
     public static final String REMINDERS_KEY_EVENT_ID = "event_id";
     public static final String REMINDERS_KEY_REMINDER_TIME = "reminder_time";
+    public static final String REMINDERS_KEY_IS_ENABLED = "is_enabled";
+    public static final String REMINDERS_KEY_IS_TRIGGERED = "is_triggered";
     public static final String REMINDERS_KEY_AUDIO = "audio";
     public static final String REMINDERS_KEY_CREATED_AT = "created_at";
     public static final String REMINDERS_KEY_UPDATED_AT = "updated_at";
@@ -123,6 +125,8 @@ public class NoMissingDB extends SQLiteOpenHelper {
                 REMINDERS_KEY_CALENDAR_ID + " INTEGER," + 
                 REMINDERS_KEY_EVENT_ID + " INTEGER," + 
                 REMINDERS_KEY_REMINDER_TIME + " DATETIME," + 
+                REMINDERS_KEY_IS_ENABLED + " INTEGER," + 
+                REMINDERS_KEY_IS_TRIGGERED + " INTEGER," + 
                 REMINDERS_KEY_AUDIO + " TEXT," + 
                 REMINDERS_KEY_CREATED_AT + " DATETIME," + 
                 REMINDERS_KEY_UPDATED_AT + " DATETIME" + ")";

@@ -20,6 +20,8 @@ public class ReminderDao extends SQLiteDao implements IReminderDao {
             NoMissingDB.REMINDERS_KEY_CALENDAR_ID,
             NoMissingDB.REMINDERS_KEY_EVENT_ID,
             NoMissingDB.REMINDERS_KEY_REMINDER_TIME,
+            NoMissingDB.REMINDERS_KEY_IS_ENABLED,
+            NoMissingDB.REMINDERS_KEY_IS_TRIGGERED,
             NoMissingDB.REMINDERS_KEY_AUDIO,
             NoMissingDB.REMINDERS_KEY_CREATED_AT,
             NoMissingDB.REMINDERS_KEY_UPDATED_AT };
@@ -34,6 +36,8 @@ public class ReminderDao extends SQLiteDao implements IReminderDao {
         values.put(NoMissingDB.REMINDERS_KEY_CALENDAR_ID, reminder.getCalendarID());
         values.put(NoMissingDB.REMINDERS_KEY_EVENT_ID, reminder.getEventID());
         values.put(NoMissingDB.REMINDERS_KEY_REMINDER_TIME, reminder.getReminderTime());
+        values.put(NoMissingDB.REMINDERS_KEY_IS_ENABLED, reminder.isEnabled());
+        values.put(NoMissingDB.REMINDERS_KEY_IS_TRIGGERED, reminder.isTriggered());
         values.put(NoMissingDB.REMINDERS_KEY_AUDIO, reminder.getAudio());
         values.put(NoMissingDB.REMINDERS_KEY_CREATED_AT, reminder.getCreatedAt());
         values.put(NoMissingDB.REMINDERS_KEY_UPDATED_AT, reminder.getUpdatedAt());
@@ -55,6 +59,8 @@ public class ReminderDao extends SQLiteDao implements IReminderDao {
         values.put(NoMissingDB.REMINDERS_KEY_CALENDAR_ID, reminder.getCalendarID());
         values.put(NoMissingDB.REMINDERS_KEY_EVENT_ID, reminder.getEventID());
         values.put(NoMissingDB.REMINDERS_KEY_REMINDER_TIME, reminder.getReminderTime());
+        values.put(NoMissingDB.REMINDERS_KEY_IS_ENABLED, reminder.isEnabled());
+        values.put(NoMissingDB.REMINDERS_KEY_IS_TRIGGERED, reminder.isTriggered());
         values.put(NoMissingDB.REMINDERS_KEY_AUDIO, reminder.getAudio());
         values.put(NoMissingDB.REMINDERS_KEY_CREATED_AT, reminder.getCreatedAt());
         values.put(NoMissingDB.REMINDERS_KEY_UPDATED_AT, reminder.getUpdatedAt());
@@ -90,6 +96,8 @@ public class ReminderDao extends SQLiteDao implements IReminderDao {
             reminder.setCalendarID(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_CALENDAR_ID)));
             reminder.setEventID(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_EVENT_ID)));
             reminder.setReminderTime(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_REMINDER_TIME)));
+            reminder.setEnabled(cursor.getInt(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_IS_ENABLED)) > 0);
+            reminder.setTriggered(cursor.getInt(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_IS_TRIGGERED)) > 0);
             reminder.setAudio(cursor.getString(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_AUDIO)));
             reminder.setCreatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_CREATED_AT)));
             reminder.setUpdatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_UPDATED_AT)));
@@ -114,6 +122,8 @@ public class ReminderDao extends SQLiteDao implements IReminderDao {
             reminder.setCalendarID(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_CALENDAR_ID)));
             reminder.setEventID(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_EVENT_ID)));
             reminder.setReminderTime(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_REMINDER_TIME)));
+            reminder.setEnabled(cursor.getInt(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_IS_ENABLED)) > 0);
+            reminder.setTriggered(cursor.getInt(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_IS_TRIGGERED)) > 0);
             reminder.setAudio(cursor.getString(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_AUDIO)));
             reminder.setCreatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_CREATED_AT)));
             reminder.setUpdatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_UPDATED_AT)));
@@ -143,6 +153,8 @@ public class ReminderDao extends SQLiteDao implements IReminderDao {
             reminder.setCalendarID(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_CALENDAR_ID)));
             reminder.setEventID(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_EVENT_ID)));
             reminder.setReminderTime(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_REMINDER_TIME)));
+            reminder.setEnabled(cursor.getInt(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_IS_ENABLED)) > 0);
+            reminder.setTriggered(cursor.getInt(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_IS_TRIGGERED)) > 0);
             reminder.setAudio(cursor.getString(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_AUDIO)));
             reminder.setCreatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_CREATED_AT)));
             reminder.setUpdatedAt(cursor.getLong(cursor.getColumnIndex(NoMissingDB.REMINDERS_KEY_UPDATED_AT)));

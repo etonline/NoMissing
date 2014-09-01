@@ -146,12 +146,28 @@
     <string name="pref_calendar">日曆</string>
     <string name="pref_tts_speaker">音源</string>
     <string-array name="pref_tts_speaker_key">
-        <item>Bruce (男生語音)</item>
-        <item>Joddess (女生語音)</item>
+		<item>Bruce (中英切換男生語音)</item>
+		<item>Theresa (中英切換女生語音)</item>
+		<item>Angela (中英切換小女孩語音)</item>
+		<item>MCHEN_Bruce (中英統合男生語音)</item>
+		<item>MCHEN_Joddess (中英統合女生語音)</item>
+		<item>ENG_Bob (英文男生語音)</item>
+		<item>ENG_Alice (英文女生語音)</item>
+		<item>ENG_Tracy (英文小男孩語音)</item>
+		<item>TW_LIT_AKoan (台語女生語音[文讀台])</item>
+		<item>TW_SPK_AKoan (台語女生語音[白話台])</item>
     </string-array>
     <string-array name="pref_tts_speaker_value">
+        <item>Bruce</item>
+        <item>Theresa</item>
+        <item>Angela</item>
         <item>MCHEN_Bruce</item>
         <item>MCHEN_Joddess</item>
+        <item>ENG_Bob</item>
+        <item>ENG_Alice</item>
+        <item>ENG_Tracy</item>
+        <item>TW_LIT_AKoan</item>
+        <item>TW_SPK_AKoan</item>
     </string-array>
     <string name="pref_tts_volume">音量</string>
     <string name="pref_tts_speed">聲速</string>

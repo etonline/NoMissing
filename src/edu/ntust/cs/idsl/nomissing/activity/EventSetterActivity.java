@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
+import edu.ntust.cs.idsl.nomissing.constant.Category;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
@@ -418,14 +419,9 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
     }
 
     private void getTTSAudio() {
-        Bundle extras = new Bundle();
-        extras.putString(TextToSpeechService.EXTRA_CATEGORY, TextToSpeechService.CATEGORY_REMINDER);
-        extras.putLong(TextToSpeechService.EXTRA_ENTITY_ID, reminderID);
-        extras.putString(TextToSpeechService.EXTRA_TTS_TEXT, reminder.getStringForTTS(event));
-        extras.putString(TextToSpeechService.EXTRA_TTS_SPEAKER, app.getSettings().getTTSSpeaker());
-        extras.putInt(TextToSpeechService.EXTRA_TTS_VOLUME, app.getSettings().getTTSVolume());
-        extras.putInt(TextToSpeechService.EXTRA_TTS_SPEED, app.getSettings().getTTSSpeed());
-        extras.putString(TextToSpeechService.EXTRA_TTS_OUTPUT_TYPE, "wav");
+        Bundle extras = TextToSpeechService.getExtras(Category.REMINDER, reminder.getId(), 
+                reminder.getStringForTTS(event), app.getSettings().getTTSSpeaker(), 
+                app.getSettings().getTTSVolume(), app.getSettings().getTTSSpeed(), "wav");
 
         TextToSpeechService.startService(this, extras);
     }

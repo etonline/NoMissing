@@ -11,7 +11,8 @@
     <string name="title_activity_chime_setter">語音報時</string>
     <string name="title_activity_weather">語音氣象</string>
     <string name="title_activity_weather_setter">語音氣象</string>
-    <string name="title_activity_settings">偏好設定</string>
+    <string name="title_activity_sms">您有新訊息</string>
+    <string name="title_activity_email">您有新郵件</string>
 
     <!-- Action Bar -->
     <string name="action_about">關於</string>
@@ -88,14 +89,14 @@
     <string name="pref_chime_repeating">重複</string>
     <string-array name="pref_chime_repeating_key">
         <item>單次</item>
-        <item>每天</item>
+        <item>每日</item>
     </string-array>
     <string-array name="pref_chime_repeating_value">
         <item>0</item>
         <item>1</item>
     </string-array>
-    <string name="pref_chime_repeating_one_time">一次</string>
-    <string name="pref_chime_repeating_every_day">每天</string>
+    <string name="pref_chime_repeating_one_time">單次</string>
+    <string name="pref_chime_repeating_every_day">每日</string>
         
     <!-- Weather -->
     <string name="pref_tts_enabled">開啟語音</string>
@@ -138,18 +139,19 @@
       
     <!-- Settings -->
     <string name="pref_category_calendar_settings">Calendar</string>
+    <string name="pref_category_reminder_settings">語音提醒</string>
+    <string name="pref_sms_reminder">簡訊提醒</string>
+    <string name="pref_reminder_summary">需保持網路連線</string>
     <string name="pref_category_tts_settings">Text-to-Speech</string>
     <string name="pref_calendar">日曆</string>
     <string name="pref_tts_speaker">音源</string>
     <string-array name="pref_tts_speaker_key">
         <item>Bruce (男生語音)</item>
-        <item>Theresa (女生語音)</item>
-        <item>Angela (小女孩語音)</item>
+        <item>Joddess (女生語音)</item>
     </string-array>
     <string-array name="pref_tts_speaker_value">
-        <item>Bruce</item>
-        <item>Theresa</item>
-        <item>Angela</item>
+        <item>MCHEN_Bruce</item>
+        <item>MCHEN_Joddess</item>
     </string-array>
     <string name="pref_tts_volume">音量</string>
     <string name="pref_tts_speed">聲速</string>

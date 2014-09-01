@@ -16,8 +16,8 @@ import android.widget.ListView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.ChimeSetterActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.ChimeListAdapter;
+import edu.ntust.cs.idsl.nomissing.constant.Constant;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 
 /**

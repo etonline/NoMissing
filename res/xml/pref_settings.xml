@@ -9,7 +9,18 @@
 	        android:title="@string/pref_calendar"/>     
         
     </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="@string/pref_category_reminder_settings" >
         
+        <CheckBoxPreference
+            android:key="sms_reminder_enabled"
+            android:persistent="true"
+            android:title="@string/pref_sms_reminder"
+            android:summary="@string/pref_reminder_summary" />    
+        
+    </PreferenceCategory>
+    
     <PreferenceCategory 
         android:title="@string/pref_category_tts_settings" >
         

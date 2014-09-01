@@ -22,8 +22,9 @@ import android.view.MenuItem;
 import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
+import edu.ntust.cs.idsl.nomissing.constant.Category;
+import edu.ntust.cs.idsl.nomissing.constant.Constant;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.global.Constant;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.service.tts.TextToSpeechService;
@@ -90,21 +91,6 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
         setPrefChimeTime();
         setPrefChimeRepeating();
     }
-    
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        IntentFilter intentFilter = new IntentFilter();
-//        intentFilter.addAction(ACTION_PROGRESS_DIALOG_VISIBLE);
-//        intentFilter.addAction(ACTION_PROGRESS_DIALOG_INVISIBLE);
-//        registerReceiver(progressDialogVisibilityReceiver, intentFilter);
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        unregisterReceiver(progressDialogVisibilityReceiver);
-//    }
 
     private void setPrefChimeEnabled() {
         prefChimeEnabled = (CheckBoxPreference) findPreference(KEY_CHIME_ENABLED);
@@ -272,46 +258,11 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
     }
 
     private void getTTSAudio() {
-        Bundle extras = new Bundle();
-        extras.putString(TextToSpeechService.EXTRA_CATEGORY, TextToSpeechService.CATEGORY_CHIME);
-        extras.putLong(TextToSpeechService.EXTRA_ENTITY_ID, (long) chime.getId());
-        extras.putString(TextToSpeechService.EXTRA_TTS_TEXT, chime.getStringForTTS());
-        extras.putString(TextToSpeechService.EXTRA_TTS_SPEAKER, app.getSettings().getTTSSpeaker());
-        extras.putInt(TextToSpeechService.EXTRA_TTS_VOLUME, app.getSettings().getTTSVolume());
-        extras.putInt(TextToSpeechService.EXTRA_TTS_SPEED, app.getSettings().getTTSSpeed());
-        extras.putString(TextToSpeechService.EXTRA_TTS_OUTPUT_TYPE, "wav");
+        Bundle extras = TextToSpeechService.getExtras(Category.CHIME, chime.getId(), 
+                chime.getStringForTTS(), app.getSettings().getTTSSpeaker(), 
+                app.getSettings().getTTSVolume(), app.getSettings().getTTSSpeed(), "wav");
 
         TextToSpeechService.startService(this, extras);
     }
-    
-//    private final BroadcastReceiver progressDialogVisibilityReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if (intent != null) {
-//                final String action = intent.getAction();
-//
-//                if (ACTION_PROGRESS_DIALOG_VISIBLE.equals(action)) {
-//                    ProgressDialog.show(ChimeSetterActivity.this, "sdf", "sdf");
-//                    return;
-//                }
-//
-//                if (ACTION_PROGRESS_DIALOG_INVISIBLE.equals(action)) {
-//                    return;
-//                }
-//            }
-//        } 
-//    };
-//    
-//    public static Intent getActionProgressDialogInvisible(Context context) {
-//        Intent intent = new Intent(context, ChimeSetterActivity.class);
-//        intent.setAction(ACTION_PROGRESS_DIALOG_INVISIBLE);
-//        return intent;
-//    }
-//    
-//    public static Intent getActionProgressDialogVisible(Context context) {
-//        Intent intent = new Intent(context, ChimeSetterActivity.class);
-//        intent.setAction(ACTION_PROGRESS_DIALOG_VISIBLE);
-//        return intent;
-//    }
 
 }

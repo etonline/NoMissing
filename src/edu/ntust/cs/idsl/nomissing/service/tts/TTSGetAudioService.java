@@ -13,10 +13,12 @@ import android.util.Log;
 
 import com.loopj.android.http.BinaryHttpResponseHandler;
 
+import edu.ntust.cs.idsl.nomissing.constant.Category;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.http.NoMissingHttpClient;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
+import edu.ntust.cs.idsl.nomissing.model.SMSMessage;
 import edu.ntust.cs.idsl.nomissing.receiver.TTSServiceReceiver;
 
 /**
@@ -41,7 +43,7 @@ public class TTSGetAudioService extends TextToSpeechService {
     @Override
     protected void handleAction(final Bundle extras) {
         final String audioURL = extras.getString(EXTRA_AUDIO_URL);
-        final String category = extras.getString(EXTRA_CATEGORY);
+        final Category category = (Category) extras.getSerializable(EXTRA_CATEGORY);
         final long entityID = extras.getLong(EXTRA_ENTITY_ID);
 
         NoMissingHttpClient.setAsync(false);
@@ -50,7 +52,7 @@ public class TTSGetAudioService extends TextToSpeechService {
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                 String audio = saveAudio(category, entityID, response);
                 setAudio(category, entityID, audio);
-                sendBroadcast(TTSServiceReceiver.getActionReceiveTTSServiceFinish(TTSGetAudioService.this));
+                sendBroadcast(TTSServiceReceiver.getActionReceiveTTSServiceFinish(TTSGetAudioService.this, category, entityID));
                 
                 if (successor != null)
                     successor.startAction(TTSGetAudioService.this, extras);
@@ -72,8 +74,8 @@ public class TTSGetAudioService extends TextToSpeechService {
         context.startService(intent);
     }
 
-    private String saveAudio(String category, long entityID, byte[] response) {
-        File dirFile = getDir(category, Context.MODE_PRIVATE);
+    private String saveAudio(Category category, long entityID, byte[] response) {
+        File dirFile = getDir(category.getName(), Context.MODE_PRIVATE);
         File file = new File(dirFile, String.valueOf(entityID));
 
         try {
@@ -88,19 +90,25 @@ public class TTSGetAudioService extends TextToSpeechService {
         return file.toURI().toString();
     }
 
-    private void setAudio(String category, long id, String audio) {
+    private void setAudio(Category category, long id, String audio) {
         Log.i(TAG, audio);
 
-        if (category.equals(CATEGORY_REMINDER)) {
+        if (Category.REMINDER.equals(category)) {
             Reminder reminder = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).find(id);
             reminder.setAudio(audio);
             DaoFactory.getSQLiteDaoFactory().createReminderDao(this).update(reminder);
         }
 
-        if (category.equals(CATEGORY_CHIME)) {
+        if (Category.CHIME.equals(category)) {
             Chime chime = DaoFactory.getSQLiteDaoFactory().createChimeDao(this).find((int) id);
             chime.setAudio(audio);
             DaoFactory.getSQLiteDaoFactory().createChimeDao(this).update(chime);
+        }
+        
+        if (Category.SMS.equals(category)) {
+            SMSMessage smsMessage = DaoFactory.getSQLiteDaoFactory().createSMSMessageDao(this).find((int) id);
+            smsMessage.setAudio(audio);
+            DaoFactory.getSQLiteDaoFactory().createSMSMessageDao(this).update(smsMessage);
         }
     }
 

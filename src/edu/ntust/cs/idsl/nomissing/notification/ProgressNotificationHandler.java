@@ -29,13 +29,17 @@ public class ProgressNotificationHandler extends
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setTicker(progressStatus.getMessage());
 
-        if (!(progressStatus.getStatus() == ProgressStatus.FINISH)) {
+        if (progressStatus.getStatus() != ProgressStatus.FINISH) {
             notification.setProgress(progressMax, progressStatus.getProgress(), false);
             notification.setNumber(progressStatus.getProgress());
         }
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notification.build());
+        
+        if ((progressStatus.getStatus() == ProgressStatus.FINISH)) {
+            notificationManager.cancel(0);
+        }        
     }
 
     @Override

@@ -1,4 +1,4 @@
-package edu.ntust.cs.idsl.nomissing.global;
+package edu.ntust.cs.idsl.nomissing.constant;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>

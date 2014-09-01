@@ -25,5 +25,9 @@ public class SQLiteDaoFactory extends DaoFactory {
     public ReminderDao createReminderDao(Context context) {
         return new ReminderDao(context);
     }
+    
+    public SMSMessageDao createSMSMessageDao(Context context) {
+        return new SMSMessageDao(context);
+    }
 
 }

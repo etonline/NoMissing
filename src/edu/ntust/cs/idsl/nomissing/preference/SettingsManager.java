@@ -24,6 +24,7 @@ public class SettingsManager {
     public static final String KEY_ACCESS_TOKEN = "access_token";
 
     public static final String KEY_CALENDAR_ID = "calendar_id";
+    public static final String KEY_SMS_REMINDER_ENABLED = "sms_reminder_enabled";
 
     public static final String KEY_TTS_SPEAKER = "tts_speaker";
     public static final String KEY_TTS_VOLUME = "tts_volume";
@@ -77,6 +78,11 @@ public class SettingsManager {
         editor.putLong(KEY_CALENDAR_ID, value);
         editor.commit();
     }
+    
+    public void setSMSReminderEnabled(boolean value) {
+        editor.putBoolean(KEY_SMS_REMINDER_ENABLED, value);
+        editor.commit();
+    }       
 
     public void setTTSSpeaker(String value) {
         editor.putString(KEY_TTS_SPEAKER, value);
@@ -138,6 +144,10 @@ public class SettingsManager {
         return pref.getLong(KEY_CALENDAR_ID, DEFAULT_CALENDAR_ID);
     }
 
+    public boolean isSMSReminderEnabled() {
+        return pref.getBoolean(KEY_SMS_REMINDER_ENABLED, false);
+    }
+    
     public String getTTSSpeaker() {
         return pref.getString(KEY_TTS_SPEAKER, DEFAULT_TTS_SPEAKER);
     }

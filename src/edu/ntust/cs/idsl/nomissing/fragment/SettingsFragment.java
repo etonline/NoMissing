@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -31,6 +32,7 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 public class SettingsFragment extends PreferenceFragment implements OnPreferenceClickListener, OnPreferenceChangeListener {
 
     private static final String KEY_CALENDAR_ID = "calendar_id";
+    private static final String KEY_SMS_REMINDER_ENABLED = "sms_reminder_enabled";
     private static final String KEY_TTS_SPEAKER = "tts_speaker";
     private static final String KEY_TTS_VOLUME = "tts_volume";
     private static final String KEY_TTS_SPEED = "tts_speed";
@@ -38,11 +40,13 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
     private NoMissingApp app;
 
     private Preference prefCalendar;
+    private CheckBoxPreference prefSMSReminderEnabled;
     private ListPreference prefTTSSpeaker;
     private SeekBarPreference prefTTSVolume;
     private SeekBarPreference prefTTSSpeed;
 
     private long calendarID;
+    private boolean isSMSReminderEnabled;
     private String ttsSpeaker;
     private int ttsVolume;
     private int ttsSpeed;
@@ -55,11 +59,13 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         app = (NoMissingApp) getActivity().getApplicationContext();
 
         calendarID = app.getSettings().getCalendarID();
+        isSMSReminderEnabled = app.getSettings().isSMSReminderEnabled();
         ttsSpeaker = app.getSettings().getTTSSpeaker();
         ttsVolume = app.getSettings().getTTSVolume();
         ttsSpeed = app.getSettings().getTTSSpeed();
 
         setPrefCalendar();
+        setPrefSMSReminder();
         setPrefTTSSpeaker();
         setPrefTTSVolume();
         setPrefTTSSpeed();
@@ -72,6 +78,12 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         prefCalendar.setSummary(Calendar.getCalendarNameById(calendars,
                 calendarID));
         prefCalendar.setOnPreferenceClickListener(this);
+    }
+    
+    private void setPrefSMSReminder() {
+        prefSMSReminderEnabled = (CheckBoxPreference) findPreference(KEY_SMS_REMINDER_ENABLED);
+        prefSMSReminderEnabled.setChecked(isSMSReminderEnabled);
+        prefSMSReminderEnabled.setOnPreferenceChangeListener(this);
     }
 
     private void setPrefTTSSpeaker() {
@@ -124,6 +136,15 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
             ttsSpeaker = (String) newValue;
             preference.setSummary((String) newValue);
         }
+        
+        else if (preference == prefSMSReminderEnabled) {
+            isSMSReminderEnabled = (boolean) newValue;
+        }
+
+        else if (preference == prefTTSSpeaker) {
+            ttsSpeaker = (String) newValue;
+            preference.setSummary((String) newValue);
+        }
 
         else if (preference == prefTTSVolume) {
             ttsVolume = (int) newValue;
@@ -140,6 +161,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 
     private void saveSettings() {
         app.getSettings().setCalendarID(calendarID);
+        app.getSettings().setSMSReminderEnabled(isSMSReminderEnabled);
         app.getSettings().setTTSSpeaker(ttsSpeaker);
         app.getSettings().setTTSVolume(ttsVolume);
         app.getSettings().setTTSSpeed(ttsSpeed);
@@ -151,11 +173,13 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         ttsSpeaker = SettingsManager.DEFAULT_TTS_SPEAKER;
         ttsVolume = SettingsManager.DEFAULT_TTS_VOLUME;
         ttsSpeed = SettingsManager.DEFAULT_TTS_SPEED;
+        isSMSReminderEnabled = false;
 
         prefCalendar.setSummary(R.string.default_calendar);
         prefTTSSpeaker.setSummary(ttsSpeaker);
         prefTTSVolume.setSummary(String.valueOf(ttsVolume));
         prefTTSSpeed.setSummary(String.valueOf(ttsSpeed));
+        prefSMSReminderEnabled.setChecked(false);
     }
 
     @Override

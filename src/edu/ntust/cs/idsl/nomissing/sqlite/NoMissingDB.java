@@ -22,6 +22,7 @@ public class NoMissingDB extends SQLiteOpenHelper {
     public static final String TABLE_REMINDERS = "reminders";
     public static final String TABLE_CHIMES = "chimes";
     public static final String TABLE_WEATHER = "weather";
+    public static final String TABLE_SMSMESSAGES = "sms_messages";
 
     // Column names
     public static final String EVENTS_KEY_ID = "_id";
@@ -52,6 +53,12 @@ public class NoMissingDB extends SQLiteOpenHelper {
     public static final String CHIMES_KEY_AUDIO = "audio";
     public static final String CHIMES_KEY_CREATED_AT = "created_at";
     public static final String CHIMES_KEY_UPDATED_AT = "updated_at";
+    
+    public static final String SMSMESSAGES_KEY_ID = "_id";
+    public static final String SMSMESSAGES_KEY_FROM = "address";
+    public static final String SMSMESSAGES_KEY_MESSAGE = "message";
+    public static final String SMSMESSAGES_KEY_TIME = "time";
+    public static final String SMSMESSAGES_KEY_AUDIO = "audio";
 
     public static final String WEATHER_KEY_CITYID = "cityid";
     public static final String WEATHER_KEY_NAME = "name";
@@ -72,6 +79,7 @@ public class NoMissingDB extends SQLiteOpenHelper {
         createRemindersTable(db);
         createChimesTable(db);
         createWeatherTable(db);
+        createSMSMessagesTable(db);
     }
 
     @Override
@@ -80,11 +88,13 @@ public class NoMissingDB extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHIMES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_WEATHER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SMSMESSAGES);
 
         createEventsTable(db);
         createRemindersTable(db);
         createChimesTable(db);
         createWeatherTable(db);
+        createSMSMessagesTable(db);
     }
 
     /*
@@ -158,6 +168,19 @@ public class NoMissingDB extends SQLiteOpenHelper {
             values.put(WEATHER_KEY_NAME, city.getCityName());
             db.insert(TABLE_WEATHER, null, values);
         }
+    }
+    
+    /**
+     * Create SMSMessages table
+     */
+    private void createSMSMessagesTable(SQLiteDatabase db) {
+        String CREATE_SMSMESSAGES_TABLE = "CREATE TABLE " + TABLE_SMSMESSAGES + "(" + 
+                SMSMESSAGES_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + 
+                SMSMESSAGES_KEY_FROM + " TEXT," + 
+                SMSMESSAGES_KEY_MESSAGE + " TEXT," + 
+                SMSMESSAGES_KEY_TIME + " DATETIME," +  
+                SMSMESSAGES_KEY_AUDIO + " TEXT" + ")";
+        db.execSQL(CREATE_SMSMESSAGES_TABLE);        
     }
 
 }

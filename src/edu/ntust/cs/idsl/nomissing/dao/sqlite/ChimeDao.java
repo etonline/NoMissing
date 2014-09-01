@@ -64,8 +64,7 @@ public class ChimeDao extends SQLiteDao implements ISimpleDao<Chime> {
         values.put(NoMissingDB.CHIMES_KEY_UPDATED_AT, chime.getUpdatedAt());
 
         open();
-        int row = db.update(NoMissingDB.TABLE_CHIMES, values, whereClause,
-                whereArgs);
+        int row = db.update(NoMissingDB.TABLE_CHIMES, values, whereClause, whereArgs);
         close();
 
         return row;

@@ -51,7 +51,7 @@ public class ChimeActivity extends Activity {
         AlertDialog cityWeatherDialog = new AlertDialog.Builder(this)
                 .setTitle(getTitle())
                 .setIcon(R.drawable.ic_action_alarms)
-                .setMessage(chime.getTime())
+                .setMessage("現在時間：" + chime.getTime())
                 .setNegativeButton(R.string.alert_dialog_close,
                         new DialogInterface.OnClickListener() {
                             @Override

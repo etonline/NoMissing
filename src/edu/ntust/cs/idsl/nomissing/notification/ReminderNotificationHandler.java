@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Event;
@@ -22,6 +23,7 @@ public class ReminderNotificationHandler extends NotificationHandler<Reminder> {
 
     @Override
     public void sendNotification(Reminder reminder) {
+        Log.i("TAG", "EventID=" +reminder.getEventID());
         Event event = DaoFactory.getEventDaoFactory(reminder.getCalendarID()).createEventDao(context).find(reminder.getEventID());
         boolean vibrate = true;
 

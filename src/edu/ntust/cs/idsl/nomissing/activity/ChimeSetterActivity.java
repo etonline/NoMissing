@@ -23,7 +23,6 @@ import android.widget.TimePicker;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.constant.Category;
-import edu.ntust.cs.idsl.nomissing.constant.Constant;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
@@ -37,9 +36,15 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class ChimeSetterActivity extends PreferenceActivity implements OnPreferenceClickListener, OnPreferenceChangeListener {
  
+    public static final int REQUEST_CREATE = 0;
+    public static final int REQUEST_UPDATE = 1;
+    public static final int RESULT_CREATE = 2;
+    public static final int RESULT_UPDATE = 3;
+    public static final int RESULT_CANCEL = 4;
+    public static final int RESULT_DELETE = 5;
+    
     private static final String ACTION = "edu.ntust.cs.idsl.nomissing.action.SET_CHIME";
-    private static final String ACTION_PROGRESS_DIALOG_VISIBLE = "edu.ntust.cs.idsl.nomissing.action.PROGRESS_DIALOG_VISIBLE";
-    private static final String ACTION_PROGRESS_DIALOG_INVISIBLE = "edu.ntust.cs.idsl.nomissing.action.PROGRESS_DIALOG_INVISIBLE";
+    private static final String EXTRA_REQUEST_CODE = "edu.ntust.cs.idsl.nomissing.extra.REQUEST_CODE";
     private static final String EXTRA_CHIME_ID = "edu.ntust.cs.idsl.nomissing.extra.CHIME_ID";
     private static final String KEY_CHIME_ENABLED = "chime_enabled";
     private static final String KEY_CHIME_TIME = "chime_time";
@@ -61,10 +66,13 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
 
     private Chime chime;
     private Calendar calendar;
+    
+    private int requestCode;
 
-    public static Intent getAction(Context context, int chimeID) {
+    public static Intent getAction(Context context, int requestCode, int chimeID) {
         Intent intent = new Intent(context, ChimeSetterActivity.class);
         intent.setAction(ACTION);
+        intent.putExtra(EXTRA_REQUEST_CODE, requestCode);
         intent.putExtra(EXTRA_CHIME_ID, chimeID);
         return intent;
     }  
@@ -77,6 +85,7 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
         app = (NoMissingApp) getApplicationContext();
+        requestCode = getIntent().getIntExtra(EXTRA_REQUEST_CODE, 0);
 
         chimeID = getIntent().getIntExtra(EXTRA_CHIME_ID, 0);
         chime = (chimeID != 0) ? DaoFactory.getSQLiteDaoFactory()
@@ -102,15 +111,16 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
         prefChimeTime = (Preference) findPreference(KEY_CHIME_TIME);
 
         calendar = Calendar.getInstance();
-        if (chimeID != 0) {
+        if (requestCode == REQUEST_UPDATE) {
             calendar.set(Calendar.HOUR_OF_DAY, chimeHour);
             calendar.set(Calendar.MINUTE, chimeMinute);
-        } else {
+        } 
+        if (requestCode == REQUEST_CREATE) {
             chimeHour = calendar.get(Calendar.HOUR);
             chimeMinute = calendar.get(Calendar.MINUTE);
         }
+        
         prefChimeTime.setSummary(formatter.format(calendar.getTime()));
-
         prefChimeTime.setOnPreferenceClickListener(this);
     }
 
@@ -135,22 +145,24 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
             return true;
 
         case R.id.action_set_chime_ok:
-            if (chimeID == 0) {
+            if (requestCode == REQUEST_CREATE) {
                 createChime();
-                setResult(Constant.RESULT_CODE_CREATE);
-            } else {
+                setResult(RESULT_CREATE);
+            }
+            if (requestCode == REQUEST_UPDATE) {
                 updateChime();
-                setResult(Constant.RESULT_CODE_UPDATE);
+                setResult(RESULT_UPDATE);
             }
             finish();
             return true;
 
         case R.id.action_delete_chime:
-            if (chimeID == 0) {
-                setResult(Constant.RESULT_CODE_CANCEL);
-            } else {
+            if (requestCode == REQUEST_CREATE) {
+                setResult(RESULT_CANCEL);
+            } 
+            if (requestCode == REQUEST_UPDATE) {
                 deleteChime();
-                setResult(Constant.RESULT_CODE_DELETE);
+                setResult(RESULT_DELETE);
             }
             finish();
             return true;
@@ -207,8 +219,7 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
         chime.setTriggered(isTrigged);
         chime.setCreatedAt(currentTime);
         chime.setUpdatedAt(currentTime);
-        chimeID = DaoFactory.getSQLiteDaoFactory().createChimeDao(this)
-                .insert(chime);
+        chimeID = DaoFactory.getSQLiteDaoFactory().createChimeDao(this).insert(chime);
         chime.setId(chimeID);
 
         if (isChimeEnabled) {

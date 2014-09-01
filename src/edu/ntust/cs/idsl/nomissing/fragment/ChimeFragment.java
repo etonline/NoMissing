@@ -16,7 +16,6 @@ import android.widget.ListView;
 import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.activity.ChimeSetterActivity;
 import edu.ntust.cs.idsl.nomissing.adapter.ChimeListAdapter;
-import edu.ntust.cs.idsl.nomissing.constant.Constant;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.model.Chime;
 
@@ -54,7 +53,8 @@ public class ChimeFragment extends ListFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.action_add_chime:
-            setChime(0);
+            startActivityForResult(ChimeSetterActivity.getAction(getActivity(), 
+                    ChimeSetterActivity.REQUEST_CREATE, 0), ChimeSetterActivity.REQUEST_CREATE);
             return true;
 
         default:
@@ -64,41 +64,15 @@ public class ChimeFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        setChime((int) id);
+        startActivityForResult(ChimeSetterActivity.getAction(getActivity(), 
+                ChimeSetterActivity.REQUEST_UPDATE, (int)id), ChimeSetterActivity.REQUEST_UPDATE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode != Constant.REQUEST_CODE_SET)
-            return;
-
         chimeList = DaoFactory.getSQLiteDaoFactory().createChimeDao(getActivity()).findAll();
         adapter = new ChimeListAdapter(getActivity(), chimeList);
         setListAdapter(adapter);
-
-        switch (resultCode) {
-        case Constant.RESULT_CODE_CREATE:
-            // ToastMaker.toast(getActivity(), getString(R.string.toast_create_chime));
-            break;
-        case Constant.RESULT_CODE_UPDATE:
-            // ToastMaker.toast(getActivity(), getString(R.string.toast_update_chime));
-            break;
-        case Constant.RESULT_CODE_CANCEL:
-            // ToastMaker.toast(getActivity(), getString(R.string.toast_cancel_chime));
-            break;
-        case Constant.RESULT_CODE_DELETE:
-            // ToastMaker.toast(getActivity(), getString(R.string.toast_delete_chime));
-            break;
-
-        default:
-            break;
-        }
-
-    }
-
-    private void setChime(int chimeID) {
-        Intent intent = ChimeSetterActivity.getAction(getActivity(), chimeID);
-        startActivityForResult(intent, Constant.REQUEST_CODE_SET);
     }
 
 }

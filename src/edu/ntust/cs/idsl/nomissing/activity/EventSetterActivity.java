@@ -1,5 +1,6 @@
 package edu.ntust.cs.idsl.nomissing.activity;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -9,6 +10,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.Menu;
@@ -25,12 +27,10 @@ import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.alarm.AlarmHandlerFactory;
 import edu.ntust.cs.idsl.nomissing.constant.Category;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
-import edu.ntust.cs.idsl.nomissing.fragment.CalendarFragment;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.service.tts.TextToSpeechService;
-import edu.ntust.cs.idsl.nomissing.util.Connectivity;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
@@ -39,14 +39,22 @@ import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class EventSetterActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
 
+    public static final int REQUEST_CREATE = 0;
+    public static final int REQUEST_UPDATE = 1;
+    public static final int RESULT_CREATE = 2;
+    public static final int RESULT_UPDATE = 3;
+    public static final int RESULT_CANCEL = 4;
+    public static final int RESULT_DELETE = 5;
+    
     private static final String ACTION = "edu.ntust.cs.idsl.nomissing.action.SET_EVENT";
+    private static final String EXTRA_REQUEST_CODE = "edu.ntust.cs.idsl.nomissing.extra.REQUEST_CODE";
     private static final String EXTRA_EVENT_ID = "edu.ntust.cs.idsl.nomissing.extra.CALENDAR_ID";
     private static final String EXTRA_CALENDAR_ID = "edu.ntust.cs.idsl.nomissing.extra.EVENT_ID";
     private static final String EXTRA_START_MILLIS = "edu.ntust.cs.idsl.nomissing.extra.START_MILLIS";
     private static final String EXTRA_END_MILLIS = "edu.ntust.cs.idsl.nomissing.extra.END_MILLIS";
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy/M/d (EEE)");
     private static final SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a");
-
+   
     private NoMissingApp app;
     private EditText editTextTitle;
     private EditText editTextLocation;
@@ -71,10 +79,13 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
 
     private Event event;
     private Reminder reminder;
+    
+    private int requestCode;
 
-    public static Intent getAction(Context context, long calendarID, long eventID, long startMillis, long endMillis) {
+    public static Intent getAction(Context context, int requestCode, long calendarID, long eventID, long startMillis, long endMillis) {
         Intent intent = new Intent(context, EventSetterActivity.class);
         intent.setAction(ACTION);
+        intent.putExtra(EXTRA_REQUEST_CODE, requestCode);
         intent.putExtra(EXTRA_CALENDAR_ID, calendarID);
         intent.putExtra(EXTRA_EVENT_ID, eventID);
         intent.putExtra(EXTRA_START_MILLIS, startMillis);
@@ -87,7 +98,8 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_setter);
         app = (NoMissingApp) getApplicationContext();
-
+        requestCode = getIntent().getIntExtra(EXTRA_REQUEST_CODE, 0);
+        
         calendarID = getIntent().getLongExtra(EXTRA_CALENDAR_ID, 0);
         eventID = getIntent().getLongExtra(EXTRA_EVENT_ID, 0);
         startMillis = getIntent().getLongExtra(EXTRA_START_MILLIS, 0);
@@ -103,16 +115,17 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
     }
 
     private void getEvent() {
-        event = (eventID != 0) 
-                ? DaoFactory.getEventDaoFactory(calendarID).createEventDao(this).find(eventID, calendarID, startMillis, endMillis)
-                : new Event();
+        if (requestCode == REQUEST_CREATE) 
+            event = new Event();
+        if (requestCode == REQUEST_UPDATE)
+            event = DaoFactory.getEventDaoFactory(calendarID).createEventDao(this).find(eventID, calendarID, startMillis, endMillis);
     }
 
     private void getReminder() {
-        reminder = (eventID != 0) 
-                ? DaoFactory.getSQLiteDaoFactory().createReminderDao(this).find(calendarID, eventID)
-                : new Reminder();
-         
+        if (requestCode == REQUEST_CREATE) 
+            reminder = new Reminder();
+        if (requestCode == REQUEST_UPDATE)
+            reminder = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).find(calendarID, eventID);
         reminderID = reminder.getId();
     }
 
@@ -196,26 +209,26 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
         case R.id.action_set_event_ok:
             if (!isValidDateRange(startCalendar, endCalendar, reminderCalendar))
                 return false;
-
-            if (eventID == 0) {
+            if (requestCode == REQUEST_CREATE) {
                 createEvent();
-                EventSetterActivity.this.setResult(CalendarFragment.RESULT_CREATE);
-            } else {
-                updateEvent();
-                EventSetterActivity.this.setResult(CalendarFragment.RESULT_UPDATE);
+                setResult(RESULT_CREATE);   
             }
-            EventSetterActivity.this.finish();
+            if (requestCode == REQUEST_UPDATE) {
+                updateEvent();
+                setResult(RESULT_UPDATE);               
+            }
+            finish();
             return true;
 
         case R.id.action_delete_event:
-            if (eventID == 0) {
-                EventSetterActivity.this.setResult(CalendarFragment.RESULT_CANCEL);
-            } else {
-                DaoFactory.getEventDaoFactory(calendarID).createEventDao(this).delete((int) eventID);
-                EventSetterActivity.this.setResult(CalendarFragment.RESULT_DELETE);
-
+            if (requestCode == REQUEST_CREATE) {
+                EventSetterActivity.this.setResult(RESULT_CANCEL);  
             }
-            EventSetterActivity.this.finish();
+            if (requestCode == REQUEST_UPDATE) {
+                deleteEvent();
+                setResult(RESULT_DELETE);              
+            }            
+            finish();
             return true;
 
         default:
@@ -338,27 +351,21 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
         event.setUpdatedAt(currentTime);
         eventID = DaoFactory.getEventDaoFactory(calendarID).createEventDao(this).insert(event);
 
-        if (checkBoxRemider.isChecked()) {
-            if (!Connectivity.isConnected(this)) {
-                ToastMaker.toast(this, R.string.toast_network_inavailable);
-                return;
-            }
+        if (!checkBoxRemider.isChecked())
+            return;
 
-            reminder.setCalendarID(calendarID);
-            reminder.setEventID(eventID);
-            reminder.setReminderTime(reminderCalendar.getTimeInMillis());
-            reminder.setEnabled(checkBoxRemider.isChecked());
-            reminder.setTriggered(false);
-            reminder.setCreatedAt(currentTime);
-            reminder.setUpdatedAt(currentTime);
-            reminderID = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).insert(reminder);
-
-            reminder.setId(reminderID);
-            AlarmHandlerFactory.createReminderAlarmHandler(this).setAlarm(reminder);
-
-            getTTSAudio();
-        }
-
+        reminder.setCalendarID(calendarID);
+        reminder.setEventID(eventID);
+        reminder.setReminderTime(reminderCalendar.getTimeInMillis());
+        reminder.setEnabled(checkBoxRemider.isChecked());
+        reminder.setTriggered(false);
+        reminder.setCreatedAt(currentTime);
+        reminder.setUpdatedAt(currentTime);
+        reminderID = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).insert(reminder);
+        reminder.setId(reminderID);
+        AlarmHandlerFactory.createReminderAlarmHandler(this).setAlarm(reminder);
+        
+        getTTSAudio();
     }
 
     private void updateEvent() {
@@ -373,25 +380,38 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
         reminder.setUpdatedAt(currentTime);
         DaoFactory.getEventDaoFactory(calendarID).createEventDao(this).update(event);
 
-        if (checkBoxRemider.isChecked()) {
-            if (!Connectivity.isConnected(this)) {
-                ToastMaker.toast(this, R.string.toast_network_inavailable);
-                return;
-            }
-
-            reminder.setCalendarID(calendarID);
-            reminder.setEventID(eventID);
-            reminder.setReminderTime(reminderCalendar.getTimeInMillis());
-            reminder.setEnabled(checkBoxRemider.isChecked());
-            reminder.setTriggered(false);
-            reminder.setUpdatedAt(currentTime);
+        if (!checkBoxRemider.isChecked())
+            return;
+        
+        reminder.setCalendarID(calendarID);
+        reminder.setEventID(eventID);
+        reminder.setReminderTime(reminderCalendar.getTimeInMillis());
+        reminder.setEnabled(checkBoxRemider.isChecked());
+        reminder.setTriggered(false);
+        reminder.setUpdatedAt(currentTime);
+        
+        if (reminder.getId() == 0) {
+            reminderID = DaoFactory.getSQLiteDaoFactory().createReminderDao(this).insert(reminder);
+            reminder.setId(reminderID);
+        } else {
             DaoFactory.getSQLiteDaoFactory().createReminderDao(this).update(reminder);
-
             AlarmHandlerFactory.createReminderAlarmHandler(this).cancelAlarm(reminder);
-            AlarmHandlerFactory.createReminderAlarmHandler(this).setAlarm(reminder);
-
-            getTTSAudio();
         }
+        AlarmHandlerFactory.createReminderAlarmHandler(this).setAlarm(reminder);
+        
+        getTTSAudio();
+    }
+    
+    private void deleteEvent() {    
+        AlarmHandlerFactory.createReminderAlarmHandler(this).cancelAlarm(reminder);
+        
+        if (reminder.getAudio() != null) {
+            File audio = new File(Uri.parse(reminder.getAudio()).getPath());
+            audio.delete();
+        }
+        
+        DaoFactory.getEventDaoFactory(calendarID).createEventDao(this).delete(eventID);  
+        DaoFactory.getSQLiteDaoFactory().createReminderDao(this).delete(reminderID);  
     }
 
     private boolean isValidDateRange(Calendar startCalendar,
@@ -408,7 +428,6 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
                 isValidDateRange = false;
                 ToastMaker.toast(this, R.string.reminder_time_setting_error);
             }
-
         }
 
         return isValidDateRange;

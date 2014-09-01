@@ -40,12 +40,6 @@ import edu.ntust.cs.idsl.nomissing.model.Event;
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class CalendarFragment extends CaldroidFragment implements OnClickListener, OnItemClickListener {
 
-    private static final int REQUEST_SET = 0;
-    public static final int RESULT_CREATE = 1;
-    public static final int RESULT_UPDATE = 2;
-    public static final int RESULT_CANCEL = 3;
-    public static final int RESULT_DELETE = 4;
-
     private NoMissingApp app;
     private long calenderID;
 
@@ -104,7 +98,8 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
             return true;
 
         case R.id.action_add_event:
-            setEvent(calenderID, 0, 0, 0);
+            startActivityForResult(EventSetterActivity.getAction(getActivity(), EventSetterActivity.REQUEST_CREATE, 
+                    calenderID, 0, 0, 0), EventSetterActivity.REQUEST_CREATE);
             return true;
 
         default:
@@ -118,7 +113,8 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
         case R.id.imageViewAdd:
             long startMillis = selectedDate.getTimeInMillis();
             long endMillis = selectedDate.getTimeInMillis();
-            setEvent(calenderID, 0, startMillis, endMillis);
+            startActivityForResult(EventSetterActivity.getAction(getActivity(), EventSetterActivity.REQUEST_CREATE, 
+                    calenderID, 0, startMillis, endMillis), EventSetterActivity.REQUEST_CREATE);
             break;
 
         default:
@@ -133,35 +129,13 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
         long eventID = id;
         long startMillis = dayEvents.get(position).getStartTime();
         long endMillis = dayEvents.get(position).getEndTime();
-        setEvent(calenderID, eventID, startMillis, endMillis);
+        startActivityForResult(EventSetterActivity.getAction(getActivity(), EventSetterActivity.REQUEST_UPDATE, 
+                calenderID, eventID, startMillis, endMillis), EventSetterActivity.REQUEST_UPDATE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode != REQUEST_SET)
-            return;
-
         setCaldroid();
-
-        switch (resultCode) {
-        case RESULT_CREATE:
-            // ToastMaker.toast(getActivity(), "建立");
-            break;
-        case RESULT_UPDATE:
-            // ToastMaker.toast(getActivity(), "更新");
-            break;
-        case RESULT_CANCEL:
-            // ToastMaker.toast(getActivity(), "取消");
-            break;
-        case RESULT_DELETE:
-            // ToastMaker.toast(getActivity(), "刪除");
-            break;
-
-        default:
-            break;
-        }
-
     }
 
     private void setCaldroid() {
@@ -260,11 +234,6 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
                 selectedDate.get(Calendar.YEAR),
                 selectedDate.get(Calendar.MONTH),
                 selectedDate.get(Calendar.DAY_OF_MONTH)).show();
-    }
-
-    private void setEvent(long calenderID, long eventID, long startMillis, long endMillis) {
-        Intent intent = EventSetterActivity.getAction(getActivity(), calenderID, eventID, startMillis, endMillis);
-        startActivityForResult(intent, REQUEST_SET);
     }
 
     private Calendar getStartOfDate(Calendar calendar) {

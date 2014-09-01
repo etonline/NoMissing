@@ -24,19 +24,12 @@ import edu.ntust.cs.idsl.nomissing.adapter.AgendaListAdapter;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
-import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
 public class HomeFragment extends Fragment implements OnItemClickListener {
-
-    private static final int REQUEST_SET = 0;
-    public static final int RESULT_CREATE = 1;
-    public static final int RESULT_UPDATE = 2;
-    public static final int RESULT_CANCEL = 3;
-    public static final int RESULT_DELETE = 4;
 
     private NoMissingApp app;
     private long calenderID;
@@ -88,7 +81,8 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.action_add_event:
-            setEvent(calenderID, 0, 0, 0);
+            startActivityForResult(EventSetterActivity.getAction(getActivity(), EventSetterActivity.REQUEST_CREATE, 
+                    calenderID, 0, 0, 0), EventSetterActivity.REQUEST_CREATE);
             return true;
 
         default:
@@ -101,35 +95,13 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
         long eventID = id;
         long startMillis = events.get(position).getStartTime();
         long endMillis = events.get(position).getEndTime();
-        setEvent(calenderID, eventID, startMillis, endMillis);
+        startActivityForResult(EventSetterActivity.getAction(getActivity(), EventSetterActivity.REQUEST_UPDATE, 
+                calenderID, eventID, startMillis, endMillis), EventSetterActivity.REQUEST_UPDATE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode != REQUEST_SET)
-            return;
-
         getEvents();
-
-        switch (resultCode) {
-        case RESULT_CREATE:
-            ToastMaker.toast(getActivity(), "建立");
-            break;
-        case RESULT_UPDATE:
-            ToastMaker.toast(getActivity(), "更新");
-            break;
-        case RESULT_CANCEL:
-            ToastMaker.toast(getActivity(), "取消");
-            break;
-        case RESULT_DELETE:
-            ToastMaker.toast(getActivity(), "刪除");
-            break;
-
-        default:
-            break;
-        }
-
     }
 
     private void getEvents() {
@@ -142,11 +114,6 @@ public class HomeFragment extends Fragment implements OnItemClickListener {
         events = DaoFactory.getEventDaoFactory(calenderID).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
         AgendaListAdapter adapter = new AgendaListAdapter(getActivity(), events);
         listViewAgenda.setAdapter(adapter);
-    }
-
-    private void setEvent(long calenderID, long eventID, long startMillis, long endMillis) {
-        Intent intent = EventSetterActivity.getAction(getActivity(), calenderID, eventID, startMillis, endMillis);
-        startActivityForResult(intent, REQUEST_SET);
     }
 
 }

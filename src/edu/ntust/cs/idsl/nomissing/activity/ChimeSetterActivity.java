@@ -218,7 +218,7 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
             isActive = true;
         if (!isChimeEnabled)
             isActive = true;
-        else 
+        if (!isActive)
             ToastMaker.toast(this, R.string.toast_network_inavailable);
         return isActive;
     }

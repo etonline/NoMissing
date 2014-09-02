@@ -346,7 +346,7 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
             isActive = true;
         if (!checkBoxRemider.isChecked())
             isActive = true;
-        else 
+        if (!isActive)
             ToastMaker.toast(this, R.string.toast_network_inavailable);
         return isActive;
     }

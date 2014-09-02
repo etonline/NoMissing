@@ -145,6 +145,8 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
             return true;
 
         case R.id.action_set_chime_ok:
+            if (!isActive()) 
+                return false;  
             if (requestCode == REQUEST_CREATE) {
                 createChime();
                 setResult(RESULT_CREATE);
@@ -210,6 +212,17 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
         return true;
     }
 
+    private boolean isActive() {
+        boolean isActive = false; 
+        if (isChimeEnabled && Connectivity.isConnected(this)) 
+            isActive = true;
+        if (!isChimeEnabled)
+            isActive = true;
+        else 
+            ToastMaker.toast(this, R.string.toast_network_inavailable);
+        return isActive;
+    }
+    
     private void createChime() {
         long currentTime = System.currentTimeMillis();
         chime.setHour(chimeHour);
@@ -222,16 +235,11 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
         chimeID = DaoFactory.getSQLiteDaoFactory().createChimeDao(this).insert(chime);
         chime.setId(chimeID);
 
-        if (isChimeEnabled) {
-            if (!Connectivity.isConnected(this)) {
-                isChimeEnabled = false;
-                ToastMaker.toast(this, R.string.toast_network_inavailable);
-                return;
-            }
-
-            AlarmHandlerFactory.createChimeAlarmHandler(this).setAlarm(chime);
-            getTTSAudio();
-        }
+        if (!isChimeEnabled)
+            return;
+        
+        AlarmHandlerFactory.createChimeAlarmHandler(this).setAlarm(chime);
+        getTTSAudio();
     }
 
     private void updateChime() {
@@ -244,27 +252,20 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
         chime.setUpdatedAt(currentTime);
         DaoFactory.getSQLiteDaoFactory().createChimeDao(this).update(chime);
 
+        if (!isChimeEnabled)
+            return;
+            
         AlarmHandlerFactory.createChimeAlarmHandler(this).cancelAlarm(chime);
-        if (isChimeEnabled) {
-            if (!Connectivity.isConnected(this)) {
-                isChimeEnabled = false;
-                ToastMaker.toast(this, R.string.toast_network_inavailable);
-                return;
-            }
-
-            AlarmHandlerFactory.createChimeAlarmHandler(this).setAlarm(chime);
-            getTTSAudio();
-        }
+        AlarmHandlerFactory.createChimeAlarmHandler(this).setAlarm(chime);
+        getTTSAudio();
     }
 
     private void deleteChime() {
         AlarmHandlerFactory.createChimeAlarmHandler(this).cancelAlarm(chime);
-
         if (chime.getAudio() != null) {
             File audio = new File(Uri.parse(chime.getAudio()).getPath());
             audio.delete();
         }
-
         DaoFactory.getSQLiteDaoFactory().createChimeDao(this).delete(chimeID);
     }
 
@@ -272,7 +273,6 @@ public class ChimeSetterActivity extends PreferenceActivity implements OnPrefere
         Bundle extras = TextToSpeechService.getExtras(Category.CHIME, chime.getId(), 
                 chime.getStringForTTS(), app.getSettings().getTTSSpeaker(), 
                 app.getSettings().getTTSVolume(), app.getSettings().getTTSSpeed(), "wav");
-
         TextToSpeechService.startService(this, extras);
     }
 

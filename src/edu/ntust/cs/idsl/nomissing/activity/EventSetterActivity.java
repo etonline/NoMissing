@@ -31,6 +31,7 @@ import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
 import edu.ntust.cs.idsl.nomissing.model.Reminder;
 import edu.ntust.cs.idsl.nomissing.service.tts.TextToSpeechService;
+import edu.ntust.cs.idsl.nomissing.util.Connectivity;
 import edu.ntust.cs.idsl.nomissing.util.ToastMaker;
 
 /**
@@ -209,6 +210,8 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
         case R.id.action_set_event_ok:
             if (!isValidDateRange(startCalendar, endCalendar, reminderCalendar))
                 return false;
+            if (!isActive())
+                return false;
             if (requestCode == REQUEST_CREATE) {
                 createEvent();
                 setResult(RESULT_CREATE);   
@@ -337,6 +340,17 @@ public class EventSetterActivity extends Activity implements OnClickListener, On
 
     }
 
+    private boolean isActive() {
+        boolean isActive = false; 
+        if (checkBoxRemider.isChecked() && Connectivity.isConnected(this)) 
+            isActive = true;
+        if (!checkBoxRemider.isChecked())
+            isActive = true;
+        else 
+            ToastMaker.toast(this, R.string.toast_network_inavailable);
+        return isActive;
+    }
+    
     private void createEvent() {
         long currentTime = System.currentTimeMillis();
 

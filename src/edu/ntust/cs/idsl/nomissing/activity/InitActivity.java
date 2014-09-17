@@ -43,7 +43,7 @@ public class InitActivity extends Activity {
                 MainActivity.startAction(InitActivity.this);
                 finish();
             }
-        }, 3000);
+        }, 1000);
     }
 
 }

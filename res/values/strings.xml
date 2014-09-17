@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <!-- Activity Title -->
     <string name="app_name">NoMissing</string>
     <string name="title_activity_init">NoMissing</string>
     <string name="title_activity_main">NoMissing</string>
+    <string name="title_activity_settings">設定</string>
     <string name="title_activity_event">待辦事項</string>
     <string name="title_activity_event_setter">待辦事項</string>
     <string name="title_activity_chime">語音報時</string>
@@ -13,10 +14,12 @@
     <string name="title_activity_weather_setter">語音氣象</string>
     <string name="title_activity_sms">您有新訊息</string>
     <string name="title_activity_email">您有新郵件</string>
+    <string name="title_activity_about">關於 NoMissing</string>
 
     <!-- Action Bar -->
+    <string name="action_settings">設定</string>
     <string name="action_about">關於</string>
-    <string name="action_search_date">查詢日期</string> 
+    <string name="action_search_date">查詢日期</string>
     <string name="action_add_event">新增活動</string>
     <string name="action_delete_event">刪除活動</string>
     <string name="action_set_event_ok">完成設定</string>
@@ -27,7 +30,7 @@
     <string name="action_set_weather">設定提醒</string>
     <string name="action_set_weather_ok">完成設定</string>
     <string name="action_default_settings">還原預設</string>
-    <string name="action_save_settings">儲存設定</string>   
+    <string name="action_save_settings">儲存設定</string>
 
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
@@ -42,8 +45,9 @@
     <!-- MainActivity -->
     <string name="dialog_set_calendar">設定日曆</string>
     <string name="default_calendar">NoMissing (預設)</string>
-    <string name="click_back_again_to_exit">再按一次返回鍵離開</string>    
-    
+    <string name="click_back_again_to_exit">再按一次返回鍵離開</string>
+    <string name="nomissing_about">NoMissing v1.0 Beta \n\nCopyright © 2014 Integrated Digital Services Laboratory.</string>
+
     <!-- Home -->
     <string name="home_fragment_agenda">待辦事項</string>
 
@@ -78,15 +82,15 @@
     <string name="event_reminder_one_week">1 週</string>
     <string name="start_time_setting_error">開始時間必須早於結束時間</string>
     <string name="reminder_time_setting_error">提醒時間必須早於開始時間</string>
-    
     <string name="toast_audio_file_created">語音檔已建立</string>
-    <string name="toast_network_inavailable">請確認網路連線已開啟</string>    
-    
+    <string name="toast_network_inavailable">請確認網路連線已開啟</string>
+
     <!-- Chime -->
-    <string name="no_data"></string>
+    <string name="no_chime">尚未新增語音報時</string>
     <string name="pref_chime_enabled">開啟報時</string>
     <string name="pref_chime_time">時間</string>
     <string name="pref_chime_repeating">重複</string>
+
     <string-array name="pref_chime_repeating_key">
         <item>單次</item>
         <item>每日</item>
@@ -95,9 +99,10 @@
         <item>0</item>
         <item>1</item>
     </string-array>
+
     <string name="pref_chime_repeating_one_time">單次</string>
     <string name="pref_chime_repeating_every_day">每日</string>
-        
+
     <!-- Weather -->
     <string name="pref_tts_enabled">開啟語音</string>
     <string name="pref_reminder_enabled">定時提醒</string>
@@ -134,9 +139,9 @@
     <string name="central_region_cities">苗栗縣, 台中市, 彰化縣, 南投縣, 雲林縣</string>
     <string name="southern_region_cities">嘉義縣, 嘉義市, 台南市, 高雄市, 屏東縣</string>
     <string name="eastern_region_cities">花蓮縣, 台東縣</string>
-    <string name="offshore_islands_region_cities">澎湖縣, 金門縣, 連江縣</string>    
+    <string name="offshore_islands_region_cities">澎湖縣, 金門縣, 連江縣</string>
     <string name="toast_save_settings">已儲存設定</string>
-      
+
     <!-- Settings -->
     <string name="pref_category_calendar_settings">Calendar</string>
     <string name="pref_category_reminder_settings">語音提醒</string>
@@ -145,17 +150,18 @@
     <string name="pref_category_tts_settings">Text-to-Speech</string>
     <string name="pref_calendar">日曆</string>
     <string name="pref_tts_speaker">音源</string>
+
     <string-array name="pref_tts_speaker_key">
-		<item>Bruce (中英切換男生語音)</item>
-		<item>Theresa (中英切換女生語音)</item>
-		<item>Angela (中英切換小女孩語音)</item>
-		<item>MCHEN_Bruce (中英統合男生語音)</item>
-		<item>MCHEN_Joddess (中英統合女生語音)</item>
-		<item>ENG_Bob (英文男生語音)</item>
-		<item>ENG_Alice (英文女生語音)</item>
-		<item>ENG_Tracy (英文小男孩語音)</item>
-		<item>TW_LIT_AKoan (台語女生語音[文讀台])</item>
-		<item>TW_SPK_AKoan (台語女生語音[白話台])</item>
+        <item>Bruce (中英切換男生語音)</item>
+        <item>Theresa (中英切換女生語音)</item>
+        <item>Angela (中英切換小女孩語音)</item>
+        <item>MCHEN_Bruce (中英統合男生語音)</item>
+        <item>MCHEN_Joddess (中英統合女生語音)</item>
+        <item>ENG_Bob (英文男生語音)</item>
+        <item>ENG_Alice (英文女生語音)</item>
+        <item>ENG_Tracy (英文小男孩語音)</item>
+        <item>TW_LIT_AKoan (台語女生語音[文讀台])</item>
+        <item>TW_SPK_AKoan (台語女生語音[白話台])</item>
     </string-array>
     <string-array name="pref_tts_speaker_value">
         <item>Bruce</item>
@@ -169,22 +175,23 @@
         <item>TW_LIT_AKoan</item>
         <item>TW_SPK_AKoan</item>
     </string-array>
+
     <string name="pref_tts_volume">音量</string>
     <string name="pref_tts_speed">聲速</string>
-    
+
     <!-- Weather Service Receiver -->
     <string name="refresh_weather_data_start">正在取得天氣資料</string>
     <string name="refresh_weather_data_finish">天氣資料更新完成</string>
-    <string name="refresh_weather_data_failure">天氣資料更新失敗</string>    
-    
+    <string name="refresh_weather_data_failure">天氣資料更新失敗</string>
+
     <!-- TTS Service Receiver -->
     <string name="create_audio_file_start">正在建立語音檔</string>
     <string name="create_audio_file_finish">已建立語音檔</string>
-    <string name="create_audio_file_failure">語音檔建立失敗</string>    
-    
+    <string name="create_audio_file_failure">語音檔建立失敗</string>
+
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
-    
     <string name="alert_dialog_close">關閉</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import edu.ntust.cs.idsl.nomissing.R;
-import edu.ntust.cs.idsl.nomissing.constant.NavDrawerItem;
+import edu.ntust.cs.idsl.nomissing.constant.NavItem;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
@@ -19,9 +19,9 @@ import edu.ntust.cs.idsl.nomissing.constant.NavDrawerItem;
 public class NavDrawerListAdapter extends BaseAdapter {
 
     private Context context;
-    private List<NavDrawerItem> navItems;
+    private List<NavItem> navItems;
 
-    public NavDrawerListAdapter(Context context, List<NavDrawerItem> navItems) {
+    public NavDrawerListAdapter(Context context, List<NavItem> navItems) {
         this.context = context;
         this.navItems = navItems;
     }

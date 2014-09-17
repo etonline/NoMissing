@@ -16,14 +16,14 @@
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:name=".global.NoMissingApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/Theme.Nomissing" >
         <activity
             android:name=".activity.InitActivity"
             android:label="@string/app_name"
@@ -38,10 +38,19 @@
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main" />
         <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".activity.ChimeSetterActivity"
+            android:label="@string/title_activity_chime_setter" />
+        <activity
+            android:name=".activity.WeatherSetterActivity"
+            android:label="@string/title_activity_weather_setter" />            
+        <activity
             android:name=".activity.EventActivity"
             android:label="@string/title_activity_event"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />        
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
         <activity
             android:name=".activity.EventSetterActivity"
             android:label="@string/title_activity_event_setter" />
@@ -49,23 +58,22 @@
             android:name=".activity.ChimeActivity"
             android:label="@string/title_activity_chime"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />        
-        <activity
-            android:name=".activity.ChimeSetterActivity"
-            android:label="@string/title_activity_chime_setter" />
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
         <activity
             android:name=".activity.WeatherActivity"
             android:label="@string/title_activity_weather"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />        
         <activity
-            android:name=".activity.WeatherSetterActivity"
-            android:label="@string/title_activity_weather_setter" />
+            android:name=".activity.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />           
         <activity
             android:name=".activity.SMSActivity"
             android:label="@string/title_activity_sms"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />        
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" />                     
 
         <service android:name=".service.MediaPlayerService" />
         <service android:name=".service.RegistrationService" />
@@ -79,10 +87,10 @@
         <receiver android:name=".receiver.TTSServiceReceiver" />
         <receiver android:name=".receiver.WeatherServiceReceiver" />
         <receiver android:name=".receiver.AlarmReceiver" />
-        <receiver android:name=".receiver.SMSReceiver">
+        <receiver android:name=".receiver.SMSReceiver" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>        
+            </intent-filter>
         </receiver>
         <receiver android:name=".receiver.BootReceiver" >
             <intent-filter>

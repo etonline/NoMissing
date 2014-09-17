@@ -38,7 +38,7 @@ import edu.ntust.cs.idsl.nomissing.model.Event;
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
  */
 @SuppressLint({ "NewApi", "SimpleDateFormat" })
-public class CalendarFragment extends CaldroidFragment implements OnClickListener, OnItemClickListener {
+public class CalendarFragment extends CaldroidFragment implements OnItemClickListener {
 
     private NoMissingApp app;
     private long calenderID;
@@ -46,7 +46,6 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
     private CaldroidFragment caldroidFragment;
 
     private TextView textViewDate;
-    private ImageView imageViewAdd;
     private ListView listViewEvents;
     private EventListAdapter adapter;
 
@@ -75,10 +74,8 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
                 false);
 
         textViewDate = (TextView) rootView.findViewById(R.id.textViewDate);
-        imageViewAdd = (ImageView) rootView.findViewById(R.id.imageViewAdd);
         listViewEvents = (ListView) rootView.findViewById(R.id.listViewEvents);
         listViewEvents.setOnItemClickListener(this);
-        imageViewAdd.setOnClickListener(this);
         setCaldroid();
 
         return rootView;
@@ -98,29 +95,15 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
             return true;
 
         case R.id.action_add_event:
+            long startMillis = selectedDate.getTimeInMillis();
+            long endMillis = selectedDate.getTimeInMillis();
             startActivityForResult(EventSetterActivity.getAction(getActivity(), EventSetterActivity.REQUEST_CREATE, 
-                    calenderID, 0, 0, 0), EventSetterActivity.REQUEST_CREATE);
+                    calenderID, 0, startMillis, endMillis), EventSetterActivity.REQUEST_CREATE);
             return true;
 
         default:
             return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.imageViewAdd:
-            long startMillis = selectedDate.getTimeInMillis();
-            long endMillis = selectedDate.getTimeInMillis();
-            startActivityForResult(EventSetterActivity.getAction(getActivity(), EventSetterActivity.REQUEST_CREATE, 
-                    calenderID, 0, startMillis, endMillis), EventSetterActivity.REQUEST_CREATE);
-            break;
-
-        default:
-            break;
-        }
-
     }
 
     @Override
@@ -145,6 +128,7 @@ public class CalendarFragment extends CaldroidFragment implements OnClickListene
         Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        args.putBoolean(CaldroidFragment.ENABLE_SWIPE, true);
         caldroidFragment.setArguments(args);
 
         FragmentManager fragManager = getActivity().getSupportFragmentManager();

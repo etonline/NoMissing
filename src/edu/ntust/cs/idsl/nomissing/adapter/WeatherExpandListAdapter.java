@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+import edu.ntust.cs.idsl.nomissing.R;
 import edu.ntust.cs.idsl.nomissing.constant.City;
 import edu.ntust.cs.idsl.nomissing.constant.Region;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
@@ -124,6 +125,7 @@ public class WeatherExpandListAdapter extends BaseExpandableListAdapter {
                 .findViewById(android.R.id.text2);
 
         textViewRegion.setText(groupList.get(groupPosition).getName());
+        textViewRegion.setTextColor(context.getResources().getColor(R.color.brown));
         textViewRegionCities.setText(groupList.get(groupPosition).getCities());
 
         return convertView;
@@ -148,6 +150,7 @@ public class WeatherExpandListAdapter extends BaseExpandableListAdapter {
         textViewWeather.setSingleLine(true);
         textViewWeather.setEllipsize(TruncateAt.END);
         textViewWeather.setText(weather.getMemo());
+        textViewWeather.setTextColor(context.getResources().getColor(R.color.gray));
 
         return convertView;
     }

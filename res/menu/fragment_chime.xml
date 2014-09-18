@@ -5,7 +5,7 @@
         android:id="@+id/action_add_chime"
 		android:orderInCategory="0"
         android:title="@string/action_add_chime"
-        android:icon="@drawable/ic_action_new"
+        android:icon="@drawable/ic_action_add_alarm"
         android:showAsAction="ifRoom|withText" />
     
 </menu>

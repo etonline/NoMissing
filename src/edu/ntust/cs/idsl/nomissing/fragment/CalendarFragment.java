@@ -15,12 +15,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,6 +31,7 @@ import edu.ntust.cs.idsl.nomissing.adapter.EventListAdapter;
 import edu.ntust.cs.idsl.nomissing.dao.DaoFactory;
 import edu.ntust.cs.idsl.nomissing.global.NoMissingApp;
 import edu.ntust.cs.idsl.nomissing.model.Event;
+import edu.ntust.cs.idsl.nomissing.util.CalendarHelper;
 
 /**
  * @author Chun-Kai Wang <m10209122@mail.ntust.edu.tw>
@@ -167,10 +166,10 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
     }
 
     private void setMonthEvents(Calendar calendar) {
-        long startMillis = getStartOfDate(calendar).getTimeInMillis();
+        long startMillis = CalendarHelper.setStartOfDate(calendar).getTimeInMillis();
         calendar.add(Calendar.MONTH, 2);
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        long endMillis = getEndOfDate(calendar).getTimeInMillis();
+        long endMillis = CalendarHelper.setEndOfDate(calendar).getTimeInMillis();
 
         monthEvents = DaoFactory.getEventDaoFactory(calenderID).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
         for (Event event : monthEvents) {
@@ -186,8 +185,8 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
 
         Calendar day = Calendar.getInstance();
         day.setTime(calendar.getTime());
-        long startMillis = getStartOfDate(day).getTimeInMillis();
-        long endMillis = getEndOfDate(day).getTimeInMillis();
+        long startMillis = CalendarHelper.setStartOfDate(day).getTimeInMillis();
+        long endMillis = CalendarHelper.setEndOfDate(day).getTimeInMillis();
 
         dayEvents = monthEvents = DaoFactory.getEventDaoFactory(calenderID).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
         adapter = new EventListAdapter(getActivity(), dayEvents);
@@ -196,7 +195,7 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
 
     private void checkWithinNextDay(Calendar calendar, long endMillis) {
         calendar.add(Calendar.DAY_OF_YEAR, 1);
-        calendar = getStartOfDate(calendar);
+        calendar = CalendarHelper.setStartOfDate(calendar);
 
         if (calendar.getTimeInMillis() <= endMillis) {
             caldroidFragment.setBackgroundResourceForDate(R.color.indianred, calendar.getTime());
@@ -218,22 +217,6 @@ public class CalendarFragment extends CaldroidFragment implements OnItemClickLis
                 selectedDate.get(Calendar.YEAR),
                 selectedDate.get(Calendar.MONTH),
                 selectedDate.get(Calendar.DAY_OF_MONTH)).show();
-    }
-
-    private Calendar getStartOfDate(Calendar calendar) {
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar;
-    }
-
-    private Calendar getEndOfDate(Calendar calendar) {
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND, 59);
-        calendar.set(Calendar.MILLISECOND, 999);
-        return calendar;
     }
 
 }

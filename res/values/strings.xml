@@ -46,7 +46,8 @@
     <string name="dialog_set_calendar">設定日曆</string>
     <string name="default_calendar">NoMissing (預設)</string>
     <string name="click_back_again_to_exit">再按一次返回鍵離開</string>
-    <string name="nomissing_about">NoMissing v1.0 Beta \n\nCopyright © 2014 Integrated Digital Services Laboratory.</string>
+    <string name="nomissing_about">NoMissing v1.0 Beta \n\nCopyright © 2014 IDSL Branch.</string>
+    <string name="copyright">Copyright © 2014 IDSL Branch.</string>
 
     <!-- Home -->
     <string name="home_fragment_agenda">待辦事項</string>

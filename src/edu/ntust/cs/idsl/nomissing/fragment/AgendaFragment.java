@@ -38,19 +38,15 @@ public class AgendaFragment extends Fragment implements OnClickListener, OnChild
     private NoMissingApp app;
     private long calenderID;
 
-    private List<List<Event>> agendaEventsList;
-    
     private TextView textViewAgenda;
     private ExpandableListView expandableListViewAgenda;
     private ImageView imageViewPrevMonth;
     private ImageView imageViewNextMonth;
     
+    private List<List<Event>> agendaEventsList;
     private Calendar calendar;
     
     private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM ");
-
-    public AgendaFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,6 +105,22 @@ public class AgendaFragment extends Fragment implements OnClickListener, OnChild
             return super.onOptionsItemSelected(item);
         }
     }
+    
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.imageViewPrevMonth:
+            setPrevMonth();
+            break;
+            
+        case R.id.imageViewNextMonth:
+            setNextMonth();
+            break;
+
+        default:
+            break;
+        }
+    }
 
     @Override
     public boolean onChildClick(ExpandableListView parent, View v,
@@ -122,10 +134,39 @@ public class AgendaFragment extends Fragment implements OnClickListener, OnChild
         return true;
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        getAgendaEvents(Calendar.getInstance());
+        calendar = CalendarHelper.setCurrentTime(calendar);
+        getAgendaEvents(calendar);
+    }
+    
+    private List<Date> getEventDateList(Calendar calendar) {
+        List<Date> eventDateList = new ArrayList<Date>(); 
+        
+        Calendar endOfMonth = Calendar.getInstance();
+        endOfMonth.setTime(calendar.getTime());
+        endOfMonth = CalendarHelper.setEndOfMonth(endOfMonth);
+        
+        while (calendar.getTimeInMillis() <= endOfMonth.getTimeInMillis()) {
+            long startMillis = calendar.getTimeInMillis();
+            calendar = CalendarHelper.setEndOfDate(calendar);
+            long endMillis = CalendarHelper.setEndOfDate(calendar).getTimeInMillis();
+            
+            if (DaoFactory.getEventDaoFactory(calenderID).createEventDao(getActivity())
+                    .find(calenderID, startMillis, endMillis).size() > 0 ) {
+                eventDateList.add(calendar.getTime());
+            }
+                
+            if (calendar.get(Calendar.DAY_OF_MONTH) 
+                    == calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                break;
+            } 
+            
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            calendar = CalendarHelper.setStartOfDate(calendar);
+        }
+
+        return eventDateList;
     }
     
     private List<List<Event>> getAgendaEventsList(List<Date> eventDateList) {
@@ -142,50 +183,6 @@ public class AgendaFragment extends Fragment implements OnClickListener, OnChild
         }
         
         return agendaEventsList;
-    }
-    
-    private List<Date> getEventDateList(Calendar calendar) {
-        List<Date> eventDateList = new ArrayList<Date>(); 
-        
-        long startMillis = CalendarHelper.setStartOfDate(calendar).getTimeInMillis();
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        long endMillis = CalendarHelper.setEndOfDate(calendar).getTimeInMillis();
-
-        List<Event> angendaEvents = DaoFactory.getEventDaoFactory(calenderID).createEventDao(getActivity()).find(calenderID, startMillis, endMillis);
-        for (Event event : angendaEvents) {
-            calendar.setTimeInMillis(event.getStartTime());
-            eventDateList.add(calendar.getTime());
-            checkWithinNextDay(eventDateList, calendar, event.getEndTime());
-        }        
-        
-        return eventDateList;
-    }
-    
-    private List<Date> checkWithinNextDay(List<Date> agendaDateList, Calendar calendar, long endMillis) {
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        calendar = CalendarHelper.setStartOfDate(calendar);
-
-        if (calendar.getTimeInMillis() <= endMillis) {
-            agendaDateList.add(calendar.getTime());
-            checkWithinNextDay(agendaDateList, calendar, endMillis);
-        }
-        return agendaDateList;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.imageViewPrevMonth:
-            setPrevMonth();
-            break;
-            
-        case R.id.imageViewNextMonth:
-            setNextMonth();
-            break;
-
-        default:
-            break;
-        }
     }
     
     private void setPrevMonth()  {        
